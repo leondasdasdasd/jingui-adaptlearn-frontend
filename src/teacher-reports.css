@@ -1,0 +1,129 @@
+.teacher-report-directory {
+  overflow: hidden;
+  border: 1px solid var(--color-border-default);
+  border-radius: 11px;
+  background: var(--color-surface-card-default);
+}
+
+.teacher-report-directory > header {
+  min-height: 56px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.teacher-report-directory > header h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.teacher-report-directory > header span {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.teacher-report-table-scroll {
+  overflow-x: auto;
+}
+
+.teacher-report-directory table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  text-align: left;
+}
+
+.teacher-report-directory th {
+  height: 40px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--color-border-default);
+  color: var(--color-text-primary);
+  background: var(--color-surface-section);
+  font-weight: 400;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.teacher-report-directory th:first-child,
+.teacher-report-directory td:first-child {
+  padding-left: 16px;
+}
+
+.teacher-report-directory th:last-child,
+.teacher-report-directory td:last-child {
+  width: 116px;
+  padding-right: 16px;
+  text-align: right;
+}
+
+.teacher-report-directory td {
+  min-height: 56px;
+  padding: 12px;
+  border-bottom: 1px solid var(--color-border-default);
+  vertical-align: middle;
+}
+
+.teacher-report-directory tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.teacher-report-directory tbody tr:hover {
+  background: var(--color-table-row-hover);
+}
+
+.teacher-report-directory td:first-child strong {
+  display: block;
+  font-weight: 500;
+}
+
+.teacher-report-directory time {
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.teacher-report-open {
+  height: 32px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 0;
+  border-radius: 7px;
+  color: #032e92;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.teacher-report-open:hover {
+  color: var(--color-primary-700);
+  background: var(--color-primary-50);
+}
+
+.teacher-report-error-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+@media (max-width: 560px) {
+  .teacher-report-directory > header {
+    min-height: 52px;
+  }
+
+  .teacher-report-error-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

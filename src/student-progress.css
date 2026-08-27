@@ -1,0 +1,337 @@
+.student-progress-tabs {
+  --student-progress-primary: #0445fc;
+  --student-progress-primary-hover: #043dcd;
+  --student-progress-link: #032e92;
+  --student-progress-text: #01113d;
+  --student-progress-secondary: #27355a;
+  --student-progress-helper: #5a6481;
+  --student-progress-weak: #9aa3b2;
+  --student-progress-border: #e6e7ec;
+  --student-progress-page: #f7f8f9;
+  --student-progress-success: #3f9378;
+  --student-progress-warning: #d48806;
+  height: 32px;
+  width: fit-content;
+  margin: 0;
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--student-progress-border);
+  border-radius: 7px;
+  background: #fff;
+}
+
+.student-progress-tabs button {
+  height: 30px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  border-right: 1px solid var(--student-progress-border);
+  border-radius: 0;
+  color: var(--student-progress-text);
+  background: #fff;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.student-progress-tabs button:last-child { border-right: 0; }
+.student-progress-tabs button:hover { background: var(--student-progress-page); }
+.student-progress-tabs button.active { color: var(--student-progress-primary); background: #f2f5ff; }
+.student-progress-tabs button span { color: var(--student-progress-helper); font-size: 12px; font-variant-numeric: tabular-nums; }
+.student-progress-tabs button.active span { color: var(--student-progress-primary); }
+
+.student-progress-sync {
+  min-height: 40px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid #bfdbfe;
+  border-radius: 7px;
+  color: #032e92;
+  background: #eff6ff;
+  font-size: 13px;
+}
+
+.student-progress-sync.error { border-color: #fed7aa; color: #9a3412; background: #fff7ed; }
+.student-progress-sync button { min-height: 30px; padding: 0 10px; flex: 0 0 auto; border: 1px solid currentColor; border-radius: 6px; color: inherit; background: #fff; font: inherit; }
+
+.student-history-panel {
+  --student-progress-primary: #0445fc;
+  --student-progress-link: #032e92;
+  --student-progress-text: #01113d;
+  --student-progress-secondary: #27355a;
+  --student-progress-helper: #5a6481;
+  --student-progress-weak: #9aa3b2;
+  --student-progress-border: #e6e7ec;
+  --student-progress-page: #f7f8f9;
+  --student-progress-success: #3f9378;
+  --student-progress-warning: #d48806;
+}
+
+.student-history-heading {
+  height: 56px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.student-history-heading > div { display: flex; align-items: center; gap: 10px; color: var(--student-progress-primary); }
+.student-history-heading h2 { margin: 0; color: var(--student-progress-text); font-size: 16px; font-weight: 500; line-height: 20px; }
+.student-history-heading p { margin: 1px 0 0; color: var(--student-progress-helper); font-size: 12px; line-height: 18px; }
+
+.student-history-table-wrap { overflow-x: auto; border: 1px solid var(--student-progress-border); border-radius: 11px; background: #fff; }
+.student-history-table { width: 100%; border-collapse: collapse; table-layout: fixed; color: var(--student-progress-text); font-size: 14px; }
+.student-history-table th { height: 40px; padding: 0 12px; color: var(--student-progress-text); background: var(--student-progress-page); font-weight: 400; text-align: left; white-space: nowrap; }
+.student-history-table th:first-child { width: 22%; }
+.student-history-table th:nth-child(2) { width: 14%; }
+.student-history-table th:nth-child(3) { width: 14%; }
+.student-history-table th:nth-child(4) { width: 8%; }
+.student-history-table th:nth-child(5) { width: 9%; }
+.student-history-table th:nth-child(6) { width: 13%; }
+.student-history-table th:nth-child(7) { width: 11%; }
+.student-history-table th:last-child { width: 100px; }
+.student-history-table td { min-height: 44px; padding: 12px; border-top: 1px solid var(--student-progress-border); vertical-align: middle; }
+.student-history-table tbody tr { background: #fff; transition: background-color 0.2s; }
+.student-history-table tbody tr:hover { background: #f2f6ff; }
+.student-history-table td > strong { display: block; overflow: hidden; color: var(--student-progress-text); font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.student-history-table td > small { color: var(--student-progress-helper); font-size: 12px; font-weight: 400; }
+.student-history-table td > b { font-weight: 500; font-variant-numeric: tabular-nums; }
+
+.student-history-status,
+.student-history-answer-state {
+  min-height: 22px;
+  padding: 1px 8px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.student-history-status.completed,
+.student-history-answer-state.correct { color: #2e7d66; background: #eaf8f4; }
+.student-history-status.in-progress,
+.student-history-answer-state.pending { color: var(--student-progress-primary); background: #f2f5ff; }
+.student-history-status.muted { color: var(--student-progress-helper); background: #f2f3f5; }
+.student-history-answer-state.incorrect { color: var(--student-progress-warning); background: #fff8e6; }
+.student-history-source { margin-top: 3px; display: block; color: var(--student-progress-helper); font-size: 12px; }
+
+.student-history-open {
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 0;
+  border-radius: 7px;
+  color: var(--student-progress-link);
+  background: transparent;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.student-history-open:hover { text-decoration: underline; }
+
+.student-history-empty { min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--student-progress-helper); text-align: center; }
+.student-history-empty svg { margin-bottom: 12px; color: var(--student-progress-weak); }
+.student-history-empty strong { color: var(--student-progress-secondary); font-size: 14px; font-weight: 500; }
+.student-history-empty span { margin-top: 5px; font-size: 12px; }
+.student-history-empty.compact { min-height: 180px; }
+
+.student-history-modal {
+  --student-progress-primary: #0445fc;
+  --student-progress-text: #01113d;
+  --student-progress-secondary: #27355a;
+  --student-progress-helper: #5a6481;
+  --student-progress-weak: #9aa3b2;
+  --student-progress-border: #e6e7ec;
+  --student-progress-page: #f7f8f9;
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+}
+
+.student-history-mask { width: 100%; height: 100%; position: absolute; inset: 0; border: 0; border-radius: 0; background: rgba(0, 0, 0, 0.5); }
+.student-history-modal > section { width: min(800px, 100%); max-height: min(780px, calc(100vh - 48px)); position: relative; display: flex; flex-direction: column; overflow: hidden; border-radius: 11px; background: #fff; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); }
+.student-history-modal > section > header { min-height: 56px; padding: 0 24px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--student-progress-border); }
+.student-history-modal header > div { min-width: 0; }
+.student-history-modal header span { color: var(--student-progress-helper); font-size: 12px; }
+.student-history-modal h2 { margin: 1px 0 0; overflow: hidden; color: var(--student-progress-text); font-size: 16px; font-weight: 500; line-height: 20px; text-overflow: ellipsis; white-space: nowrap; }
+.student-history-modal header > button { width: 32px; height: 32px; padding: 0; display: grid; place-items: center; flex: 0 0 auto; border: 0; border-radius: 7px; color: var(--student-progress-helper); background: transparent; }
+.student-history-modal header > button:hover { background: var(--student-progress-page); }
+
+.student-history-detail-body { padding: 24px 32px 32px; overflow-y: auto; }
+.student-history-detail-meta { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--student-progress-border); border-bottom: 1px solid var(--student-progress-border); }
+.student-history-detail-meta > div { min-height: 72px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.student-history-detail-meta > div + div { border-left: 1px solid var(--student-progress-border); }
+.student-history-detail-meta span { color: var(--student-progress-helper); font-size: 12px; }
+.student-history-detail-meta strong { color: var(--student-progress-text); font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.student-history-detail-heading { min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.student-history-detail-heading > div { display: flex; align-items: baseline; gap: 10px; }
+.student-history-detail-heading h3 { margin: 0; color: var(--student-progress-text); font-size: 16px; font-weight: 500; }
+.student-history-detail-heading > div span { color: var(--student-progress-helper); font-size: 12px; }
+
+.student-history-question-list { border: 1px solid var(--student-progress-border); border-radius: 11px; background: #fff; }
+.student-history-question { min-height: 104px; padding: 16px; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: start; gap: 12px; }
+.student-history-question + .student-history-question { border-top: 1px solid var(--student-progress-border); }
+.student-history-question-number { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 7px; color: var(--student-progress-primary); background: #f2f5ff; font-size: 12px; font-weight: 500; }
+.student-history-question-main { min-width: 0; }
+.student-history-question-labels { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+.student-history-question-labels span { min-height: 22px; padding: 1px 7px; border-radius: 4px; color: var(--student-progress-helper); background: #f2f3f5; font-size: 12px; line-height: 20px; }
+.student-history-question-labels time { margin-left: auto; color: var(--student-progress-helper); font-size: 12px; }
+.student-history-question h4 { margin: 8px 0 10px; color: var(--student-progress-text); font-size: 14px; font-weight: 500; line-height: 22px; overflow-wrap: anywhere; }
+.student-history-question dl { margin: 0; display: grid; gap: 5px; }
+.student-history-question dl > div { display: grid; grid-template-columns: 68px minmax(0, 1fr); gap: 8px; color: var(--student-progress-secondary); font-size: 13px; line-height: 20px; }
+.student-history-question dt { color: var(--student-progress-helper); }
+.student-history-question dd { margin: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+
+@media (max-width: 760px) {
+  .app-header.knowledge-map-header {
+    height: auto;
+    min-height: 64px;
+    padding: 9px 12px;
+    grid-template-columns: 44px minmax(0, 1fr);
+    row-gap: 8px;
+  }
+  .knowledge-map-header .header-title { min-width: 0; align-items: flex-start; }
+  .knowledge-map-header .header-title span,
+  .knowledge-map-header .header-title strong { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .knowledge-map-header .header-side-right { width: 100%; grid-column: 1 / -1; }
+  .student-progress-tabs { width: 100%; }
+  .student-progress-tabs button { min-width: 0; padding: 0 9px; flex: 1; justify-content: center; }
+  .student-history-heading { padding: 0; }
+  .student-history-table-wrap { overflow: visible; border: 0; border-radius: 0; background: transparent; }
+  .student-history-table, .student-history-table tbody { display: block; }
+  .student-history-table thead { display: none; }
+  .student-history-table tr { margin-bottom: 10px; padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; border: 1px solid var(--student-progress-border); border-radius: 11px; }
+  .student-history-table td { min-height: 0; padding: 0; display: flex; flex-direction: column; align-items: flex-start; border: 0; }
+  .student-history-table td:first-child { grid-column: 1 / -1; }
+  .student-history-table td:last-child { grid-column: 1 / -1; padding-top: 8px; border-top: 1px solid var(--student-progress-border); }
+  .student-history-table td[data-label]::before { margin-bottom: 2px; color: var(--student-progress-helper); content: attr(data-label); font-size: 11px; }
+  .student-history-open { width: 100%; justify-content: flex-end; }
+  .student-history-modal { padding: 0; place-items: end center; }
+  .student-history-modal > section { width: 100%; max-height: 92vh; border-radius: 11px 11px 0 0; }
+  .student-history-modal > section > header { padding: 0 16px 0 20px; }
+  .student-history-detail-body { padding: 16px 20px 24px; }
+  .student-history-detail-meta { grid-template-columns: 1fr 1fr; }
+  .student-history-detail-meta > div:nth-child(3) { border-left: 0; border-top: 1px solid var(--student-progress-border); }
+  .student-history-detail-meta > div:nth-child(4) { border-top: 1px solid var(--student-progress-border); }
+  .student-history-question { grid-template-columns: 28px minmax(0, 1fr); }
+  .student-history-answer-state { grid-column: 2; grid-row: 1; width: fit-content; justify-self: end; }
+  .student-history-question-main { grid-column: 1 / -1; }
+  .student-history-question-labels time { width: 100%; margin: 2px 0 0; }
+}
+
+/* 逐题记录：题目是主对象，课时与知识点只负责筛选和追溯。 */
+.student-attempt-history {
+  --student-progress-primary: #0445fc;
+  --student-progress-primary-hover: #043dcd;
+  --student-progress-text: #01113d;
+  --student-progress-secondary: #27355a;
+  --student-progress-helper: #5a6481;
+  --student-progress-weak: #9aa3b2;
+  --student-progress-border: #e6e7ec;
+  --student-progress-page: #f7f8f9;
+  --student-progress-brand: #f2f5ff;
+  --student-progress-success: #3f9378;
+  --student-progress-warning: #d48806;
+  --student-progress-danger: #e23b3b;
+}
+.main-content:has(> .student-attempt-history) { padding-top: 24px; }
+.student-attempt-history-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.student-attempt-history-heading > div { display: flex; align-items: center; gap: 10px; }
+.student-attempt-history-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 7px; color: var(--student-progress-primary); background: var(--student-progress-brand); }
+.student-attempt-history-heading h2 { margin: 0; color: var(--student-progress-text); font-size: 18px; font-weight: 500; }
+.student-attempt-clear-filter { height: 32px; padding: 0 10px; border: 1px solid var(--student-progress-border); border-radius: 7px; color: var(--student-progress-secondary); background: #fff; font-size: 13px; }
+.student-attempt-clear-filter:hover { color: var(--student-progress-primary); background: var(--student-progress-page); }
+.student-attempt-toolbar { min-height: 56px; padding: 12px; display: flex; align-items: flex-end; flex-wrap: wrap; gap: 10px 12px; border: 1px solid var(--student-progress-border); border-radius: 11px; background: #fff; }
+.student-attempt-toolbar label { min-width: 132px; display: grid; gap: 4px; color: var(--student-progress-helper); font-size: 12px; }
+.student-attempt-toolbar select { width: 100%; height: 32px; padding: 0 28px 0 10px; border: 1px solid var(--student-progress-border); border-radius: 7px; color: var(--student-progress-text); background: #fff; font: inherit; font-size: 13px; }
+.student-attempt-toolbar select:focus { outline: 0; border-color: var(--student-progress-primary); }
+.student-attempt-stats { margin: 14px 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: hidden; border: 1px solid var(--student-progress-border); border-radius: 11px; background: #fff; }
+.student-attempt-stats > div { min-height: 68px; padding: 12px 16px; display: flex; flex-direction: column; justify-content: center; gap: 3px; }
+.student-attempt-stats > div + div { border-left: 1px solid var(--student-progress-border); }
+.student-attempt-stats span { color: var(--student-progress-helper); font-size: 12px; }
+.student-attempt-stats strong { color: var(--student-progress-text); font-size: 21px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.student-attempt-list { overflow: hidden; border: 1px solid var(--student-progress-border); border-radius: 11px; background: #fff; }
+.student-attempt-row { min-height: 108px; padding: 16px; display: grid; grid-template-columns: 66px minmax(0, 1fr) auto; align-items: start; gap: 14px; background: #fff; }
+.student-attempt-row + .student-attempt-row { border-top: 1px solid var(--student-progress-border); }
+.student-attempt-row:hover { background: #f2f6ff; }
+.student-attempt-load-more { min-height: 68px; padding: 14px 16px; display: flex; align-items: center; justify-content: center; gap: 12px; border-top: 1px solid var(--student-progress-border); color: var(--student-progress-helper); font-size: 12px; }
+.student-attempt-load-more .secondary-button { height: 32px; }
+.student-attempt-state { padding-top: 3px; }
+.student-attempt-state span, .student-attempt-outcome { min-height: 22px; padding: 1px 8px; display: inline-flex; align-items: center; border-radius: 4px; font-size: 12px; line-height: 20px; white-space: nowrap; }
+.student-attempt-state.success span, .student-attempt-outcome.success { color: #2e7d66; background: #eaf8f4; }
+.student-attempt-state.warning span, .student-attempt-outcome.warning { color: var(--student-progress-warning); background: #fff8e6; }
+.student-attempt-state.danger span, .student-attempt-outcome.danger { color: var(--student-progress-danger); background: #ffeaea; }
+.student-attempt-state.muted span, .student-attempt-outcome.muted { color: var(--student-progress-helper); background: #f2f3f5; }
+.student-attempt-main { min-width: 0; }
+.student-attempt-labels { min-height: 22px; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
+.student-attempt-labels > span { max-width: 190px; overflow: hidden; padding: 1px 7px; border-radius: 4px; color: var(--student-progress-helper); background: #f2f3f5; font-size: 12px; line-height: 20px; text-overflow: ellipsis; white-space: nowrap; }
+.student-attempt-labels > .student-attempt-question-type { color: var(--student-progress-primary); background: var(--student-progress-brand); }
+.student-attempt-labels time { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: var(--student-progress-helper); font-size: 12px; white-space: nowrap; }
+.student-attempt-main h3 { margin: 7px 0 4px; color: var(--student-progress-text); font-size: 15px; font-weight: 500; line-height: 22px; overflow-wrap: anywhere; }
+.student-attempt-main p { margin: 0; overflow: hidden; color: var(--student-progress-secondary); font-size: 13px; line-height: 20px; text-overflow: ellipsis; white-space: nowrap; }
+.student-attempt-main small { display: block; margin-top: 5px; color: var(--student-progress-helper); font-size: 12px; }
+.student-attempt-detail-button { height: 32px; padding: 0 4px; border: 0; border-radius: 7px; color: #032e92; background: transparent; font-size: 13px; white-space: nowrap; }
+.student-attempt-detail-button:hover { text-decoration: underline; }
+.student-attempt-empty { min-height: 300px; padding: 28px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--student-progress-helper); text-align: center; }
+.student-attempt-empty svg { margin-bottom: 10px; color: var(--student-progress-weak); }
+.student-attempt-empty strong { color: var(--student-progress-secondary); font-size: 14px; font-weight: 500; }
+.student-attempt-empty span { margin: 4px 0 14px; font-size: 12px; }
+.student-attempt-drawer { position: fixed; z-index: 100; inset: 0; }
+.student-attempt-drawer-mask { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 0; background: rgba(0, 0, 0, .5); }
+.student-attempt-drawer > aside { width: min(680px, 94vw); height: 100%; position: absolute; top: 0; right: 0; display: flex; flex-direction: column; overflow: hidden; border-left: 1px solid var(--student-progress-border); background: #fff; box-shadow: -6px 0 16px rgba(0, 0, 0, .12); }
+.student-attempt-drawer > aside > header { min-height: 56px; padding: 0 20px 0 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--student-progress-border); }
+.student-attempt-drawer header span { color: var(--student-progress-helper); font-size: 12px; }
+.student-attempt-drawer header h2 { margin: 2px 0 0; color: var(--student-progress-text); font-size: 16px; font-weight: 500; }
+.student-attempt-drawer header button { width: 32px; height: 32px; padding: 0; display: grid; place-items: center; border: 0; border-radius: 7px; color: var(--student-progress-helper); background: transparent; }
+.student-attempt-drawer header button:hover { background: var(--student-progress-page); }
+.student-attempt-drawer-body { padding: 24px 28px 32px; overflow-y: auto; }
+.student-attempt-drawer-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.student-attempt-drawer-meta > span:not(.student-attempt-outcome) { padding: 1px 7px; border-radius: 4px; color: var(--student-progress-helper); background: #f2f3f5; font-size: 12px; line-height: 20px; }
+.student-attempt-detail-question { margin-top: 18px; padding: 16px; border: 1px solid var(--student-progress-border); border-radius: 11px; background: #fff; }
+.student-attempt-detail-question > span, .student-attempt-detail-grid span, .student-attempt-detail-feedback > span { color: var(--student-progress-helper); font-size: 12px; }
+.student-attempt-detail-question > div { margin-top: 8px; color: var(--student-progress-text); font-size: 16px; line-height: 1.7; }
+.student-attempt-detail-grid { margin-top: 12px; display: grid; grid-template-columns: 1fr; gap: 12px; }
+.student-attempt-detail-grid > div { min-width: 0; padding: 14px; border-radius: 7px; background: var(--student-progress-page); }
+.student-attempt-detail-grid p, .student-attempt-detail-feedback p { margin: 7px 0 0; color: var(--student-progress-secondary); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; white-space: pre-wrap; }
+.student-attempt-detail-feedback { margin-top: 12px; padding: 14px; border: 1px solid #dce7ff; border-radius: 7px; background: var(--student-progress-brand); }
+.student-attempt-detail-feedback.error-reason { border-color: var(--color-feedback-danger-border); background: var(--color-surface-card-default); box-shadow: inset 3px 0 var(--color-feedback-danger-ring); }
+.student-attempt-detail-feedback.error-reason > span { color: var(--color-feedback-danger-fg); }
+.student-attempt-detail-facts { margin: 16px 0 0; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--student-progress-border); }
+.student-attempt-detail-facts > div { padding: 12px 0; border-bottom: 1px solid var(--student-progress-border); }
+.student-attempt-detail-facts > div:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--student-progress-border); }
+.student-attempt-detail-facts dt { color: var(--student-progress-helper); font-size: 12px; }
+.student-attempt-detail-facts dd { margin: 3px 0 0; color: var(--student-progress-text); font-size: 14px; }
+
+@media (max-width: 820px) {
+  .student-attempt-toolbar label { flex: 1 1 150px; }
+}
+@media (max-width: 640px) {
+  .student-attempt-history-heading { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .student-attempt-toolbar { align-items: stretch; }
+  .student-attempt-toolbar label { min-width: calc(50% - 6px); flex: 1 1 calc(50% - 6px); }
+  .student-attempt-stats { grid-template-columns: 1fr 1fr; }
+  .student-attempt-stats > div:nth-child(3) { border-left: 0; border-top: 1px solid var(--student-progress-border); }
+  .student-attempt-stats > div:nth-child(4) { border-top: 1px solid var(--student-progress-border); }
+  .student-attempt-row { grid-template-columns: 1fr auto; gap: 8px 12px; }
+  .student-attempt-state { grid-column: 1; grid-row: 1; padding: 0; }
+  .student-attempt-detail-button { grid-column: 2; grid-row: 1; }
+  .student-attempt-main { grid-column: 1 / -1; }
+  .student-attempt-labels time { width: 100%; margin-left: 0; }
+  .student-attempt-drawer > aside { width: 100%; height: 92vh; top: auto; bottom: 0; border: 0; border-radius: 11px 11px 0 0; }
+  .student-attempt-drawer > aside > header { padding: 0 16px 0 20px; }
+  .student-attempt-drawer-body { padding: 20px 20px 24px; }
+  .student-attempt-detail-grid { grid-template-columns: 1fr; }
+  .student-attempt-detail-facts { grid-template-columns: 1fr; }
+  .student-attempt-detail-facts > div:nth-child(even) { padding-left: 0; border-left: 0; }
+}
