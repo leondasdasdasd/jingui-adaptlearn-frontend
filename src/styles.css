@@ -1358,6 +1358,9 @@ button:disabled { cursor: not-allowed; opacity: 0.45; }
 .teacher-question-meta { min-width: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
 .teacher-question-meta > span { min-height: 26px; padding: 0 9px; display: inline-flex; align-items: center; border: 1px solid var(--border); border-radius: 7px; color: var(--helper); background: #fff; font-size: 12px; font-weight: 500; }
 .teacher-question-meta > .teacher-question-type { border-color: #cfdbff; color: var(--primary); background: var(--brand-soft); }
+.teacher-question-meta > .teacher-question-slot { min-height: 24px; padding: 0 8px; gap: 4px; border-radius: 4px; border-color: var(--color-primary-200); color: var(--color-primary-700); background: var(--color-primary-50); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.teacher-question-slot > span { color: var(--helper); font-weight: 400; }
+.teacher-question-slot > strong, .teacher-question-slot > b { font-weight: 600; }
 .teacher-question-meta > .teacher-question-difficulty { gap: 6px; background: var(--page); }
 .teacher-question-difficulty-stars { min-height: 0; padding: 0; display: inline-flex; align-items: center; gap: 2px; border: 0; background: transparent; }
 .teacher-question-difficulty-stars svg { stroke-width: 1.8; }

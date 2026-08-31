@@ -8,6 +8,10 @@ import {
 } from '../shared/question-platform/legacyQuestionAdapter';
 import { getQuestionPlatformTemplate } from '../shared/question-platform/questionContract';
 import { knowledgeEvidenceProfile } from '../shared/domain/questionEvidence';
+import {
+  ASSESSMENT_MATRIX_DOMAIN_LABELS,
+  ASSESSMENT_MATRIX_LEVEL_LABELS,
+} from '../shared/domain/knowledgeAssessmentMatrix';
 import { choiceLayoutClassName } from '../shared/question-platform/choiceLayout';
 import MathContent from './MathContent';
 import QuestionReferenceAnswer from './QuestionReferenceAnswer';
@@ -26,6 +30,65 @@ const difficultyLabels = {
   1: 'D1 基础识别', 2: 'D2 直接理解', 3: 'D3 标准应用', 4: 'D4 变式综合', 5: 'D5 迁移应用',
   D1: 'D1 基础识别', D2: 'D2 直接理解', D3: 'D3 标准应用', D4: 'D4 变式综合', D5: 'D5 迁移应用',
 };
+const matrixRoleLabels = {
+  CORE: '核心格',
+  SUPPORT: '支撑格',
+  EXTENSION: '拓展格',
+};
+
+function difficultyCode(value) {
+  const level = Number(String(value || '').replace(/^D/i, ''));
+  return level >= 1 && level <= 5 ? `D${level}` : 'D3';
+}
+
+export function questionSlotPresentation(question) {
+  const blueprint = question?.blueprint || {};
+  const matrixCellId = String(
+    question?.matrixCellId || question?.assessmentMatrixCellId || blueprint.matrixCellId || '',
+  ).trim();
+  const cellIdParts = matrixCellId.split(':');
+  const domain = String(
+    question?.domain || blueprint.domain || cellIdParts.at(-2) || '',
+  ).trim().toUpperCase();
+  const targetLevel = String(
+    question?.targetLevel || blueprint.targetLevel || cellIdParts.at(-1) || '',
+  ).trim().toUpperCase();
+  if (!ASSESSMENT_MATRIX_DOMAIN_LABELS[domain] || !ASSESSMENT_MATRIX_LEVEL_LABELS[targetLevel]) {
+    return null;
+  }
+  const difficulty = difficultyCode(question?.difficulty);
+  const role = String(question?.matrixRole || blueprint.matrixRole || '').trim().toUpperCase();
+  const blueprintSlotId = String(
+    question?.blueprintSlotId || blueprint.blueprintSlotId || blueprint.id || '',
+  ).trim();
+  const description = [
+    `${ASSESSMENT_MATRIX_DOMAIN_LABELS[domain]} / ${ASSESSMENT_MATRIX_LEVEL_LABELS[targetLevel]}`,
+    difficultyLabels[difficulty],
+    matrixRoleLabels[role],
+    blueprintSlotId ? `蓝图插槽 ${blueprintSlotId}` : '',
+  ].filter(Boolean).join(' · ');
+  return {
+    matrixCode: `${domain}-${targetLevel}`,
+    difficulty,
+    description,
+  };
+}
+
+function QuestionSlotBadge({ question }) {
+  const slot = questionSlotPresentation(question);
+  if (!slot) return null;
+  return (
+    <span
+      className="teacher-question-slot"
+      aria-label={`评估插槽 ${slot.matrixCode}，难度 ${slot.difficulty}。${slot.description}`}
+      title={slot.description}
+    >
+      <span>插槽</span>
+      <strong>{slot.matrixCode}</strong>
+      <b>· {slot.difficulty}</b>
+    </span>
+  );
+}
 
 const structuredArrayAnswerTypes = new Set([
   'multiple_choice', 'ordering', 'matching', 'line_connect', 'text_marker',
@@ -200,6 +263,9 @@ export default function TeacherQuestionReview({
       maximum: Math.floor(publishablePoolSize * 0.6),
     };
   }, [visible.length]);
+  const visibleMatrixCellCount = useMemo(() => new Set(visible
+    .map((item) => item.matrixCellId || item.assessmentMatrixCellId || item.blueprint?.matrixCellId)
+    .filter(Boolean)).size, [visible]);
   const selectedKnowledgePointIndex = knowledgePoints.findIndex((kp) => kp.id === selectedKp);
   const selectedKnowledgePointTabId = selectedKnowledgePointIndex >= 0
     ? `${questionTabsId}-tab-${selectedKnowledgePointIndex}`
@@ -359,8 +425,9 @@ export default function TeacherQuestionReview({
               onKeyDown={(event) => handleKnowledgePointTabKeyDown(event, index)}
             >{kp.name}<span>{questions.filter((q) => q.phase !== 'review' && q.knowledgePointIds?.includes(kp.id)).length}</span></button>)}
           </div>
-          <div className="question-generation-status">
-            单点题池：{visible.length} 题（至少 15 题） · D1 {visibleDifficultyCounts[1]}/3 · D2 {visibleDifficultyCounts[2]}/3 · D3 {visibleDifficultyCounts[3]}/4 · D4 {visibleDifficultyCounts[4]}/3 · D5 {visibleDifficultyCounts[5]}/2 · 应用题 {visibleApplicationCount}（目标 {visibleApplicationRange.minimum}–{visibleApplicationRange.maximum}）
+          <div className="question-generation-status">{visibleMatrixCellCount > 0
+            ? `矩阵题池：${visible.length} 题 · 覆盖 ${visibleMatrixCellCount} 个评估格 · 以各格最低独立证据为完成标准`
+            : `单点题池：${visible.length} 题（至少 15 题） · D1 ${visibleDifficultyCounts[1]}/3 · D2 ${visibleDifficultyCounts[2]}/3 · D3 ${visibleDifficultyCounts[3]}/4 · D4 ${visibleDifficultyCounts[4]}/3 · D5 ${visibleDifficultyCounts[5]}/2 · 应用题 ${visibleApplicationCount}（目标 ${visibleApplicationRange.minimum}–${visibleApplicationRange.maximum}）`}
           </div>
         </>
       )}
@@ -377,6 +444,7 @@ export default function TeacherQuestionReview({
               <span className="teacher-question-index" aria-label={`第 ${index + 1} 题`}>{index + 1}</span>
               <div className="teacher-question-meta">
                 <span className="teacher-question-type">{typeLabels[question.type] || question.type}</span>
+                <QuestionSlotBadge question={question} />
                   <span className="teacher-question-difficulty" aria-label={`${difficultyLabels[question.difficulty] || 'D3 标准应用'}难度`}>
                   <span>难度</span>
                   <span className="teacher-question-difficulty-stars" aria-hidden="true">

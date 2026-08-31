@@ -11,6 +11,10 @@ import {
   diagnosticSlotForQuestion,
   hasCompletePreAssessmentBlueprint,
 } from '../../shared/domain/preAssessmentBlueprint.js';
+import {
+  assessmentMatrixCellRequiredSlotCount,
+  assessmentMatrixRequiredEvidenceCount,
+} from '../../shared/domain/knowledgeAssessmentMatrix.js';
 
 export const MAX_AUTOMATIC_REPAIR_ROUNDS = 4;
 
@@ -170,14 +174,25 @@ export function buildLessonGenerationModules({ lesson, content }) {
     const questions = knowledgeQuestions.filter((question) => (
       questionKnowledgeIds(question)[0] === knowledgePoint.id
     ));
+    const assessmentMatrix = content?.assessmentMatrices?.[knowledgePoint.id];
+    const requiredCount = assessmentMatrix?.cells?.length
+      ? assessmentMatrixRequiredEvidenceCount(assessmentMatrix)
+      : PRACTICE_POOL_SIZE_PER_KNOWLEDGE_POINT;
+    const matrixCoverageComplete = !assessmentMatrix?.cells?.length || assessmentMatrix.cells.every((cell) => {
+      const cellId = String(cell.matrixCellId || `${knowledgePoint.id}:${cell.domain}:${cell.targetLevel || cell.level}`);
+      const evidenceCount = questions.filter((question) => String(
+        question.matrixCellId || question.assessmentMatrixCellId || question.blueprint?.matrixCellId || '',
+      ) === cellId).length;
+      return evidenceCount >= assessmentMatrixCellRequiredSlotCount(cell);
+    });
     modules.push(moduleRecord({
       id: `knowledge-questions:${knowledgePoint.id}`,
       kind: LESSON_GENERATION_MODULE_KIND.KNOWLEDGE_QUESTIONS,
       label: `${knowledgePoint.name}·单点题池`,
       knowledgePointId: knowledgePoint.id,
-      complete: questions.length >= PRACTICE_POOL_SIZE_PER_KNOWLEDGE_POINT,
+      complete: questions.length >= requiredCount && matrixCoverageComplete,
       currentCount: questions.length,
-      requiredCount: PRACTICE_POOL_SIZE_PER_KNOWLEDGE_POINT,
+      requiredCount,
     }));
   });
 
@@ -818,9 +833,24 @@ export function validateLessonGenerationTaskResult({ task, result, lesson, conte
 
   const distinctTypes = new Set(questions.map((question) => question.type).filter(Boolean));
   const distinctDifficulties = new Set(questions.map((question) => difficultyNumber(question.difficulty)).filter((value) => DIFFICULTY_LEVELS.includes(value)));
-  if (!targetedRepair && questions.length && distinctTypes.size < 2) issues.push(taskIssue(task, 'POOL_TYPE_INSUFFICIENT', `${task.label}至少需要 2 种题型`));
-  if (!targetedRepair && questions.length && distinctDifficulties.size < 2) issues.push(taskIssue(task, 'QUESTION_DIFFICULTY_STRUCTURE_INVALID', `${task.label}至少需要 2 个难度层级`));
-  if (!targetedRepair && task.moduleKind === LESSON_GENERATION_MODULE_KIND.KNOWLEDGE_QUESTIONS) {
+  const taskAssessmentMatrix = task.moduleKind === LESSON_GENERATION_MODULE_KIND.KNOWLEDGE_QUESTIONS
+    ? content?.assessmentMatrices?.[task.knowledgePointId] : null;
+  const matrixDrivenTask = Boolean(taskAssessmentMatrix?.cells?.length);
+  if (!targetedRepair && !matrixDrivenTask && questions.length && distinctTypes.size < 2) issues.push(taskIssue(task, 'POOL_TYPE_INSUFFICIENT', `${task.label}至少需要 2 种题型`));
+  if (!targetedRepair && !matrixDrivenTask && questions.length && distinctDifficulties.size < 2) issues.push(taskIssue(task, 'QUESTION_DIFFICULTY_STRUCTURE_INVALID', `${task.label}至少需要 2 个难度层级`));
+  if (!targetedRepair && matrixDrivenTask) {
+    taskAssessmentMatrix.cells.forEach((cell) => {
+      const cellId = String(cell.matrixCellId || `${task.knowledgePointId}:${cell.domain}:${cell.targetLevel || cell.level}`);
+      const currentCount = questions.filter((question) => String(question.matrixCellId || '') === cellId).length;
+      const requiredEvidence = assessmentMatrixCellRequiredSlotCount(cell);
+      if (currentCount < requiredEvidence) issues.push(taskIssue(
+        task,
+        'ASSESSMENT_MATRIX_EVIDENCE_INSUFFICIENT',
+        `${task.label}的矩阵格 ${cell.domain}-${cell.targetLevel || cell.level} 有 ${currentCount} 条独立证据，还需 ${requiredEvidence - currentCount} 条`,
+      ));
+    });
+  }
+  if (!targetedRepair && !matrixDrivenTask && task.moduleKind === LESSON_GENERATION_MODULE_KIND.KNOWLEDGE_QUESTIONS) {
     Object.entries(PRACTICE_POOL_DIFFICULTY_COUNTS).forEach(([difficulty, count]) => {
       const currentCount = questions.filter((question) => difficultyNumber(question.difficulty) === Number(difficulty)).length;
       if (currentCount < count) issues.push(taskIssue(
@@ -960,9 +990,6 @@ export function buildLessonGenerationDraftPatch({ task, result }) {
       + Math.max(0, Number(task.missingQuestionCount || 0));
     if (task.taskType === 'repair' && repairTargetCount === 0) return null;
     const lockedQuestions = result.questions.map((question, index) => lockGeneratedQuestionMetadata(task, question, index));
-    const assessmentMatrix = result.assessmentMatrix
-      || result.assessmentMatrices?.[task.knowledgePointId]
-      || null;
     const operations = [{
       type: 'replace-question-module',
       moduleKind: task.moduleKind,
@@ -978,15 +1005,6 @@ export function buildLessonGenerationDraftPatch({ task, result }) {
       requiredCount: Math.max(0, Number(task.requiredCount || 0)),
       questions: lockedQuestions,
     }];
-    if (task.moduleKind === LESSON_GENERATION_MODULE_KIND.KNOWLEDGE_QUESTIONS
-      && assessmentMatrix && typeof assessmentMatrix === 'object') {
-      operations.push({
-        type: 'replace-assessment-matrix',
-        moduleKind: task.moduleKind,
-        knowledgePointId: task.knowledgePointId,
-        assessmentMatrix,
-      });
-    }
     return {
       ...base,
       operations,

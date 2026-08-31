@@ -160,6 +160,57 @@ export async function generateQuestions(payload, options = {}) {
   return generateSingleQuestionSet(payload, options);
 }
 
+export async function generateQuestionSlotsConcurrently(payload, { onEvent, signal } = {}) {
+  const response = await fetch('/api/questions/generate-slots-stream', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    signal,
+  });
+  if (!response.ok || !response.body) {
+    const body = await response.json().catch(() => ({}));
+    throw new Error(body.message || '插槽题目生成失败，请稍后再试');
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let summary = null;
+  const handleLine = (line) => {
+    if (!line.trim()) return;
+    const event = JSON.parse(line);
+    onEvent?.(event);
+    if (event.type === 'complete') summary = event;
+  };
+  while (true) {
+    const { done, value } = await reader.read();
+    buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
+    const lines = buffer.split('\n');
+    buffer = lines.pop() || '';
+    lines.forEach(handleLine);
+    if (done) break;
+  }
+  if (buffer.trim()) handleLine(buffer);
+  if (!summary) throw new Error('插槽题目生成未正常结束，请重试未完成插槽');
+  return summary;
+}
+
+export async function generateAssessmentMatrices(payload, { signal } = {}) {
+  const response = await fetch('/api/assessment-matrices/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    signal,
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const error = new Error(body.message || '评估矩阵生成失败，请稍后再试');
+    error.status = response.status;
+    throw error;
+  }
+  return body;
+}
+
 export async function reviewLessonContentQuality(payload, { signal } = {}) {
   const response = await fetch('/api/content-quality/review', {
     method: 'POST',

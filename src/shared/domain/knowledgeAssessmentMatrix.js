@@ -1,7 +1,4 @@
-import {
-  PRACTICE_POOL_SIZE_PER_KNOWLEDGE_POINT,
-  practicePoolBlueprint,
-} from './questionPoolPolicy.js';
+import { practicePoolBlueprint } from './questionPoolPolicy.js';
 
 export const KNOWLEDGE_ASSESSMENT_MATRIX_POLICY_VERSION = 'math-assessment-matrix-v1';
 
@@ -37,6 +34,21 @@ function compactStringList(value, maximum = 6) {
     .map(compactText).filter(Boolean))].slice(0, maximum);
 }
 
+function normalizeQuestionRecommendations(value, maximum = 6) {
+  const source = Array.isArray(value) ? value : [];
+  const profiles = source.map((item) => {
+    if (typeof item === 'string') {
+      return { questionType: compactText(item).toLowerCase().replace(/[\s-]+/g, '_'), difficulty: '' };
+    }
+    return {
+      questionType: compactText(item?.questionType || item?.type).toLowerCase().replace(/[\s-]+/g, '_'),
+      difficulty: compactText(item?.difficulty).toUpperCase(),
+    };
+  }).filter((item) => item.questionType);
+  return [...new Map(profiles.map((item) => [`${item.questionType}:${item.difficulty}`, item])).values()]
+    .slice(0, maximum);
+}
+
 export function assessmentMatrixCellId(knowledgePointId, domain, level) {
   return `${compactText(knowledgePointId)}:${compactText(domain).toUpperCase()}:${compactText(level).toUpperCase()}`;
 }
@@ -55,6 +67,10 @@ export function normalizeKnowledgeAssessmentMatrix(rawMatrix = {}) {
     cells: (Array.isArray(rawMatrix.cells) ? rawMatrix.cells : []).map((rawCell) => {
       const domain = compactText(rawCell?.domain).toUpperCase();
       const targetLevel = compactText(rawCell?.targetLevel || rawCell?.level).toUpperCase();
+      const recommendedQuestionProfiles = normalizeQuestionRecommendations(
+        rawCell?.recommendedQuestionProfiles || rawCell?.recommendedQuestionTypes,
+        6,
+      );
       return {
         matrixCellId: assessmentMatrixCellId(knowledgePointId, domain, targetLevel),
         domain,
@@ -63,8 +79,8 @@ export function normalizeKnowledgeAssessmentMatrix(rawMatrix = {}) {
         observableBehavior: compactText(rawCell?.observableBehavior),
         evidenceCriteria: compactStringList(rawCell?.evidenceCriteria, 4),
         commonMisconceptions: compactStringList(rawCell?.commonMisconceptions, 4),
-        recommendedQuestionTypes: compactStringList(rawCell?.recommendedQuestionTypes, 6)
-          .map((item) => item.toLowerCase().replace(/[\s-]+/g, '_')),
+        recommendedQuestionProfiles,
+        recommendedQuestionTypes: [...new Set(recommendedQuestionProfiles.map((item) => item.questionType))],
         minimumIndependentEvidence: Math.max(1, Math.min(4, Number(rawCell?.minimumIndependentEvidence) || 1)),
       };
     }),
@@ -105,31 +121,6 @@ export function validateKnowledgeAssessmentMatrices(raw, {
     if (matrix.rationale.length < 4 || matrix.rationale.length > 360) errors.push(issue('INVALID_RATIONALE', `${path}.rationale`, '矩阵取舍理由需为 4 至 360 个字符'));
     if (!matrix.cells.length || matrix.cells.length > 12) errors.push(issue('INVALID_ACTIVE_CELL_COUNT', `${path}.cells`, '每个知识点必须有 1 至 12 个适用格，未列出的格视为不适用'));
     if (matrix.cells.length && !matrix.cells.some((cell) => cell.role === 'CORE')) errors.push(issue('CORE_CELL_MISSING', `${path}.cells`, '每个知识点至少需要一个核心评估格'));
-    const minimumEvidenceCount = matrix.cells.reduce((sum, cell) => sum + cell.minimumIndependentEvidence, 0);
-    if (minimumEvidenceCount > PRACTICE_POOL_SIZE_PER_KNOWLEDGE_POINT) {
-      errors.push(issue(
-        'MATRIX_EVIDENCE_BUDGET_EXCEEDED',
-        `${path}.cells`,
-        `适用格最低独立证据合计 ${minimumEvidenceCount}，超过单点题池 ${PRACTICE_POOL_SIZE_PER_KNOWLEDGE_POINT} 题预算`,
-      ));
-    }
-    const minimumEvidenceTotal = matrix.cells.reduce(
-      (total, cell) => total + cell.minimumIndependentEvidence, 0,
-    );
-    const coreMinimumEvidenceTotal = matrix.cells.filter((cell) => cell.role === 'CORE').reduce(
-      (total, cell) => total + cell.minimumIndependentEvidence, 0,
-    );
-    if (minimumEvidenceTotal > 15) errors.push(issue(
-      'MINIMUM_EVIDENCE_EXCEEDS_POOL',
-      `${path}.cells`,
-      `适用格最低独立证据合计 ${minimumEvidenceTotal}，超过单知识点 15 题基线`,
-    ));
-    if (coreMinimumEvidenceTotal > 15) errors.push(issue(
-      'CORE_MINIMUM_EVIDENCE_EXCEEDS_POOL',
-      `${path}.cells`,
-      `核心格最低独立证据合计 ${coreMinimumEvidenceTotal}，超过单知识点 15 题基线`,
-    ));
-
     const cellIds = new Set();
     matrix.cells.forEach((cell, cellIndex) => {
       const cellPath = `${path}.cells[${cellIndex}]`;
@@ -143,6 +134,12 @@ export function validateKnowledgeAssessmentMatrices(raw, {
       if (!cell.recommendedQuestionTypes.length) errors.push(issue('QUESTION_TYPES_MISSING', `${cellPath}.recommendedQuestionTypes`, '适用格至少需要一种推荐题型'));
       if (allowedTypeSet.size) cell.recommendedQuestionTypes.forEach((type) => {
         if (!allowedTypeSet.has(type)) errors.push(issue('INVALID_QUESTION_TYPE', `${cellPath}.recommendedQuestionTypes`, `不支持题型 ${type}`));
+      });
+      cell.recommendedQuestionProfiles.forEach((profile, profileIndex) => {
+        const profilePath = `${cellPath}.recommendedQuestionTypes[${profileIndex}]`;
+        if (profile.difficulty && !/^D[1-5]$/.test(profile.difficulty)) {
+          errors.push(issue('INVALID_RECOMMENDED_DIFFICULTY', `${profilePath}.difficulty`, `不支持难度 ${profile.difficulty}`));
+        }
       });
     });
   });
@@ -165,9 +162,9 @@ export function fallbackKnowledgeAssessmentMatrices(knowledgePoints = []) {
       targetStatement: objective,
       rationale: '模型矩阵不可用时采用保守基线，覆盖概念理解、标准执行和基本建模证据。',
       cells: [
-        { domain: 'CR', targetLevel: 'B', role: 'CORE', observableBehavior: `理解并转换${name}的核心表示`, evidenceCriteria: ['能在等价表示间正确转换并说明关键含义'], commonMisconceptions: ['混淆对象、符号或适用边界'], recommendedQuestionTypes: ['single_choice', 'classification', 'matching'], minimumIndependentEvidence: 2 },
-        { domain: 'PJ', targetLevel: 'C', role: 'CORE', observableBehavior: `选择并执行${name}的标准程序`, evidenceCriteria: ['能独立选择适用方法并完成连续步骤'], commonMisconceptions: ['程序顺序错误或遗漏必要条件'], recommendedQuestionTypes: ['fill_blank', 'ordering', 'short_answer'], minimumIndependentEvidence: 3 },
-        { domain: 'M', targetLevel: 'C', role: 'SUPPORT', observableBehavior: `从情境中识别并建立与${name}有关的数量关系`, evidenceCriteria: ['能提取有效条件并形成可计算关系'], commonMisconceptions: ['把无关背景信息当作建模条件'], recommendedQuestionTypes: ['multiple_choice', 'word_builder', 'short_answer'], minimumIndependentEvidence: 2 },
+        { domain: 'CR', targetLevel: 'B', role: 'CORE', observableBehavior: `理解并转换${name}的核心表示`, evidenceCriteria: ['能在等价表示间正确转换并说明关键含义'], commonMisconceptions: ['混淆对象、符号或适用边界'], recommendedQuestionTypes: [{ questionType: 'single_choice', difficulty: 'D1' }, { questionType: 'classification', difficulty: 'D2' }, { questionType: 'matching', difficulty: 'D2' }], minimumIndependentEvidence: 2 },
+        { domain: 'PJ', targetLevel: 'C', role: 'CORE', observableBehavior: `选择并执行${name}的标准程序`, evidenceCriteria: ['能独立选择适用方法并完成连续步骤'], commonMisconceptions: ['程序顺序错误或遗漏必要条件'], recommendedQuestionTypes: [{ questionType: 'fill_blank', difficulty: 'D2' }, { questionType: 'ordering', difficulty: 'D3' }, { questionType: 'short_answer', difficulty: 'D4' }], minimumIndependentEvidence: 3 },
+        { domain: 'M', targetLevel: 'C', role: 'SUPPORT', observableBehavior: `从情境中识别并建立与${name}有关的数量关系`, evidenceCriteria: ['能提取有效条件并形成可计算关系'], commonMisconceptions: ['把无关背景信息当成建模条件'], recommendedQuestionTypes: [{ questionType: 'multiple_choice', difficulty: 'D3' }, { questionType: 'word_builder', difficulty: 'D3' }, { questionType: 'short_answer', difficulty: 'D4' }], minimumIndependentEvidence: 2 },
       ],
     });
   }).filter((matrix) => matrix.knowledgePointId);
@@ -181,11 +178,23 @@ function sortedActiveCells(matrix) {
   ));
 }
 
+export function assessmentMatrixCellRequiredSlotCount(cellInput = {}) {
+  const recommendationCount = normalizeQuestionRecommendations(
+    cellInput.recommendedQuestionProfiles || cellInput.recommendedQuestionTypes,
+    6,
+  ).length;
+  return Math.max(
+    1,
+    Number(cellInput.minimumIndependentEvidence) || 1,
+    recommendationCount,
+  );
+}
+
 function evidenceCellSequence(matrix, count) {
   const cells = sortedActiveCells(matrix);
   if (!cells.length) return [];
   const sequence = cells.flatMap((cell) => Array.from({
-    length: Math.max(1, cell.minimumIndependentEvidence),
+    length: assessmentMatrixCellRequiredSlotCount(cell),
   }, () => cell));
   let cursor = 0;
   while (sequence.length < count) {
@@ -196,22 +205,60 @@ function evidenceCellSequence(matrix, count) {
   return sequence.slice(0, count);
 }
 
+export function assessmentMatrixRequiredSlotCount(matrixInput) {
+  const matrix = normalizeKnowledgeAssessmentMatrix(matrixInput);
+  return matrix.cells.reduce((total, cell) => (
+    total + assessmentMatrixCellRequiredSlotCount(cell)
+  ), 0);
+}
+
+// Compatibility name for existing callers. Matrix-driven quantity now means
+// required slots, including complete coverage of every recommended profile.
+export const assessmentMatrixRequiredEvidenceCount = assessmentMatrixRequiredSlotCount;
+
 export function practicePoolBlueprintFromAssessmentMatrix(matrixInput, {
-  count = 15,
+  count = null,
   allowedTypesByDifficulty = {},
 } = {}) {
   const matrix = normalizeKnowledgeAssessmentMatrix(matrixInput);
-  const baseSlots = practicePoolBlueprint(matrix.knowledgePointId, count);
+  const requiredSlotCount = assessmentMatrixRequiredSlotCount(matrix);
+  const slotCount = count == null ? requiredSlotCount : Math.max(requiredSlotCount, Number(count) || requiredSlotCount);
+  const baseSlots = practicePoolBlueprint(matrix.knowledgePointId, slotCount);
   const cells = evidenceCellSequence(matrix, baseSlots.length);
   if (!cells.length) return baseSlots;
+  const occurrenceByCell = new Map();
   return baseSlots.map((slot, index) => {
     const cell = cells[index];
-    const allowedTypes = allowedTypesByDifficulty[slot.difficulty] || slot.recommendedQuestionTypes || [];
-    const matrixRecommendedTypes = cell.recommendedQuestionTypes.filter((type) => allowedTypes.includes(type));
-    const questionType = matrixRecommendedTypes[index % Math.max(1, matrixRecommendedTypes.length)] || slot.questionType;
-    const evidenceText = cell.evidenceCriteria[index % cell.evidenceCriteria.length];
+    const occurrence = occurrenceByCell.get(cell.matrixCellId) || 0;
+    occurrenceByCell.set(cell.matrixCellId, occurrence + 1);
+    const recommendedProfile = cell.recommendedQuestionProfiles[
+      occurrence % Math.max(1, cell.recommendedQuestionProfiles.length)
+    ];
+    const difficulty = /^D[1-5]$/.test(recommendedProfile?.difficulty || '')
+      ? recommendedProfile.difficulty
+      : slot.difficulty;
+    const allowedTypes = allowedTypesByDifficulty[difficulty]
+      || cell.recommendedQuestionTypes
+      || slot.recommendedQuestionTypes
+      || [];
+    const matrixRecommendedTypes = cell.recommendedQuestionProfiles
+      .filter((profile) => !profile.difficulty || profile.difficulty === difficulty)
+      .map((profile) => profile.questionType)
+      .filter((type) => allowedTypes.includes(type));
+    const preferredType = recommendedProfile?.difficulty === difficulty
+      && allowedTypes.includes(recommendedProfile.questionType)
+      ? recommendedProfile.questionType
+      : '';
+    const questionType = preferredType
+      || matrixRecommendedTypes[occurrence % Math.max(1, matrixRecommendedTypes.length)]
+      || slot.questionType;
+    const evidenceCriterion = cell.evidenceCriteria[
+      occurrence % Math.max(1, cell.evidenceCriteria.length)
+    ] || cell.observableBehavior;
+    const variationRequirement = slot.assessmentFocus;
     return {
       ...slot,
+      difficulty,
       questionType,
       matrixCellId: cell.matrixCellId,
       domain: cell.domain,
@@ -220,7 +267,12 @@ export function practicePoolBlueprintFromAssessmentMatrix(matrixInput, {
       observableBehavior: cell.observableBehavior,
       evidenceCriteria: cell.evidenceCriteria,
       commonMisconceptions: cell.commonMisconceptions,
-      assessmentFocus: `${cell.observableBehavior}；本题独立证据：${evidenceText}；变化要求：${slot.assessmentFocus}`,
+      matrixCellCode: `${cell.domain}-${cell.targetLevel}`,
+      slotSequenceInCell: occurrence + 1,
+      evidenceCriterion,
+      variationRequirement,
+      recommendedQuestionProfile: recommendedProfile || null,
+      assessmentFocus: `${cell.observableBehavior}；本槽独立证据：${evidenceCriterion}；题型：${questionType}；难度：${difficulty}；与同格其他题的变化要求：${variationRequirement}`,
       recommendedQuestionTypes: matrixRecommendedTypes.length ? matrixRecommendedTypes : slot.recommendedQuestionTypes,
     };
   });

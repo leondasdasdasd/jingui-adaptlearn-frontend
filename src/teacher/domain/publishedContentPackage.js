@@ -114,6 +114,7 @@ export function restoreTeacherDraftFromPublishedVersion({
       knowledgePoints: [],
     }),
     assessmentMatrices: clonePublishedValue(normalized.assessmentMatrices || {}),
+    assessmentQuestionSlots: clonePublishedValue(normalized.assessmentQuestionSlots || {}),
     baseContentVersionId: contentVersionId,
     baseVersionNumber: versionNumber,
     status: 'draft',
@@ -274,6 +275,7 @@ export function buildPublishedContentPackage({ lesson, content, coveredKnowledge
     lesson: { id: lesson.id, title: lesson.title },
     knowledgeObjectives: lesson.knowledgePoints.map(({ id, name, objective }) => ({ id, name, objective })),
     assessmentMatrices: approvedAssessmentMatrices(content.assessmentMatrices || {}),
+    assessmentQuestionSlots: clonePublishedValue(content.assessmentQuestionSlots || {}),
     diagnosticQuestionPool: normalizedDiagnosticPool,
     learningContent: {
       composite: {

@@ -66,6 +66,97 @@
 .assessment-matrix-coverage-summary > strong { color: var(--primary); font-size: 20px; font-weight: 600; }
 .assessment-matrix-coverage-summary small { color: var(--helper); font-size: 12px; font-weight: 500; }
 
+.assessment-matrix-header-actions { display: flex; align-items: center; gap: 12px; }
+.assessment-matrix-action-buttons { display: flex; align-items: center; gap: 8px; }
+.assessment-matrix-action,
+.assessment-matrix-generate {
+  min-height: 32px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: var(--radius-control);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.assessment-matrix-action.primary,
+.assessment-matrix-generate { border: 1px solid var(--primary); color: var(--surface); background: var(--primary); }
+.assessment-matrix-action.primary:hover:not(:disabled),
+.assessment-matrix-generate:hover:not(:disabled) { background: var(--primary-hover); }
+.assessment-matrix-action.secondary { border: 1px solid var(--border); color: var(--text); background: var(--disabled); }
+.assessment-matrix-action.secondary:hover:not(:disabled) { background: var(--border); }
+.assessment-matrix-action.stop { border: 1px solid var(--color-feedback-danger-border); color: var(--color-feedback-danger-fg); background: var(--color-feedback-danger-bg); }
+.assessment-matrix-action.stop:hover { border-color: var(--color-feedback-danger-fg); background: var(--color-surface-card-default); }
+.assessment-matrix-action:focus-visible,
+.assessment-matrix-generate:focus-visible { outline: 0; box-shadow: var(--classroom-focus-ring); }
+.assessment-matrix-action:disabled,
+.assessment-matrix-generate:disabled { border-color: var(--border); color: var(--helper); background: var(--disabled); cursor: not-allowed; opacity: 1; }
+.assessment-matrix-action[aria-busy="true"],
+.assessment-matrix-generate[aria-busy="true"] { cursor: progress; }
+
+.assessment-slot-progress {
+  padding: 10px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--page);
+}
+
+.assessment-slot-progress > header {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.assessment-slot-progress > header > div:first-child { min-width: 0; display: flex; align-items: baseline; gap: 8px; }
+.assessment-slot-progress > header strong { color: var(--text); font-size: 13px; font-weight: 500; }
+.assessment-slot-progress > header span { color: var(--helper); font-size: 12px; }
+.assessment-slot-counts { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; font-variant-numeric: tabular-nums; }
+.assessment-slot-counts b { color: var(--text); font-weight: 600; }
+.assessment-slot-counts .success, .assessment-slot-counts .success b { color: var(--success); }
+.assessment-slot-counts .failed, .assessment-slot-counts .failed b { color: var(--color-feedback-danger-fg); }
+
+.assessment-slot-list { margin-top: 8px; display: grid; gap: 6px; }
+.assessment-slot-item {
+  min-width: 0;
+  min-height: 72px;
+  padding: 9px 10px;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  color: var(--helper);
+  background: var(--surface);
+  font-variant-numeric: tabular-nums;
+}
+.assessment-slot-state-icon { width: 20px; height: 20px; display: grid; place-items: center; color: inherit; }
+.assessment-slot-contract { min-width: 0; }
+.assessment-slot-contract > header { display: flex; align-items: baseline; flex-wrap: wrap; gap: 5px 10px; }
+.assessment-slot-contract > header strong { color: var(--text); font-size: 13px; font-weight: 500; }
+.assessment-slot-contract > header span { color: var(--helper); font-size: 12px; }
+.assessment-slot-contract > p { margin: 4px 0 0; color: var(--text-secondary); font-size: 12px; line-height: 1.5; }
+.assessment-slot-contract dl { margin: 5px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; }
+.assessment-slot-contract dl > div { min-width: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 5px; }
+.assessment-slot-contract dt, .assessment-slot-contract dd { margin: 0; font-size: 12px; line-height: 1.5; }
+.assessment-slot-contract dt { color: var(--helper); }
+.assessment-slot-contract dd { color: var(--text-secondary); overflow-wrap: anywhere; }
+.assessment-slot-status { min-height: 24px; padding: 0 7px; display: inline-flex; align-items: center; border: 1px solid currentColor; border-radius: 4px; color: inherit; background: var(--surface); font-size: 12px; white-space: nowrap; }
+.assessment-slot-item.running { border-color: var(--color-primary-200); color: var(--primary); background: var(--brand-soft); }
+.assessment-slot-item.success { border-color: var(--classroom-feedback-success-border); color: var(--success); background: var(--success-bg); }
+.assessment-slot-item.failed { border-color: var(--color-feedback-danger-border); color: var(--color-feedback-danger-fg); background: var(--color-feedback-danger-bg); }
+.assessment-slot-item.stopped { background: var(--disabled); }
+
+@media (max-width: 720px) {
+  .assessment-slot-progress > header { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .assessment-slot-contract dl { grid-template-columns: 1fr; }
+  .assessment-slot-item { grid-template-columns: 20px minmax(0, 1fr); }
+  .assessment-slot-status { grid-column: 2; justify-self: start; }
+}
+
 .assessment-matrix-kp-tabs {
   padding: 8px;
   display: flex;
@@ -248,7 +339,8 @@ button.assessment-matrix-cell.selected { border-color: currentColor; box-shadow:
 .assessment-matrix-empty-copy { color: var(--helper) !important; }
 
 .assessment-matrix-type-list { display: flex; flex-wrap: wrap; gap: 6px; }
-.assessment-matrix-type-list span { min-height: 26px; padding: 3px 8px; display: inline-flex; align-items: center; border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); background: var(--surface); font-size: 12px; }
+.assessment-matrix-type-list span { min-height: 26px; padding: 3px 8px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); background: var(--surface); font-size: 12px; }
+.assessment-matrix-type-list b { color: var(--primary); font-size: 12px; font-weight: 600; white-space: nowrap; }
 
 .assessment-matrix-question-list { margin: 0; padding: 0; display: grid; gap: 6px; list-style: none; }
 .assessment-matrix-question-list li { min-width: 0; padding: 7px 8px; display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; align-items: center; gap: 7px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
@@ -270,13 +362,23 @@ button.assessment-matrix-cell.selected { border-color: currentColor; box-shadow:
 .assessment-matrix-empty strong { color: var(--text); font-size: 14px; font-weight: 500; }
 .assessment-matrix-empty span { max-width: 420px; font-size: 12px; line-height: 1.5; }
 
+.assessment-matrix-spinner { animation: assessment-matrix-spin .8s linear infinite; }
+
+@keyframes assessment-matrix-spin { to { transform: rotate(360deg); } }
+
 @media (max-width: 1023px) {
+  .assessment-matrix-header { align-items: flex-start; }
+  .assessment-matrix-header-actions { align-items: flex-end; flex-direction: column; }
   .assessment-matrix-detail-grid { grid-template-columns: 1fr; }
   .assessment-matrix-detail-grid > aside { border-top: 1px solid var(--border); border-left: 0; }
 }
 
 @media (max-width: 767px) {
-  .assessment-matrix-header { align-items: flex-start; }
+  .assessment-matrix-header { flex-direction: column; }
+  .assessment-matrix-header-actions { width: 100%; align-items: stretch; }
+  .assessment-matrix-coverage-summary { width: 100%; padding: 8px 0 0; border-top: 1px solid var(--border); border-left: 0; }
+  .assessment-matrix-action-buttons { width: 100%; }
+  .assessment-matrix-action { min-width: 0; flex: 1; }
   .assessment-matrix-coverage-summary { min-width: auto; flex-direction: column; align-items: flex-end; gap: 0; }
   .assessment-matrix-panel { padding: 10px; }
   .assessment-matrix-context { grid-template-columns: 1fr; }
@@ -289,4 +391,5 @@ button.assessment-matrix-cell.selected { border-color: currentColor; box-shadow:
 @media (prefers-reduced-motion: reduce) {
   .assessment-matrix-kp-tabs button,
   .assessment-matrix-cell { transition: none; }
+  .assessment-matrix-spinner { animation: none; }
 }

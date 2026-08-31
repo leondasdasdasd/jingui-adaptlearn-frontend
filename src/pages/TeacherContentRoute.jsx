@@ -6,7 +6,11 @@ import TeacherQuestionReview from '../components/TeacherQuestionReview';
 import TeacherShell from '../components/TeacherShell';
 import StatePanel from '../components/StatePanel';
 import { course } from '../shared/domain/courseCatalog';
-import { generateQuestions } from '../lib/questionApi';
+import {
+  generateAssessmentMatrices,
+  generateQuestions,
+  generateQuestionSlotsConcurrently,
+} from '../lib/questionApi';
 import { planTeacherContentInstruction } from '../lib/teacherContentAgentApi';
 import { cancelOpenMaicJob, createOpenMaicClassroom, getOpenMaicJob } from '../lib/openMaicApi';
 import {
@@ -39,6 +43,7 @@ import {
 import { applyStyleSampleKnowledgeClassrooms } from '../teacher/domain/styleComparisonClassrooms';
 import { publishedVersionToTeacherContent } from '../teacher/domain/publishedVersionView';
 import KnowledgeAssessmentMatrix from '../teacher/components/KnowledgeAssessmentMatrix';
+import { practicePoolBlueprintFromAssessmentMatrix } from '../shared/domain/knowledgeAssessmentMatrix';
 import {
   buildLessonGenerationModules,
   buildMissingContentGenerationPlan,
@@ -136,6 +141,7 @@ async function generatePracticeQuestionsByKnowledgePoint({
   knowledgePoints,
   teacherInstruction,
   existingQuestions,
+  assessmentMatrices,
   generationScope = 'all',
 }, onProgress, signal) {
   let latestError;
@@ -151,6 +157,10 @@ async function generatePracticeQuestionsByKnowledgePoint({
           countPerKnowledgePoint: PRACTICE_POOL_SIZE_PER_KNOWLEDGE_POINT,
           reviewCount: 0,
           teacherInstruction,
+          skipAssessmentMatrixPlanning: true,
+          ...(assessmentMatrices?.[knowledgePoint.id]
+            ? { assessmentMatrices: { [knowledgePoint.id]: assessmentMatrices[knowledgePoint.id] } }
+            : {}),
         }, {
           onProgress: (status) => onProgress({ ...status, message: `正在准备“${knowledgePoint.name}”练习` }),
           signal,
@@ -162,6 +172,7 @@ async function generatePracticeQuestionsByKnowledgePoint({
           countPerKnowledgePoint: 0,
           reviewCount: COMPOSITE_REVIEW_POOL_SIZE,
           teacherInstruction,
+          skipAssessmentMatrixPlanning: true,
         }, { onProgress: (status) => onProgress({ ...status, message: '正在准备综合练习' }), signal }) : Promise.resolve({ questions: [] }),
       ]);
       const result = {
@@ -195,6 +206,7 @@ export default function TeacherContentRoute() {
   const activeOpenMaicJobsRef = useRef(new Map());
   const generationRunRef = useRef(0);
   const generationAbortRef = useRef(null);
+  const questionPoolAbortRef = useRef(null);
   const generationStartedAtRef = useRef(0);
   const [questionGeneration, setQuestionGeneration] = useState({ mode: '', scope: '', status: null, error: '' });
   const [teacherAgent, setTeacherAgent] = useState({ open: false, scope: 'whole' });
@@ -270,6 +282,8 @@ export default function TeacherContentRoute() {
   useEffect(() => {
     generationAbortRef.current?.abort();
     generationAbortRef.current = null;
+    questionPoolAbortRef.current?.abort();
+    questionPoolAbortRef.current = null;
     generationStartedAtRef.current = 0;
     generationRunRef.current += 1;
     resumedJobs.current.clear();
@@ -295,6 +309,7 @@ export default function TeacherContentRoute() {
     setTeacherAgent({ open: false, scope: 'whole' });
     return () => {
       generationAbortRef.current?.abort();
+      questionPoolAbortRef.current?.abort();
     };
   }, [lesson.id]);
 
@@ -435,6 +450,7 @@ export default function TeacherContentRoute() {
           postQuestions: publishedQuestions.filter((item) => ['PRACTICE', 'POST'].includes(item.purpose)).map((item) => ({ ...item, knowledgePointIds: item.knowledgeObjectiveIds || item.knowledgePointIds })),
           learningContent: packageContent.learningContent,
           assessmentMatrices: packageContent.assessmentMatrices,
+          assessmentQuestionSlots: packageContent.assessmentQuestionSlots,
           status: 'published', publishedAt: published.publishedAt,
         };
         const next = { ...restored, version: published.versionNumber, publishedVersionId: published.id, publishedVersionNumber: published.versionNumber, qualityReport: published.qualityReport };
@@ -634,6 +650,7 @@ export default function TeacherContentRoute() {
         current.preQuestions || [],
         current.postQuestions || [],
         current.learningContent || null,
+        current.assessmentMatrices || {},
       ]),
     };
   };
@@ -1034,6 +1051,7 @@ export default function TeacherContentRoute() {
               ...sourceContent.preQuestions,
               ...(generationScope === 'review' ? existingKnowledgeQuestions : existingReviewQuestions),
             ],
+            assessmentMatrices: sourceContent.assessmentMatrices || {},
           }, updateProgress);
       const nextQuestions = mode === 'pre'
         ? response.questions
@@ -1055,6 +1073,252 @@ export default function TeacherContentRoute() {
       setNotice(noticeMessage('error', error.message || '题目生成失败'));
       return { ok: false, message: error.message };
     }
+  };
+
+  const generateKnowledgePointAssessmentMatrix = async (knowledgePointId) => {
+    const knowledgePoint = lesson.knowledgePoints.find((item) => item.id === knowledgePointId);
+    if (!knowledgePoint) return;
+    const sourceContent = readTeacherContent()[lesson.id] || base;
+    const sourceSnapshot = contentVersionSnapshot();
+    setQuestionGeneration({
+      mode: 'knowledge-matrix',
+      scope: knowledgePointId,
+      status: { message: `正在为“${knowledgePoint.name}”生成评估矩阵` },
+      error: '',
+    });
+    setNotice('');
+    try {
+      if (contentMutationLocked) throw new Error('整课后台任务正在处理，完成后才能生成评估矩阵');
+      const response = await generateAssessmentMatrices({
+        lesson: lessonPayload,
+        knowledgePoints: [knowledgePoint],
+        teacherInstruction: '独立生成该知识点的稀疏评估矩阵，不生成题目。',
+      });
+      const assessmentMatrix = response.assessmentMatrix
+        || response.assessmentMatrices?.[knowledgePointId];
+      if (!assessmentMatrix?.cells?.length) throw new Error('AI 未返回可用评估矩阵，请重新生成');
+      assertContentVersion(sourceSnapshot);
+      const saved = saveDraft({
+        assessmentMatrices: {
+          ...(sourceContent.assessmentMatrices || {}),
+          [knowledgePointId]: assessmentMatrix,
+        },
+        assessmentQuestionSlots: Object.fromEntries(Object.entries(
+          sourceContent.assessmentQuestionSlots || {},
+        ).filter(([id]) => id !== knowledgePointId)),
+        version: sourceSnapshot.version + 1,
+      });
+      if (!saved) throw new Error('当前内容暂时只读，评估矩阵未保存');
+      setNotice(`“${knowledgePoint.name}”评估矩阵已保存到草稿，原题池未改动`);
+    } catch (error) {
+      setNotice(noticeMessage('error', error.message || '评估矩阵生成失败'));
+    } finally {
+      setQuestionGeneration({ mode: '', scope: '', status: null, error: '' });
+    }
+  };
+
+  const generateKnowledgePointQuestionSlots = (knowledgePointId) => {
+    const knowledgePoint = lesson.knowledgePoints.find((item) => item.id === knowledgePointId);
+    if (!knowledgePoint) return;
+    const sourceContent = readTeacherContent()[lesson.id] || base;
+    const assessmentMatrix = sourceContent.assessmentMatrices?.[knowledgePointId];
+    if (!assessmentMatrix?.cells?.length) {
+      setNotice(noticeMessage('warning', '请先生成并确认该知识点的评估矩阵'));
+      return;
+    }
+    const slots = practicePoolBlueprintFromAssessmentMatrix(assessmentMatrix);
+    if (!slots.length) {
+      setNotice(noticeMessage('warning', '当前评估矩阵没有需要生成题目的适用格'));
+      return;
+    }
+    const saved = saveDraft({
+      assessmentQuestionSlots: {
+        ...(sourceContent.assessmentQuestionSlots || {}),
+        [knowledgePointId]: slots,
+      },
+      version: Number(sourceContent.version || 0) + 1,
+    });
+    if (!saved) return;
+    setQuestionGeneration({ mode: '', scope: '', phase: 'idle', status: null, slots: [], error: '' });
+    setNotice(`已根据“${knowledgePoint.name}”评估矩阵生成并保存 ${slots.length} 个题目插槽，尚未生成题目`);
+  };
+
+  const generateKnowledgePointQuestionPool = async (knowledgePointId) => {
+    const knowledgePoint = lesson.knowledgePoints.find((item) => item.id === knowledgePointId);
+    if (!knowledgePoint) return;
+    const sourceContent = readTeacherContent()[lesson.id] || base;
+    const assessmentMatrix = sourceContent.assessmentMatrices?.[knowledgePointId];
+    if (!assessmentMatrix?.cells?.length) {
+      setNotice(noticeMessage('warning', '请先生成并确认该知识点的评估矩阵'));
+      return;
+    }
+    const blueprintSlots = sourceContent.assessmentQuestionSlots?.[knowledgePointId] || [];
+    if (!blueprintSlots.length) {
+      setNotice(noticeMessage('warning', '请先根据评估矩阵生成并确认题目插槽'));
+      return;
+    }
+    const previousSlots = questionGeneration.scope === knowledgePointId
+      ? questionGeneration.slots || [] : [];
+    const retrySlotIds = new Set(previousSlots
+      .filter((slot) => ['failed', 'stopped'].includes(slot.status))
+      .map((slot) => slot.id));
+    const retryingPartialRun = questionGeneration.scope === knowledgePointId
+      && questionGeneration.phase === 'partial'
+      && retrySlotIds.size > 0;
+    const slotsToGenerate = retryingPartialRun
+      ? blueprintSlots.filter((slot) => retrySlotIds.has(slot.id))
+      : blueprintSlots;
+    const initialSlots = blueprintSlots.map((slot) => {
+      const previous = previousSlots.find((item) => item.id === slot.id);
+      const retainSuccess = retryingPartialRun && previous?.status === 'success';
+      return {
+        id: slot.id,
+        matrixCellId: slot.matrixCellId,
+        matrixCode: `${slot.domain}-${slot.targetLevel}`,
+        difficulty: slot.difficulty,
+        questionType: slot.questionType,
+        status: retainSuccess ? 'success' : slotsToGenerate.some((item) => item.id === slot.id) ? 'pending' : 'stopped',
+        questionId: retainSuccess ? previous.questionId : '',
+        error: '',
+      };
+    });
+    questionPoolAbortRef.current?.abort();
+    const controller = new AbortController();
+    questionPoolAbortRef.current = controller;
+    setQuestionGeneration({
+      mode: 'knowledge-questions',
+      scope: knowledgePointId,
+      phase: 'running',
+      status: { message: `准备按“${knowledgePoint.name}”评估矩阵以 30 路并发生成` },
+      slots: initialSlots,
+      error: '',
+    });
+    setNotice('');
+    let successCount = initialSlots.filter((slot) => slot.status === 'success').length;
+    let failedCount = 0;
+    let completedCount = 0;
+    const updateSlot = (slotId, patch) => setQuestionGeneration((current) => ({
+      ...current,
+      slots: (current.slots || []).map((slot) => slot.id === slotId ? { ...slot, ...patch } : slot),
+    }));
+    const persistGeneratedQuestion = (slot, response) => {
+      if (response.questions?.length !== 1 || response.questions[0]?.blueprintSlotId !== slot.id) {
+        throw new Error('返回题目没有匹配当前插槽');
+      }
+      const generatedQuestion = response.questions[0];
+      const current = readTeacherContent();
+      const currentLesson = current[lesson.id] || sourceContent;
+      const currentQuestions = currentLesson.postQuestions || [];
+      const duplicateStem = currentQuestions.some((question) => (
+        question.blueprintSlotId !== slot.id
+        && normalizedQuestionStem(question)
+        && normalizedQuestionStem(question) === normalizedQuestionStem(generatedQuestion)
+      ));
+      if (duplicateStem) throw new Error('题干与已有题目重复');
+      let replaced = false;
+      const nextPostQuestions = currentQuestions.map((question) => {
+        const belongsToKnowledgePoint = (question.knowledgePointIds || question.knowledgeObjectiveIds || [])
+          .includes(knowledgePointId);
+        if (!belongsToKnowledgePoint || question.blueprintSlotId !== slot.id) return question;
+        replaced = true;
+        return generatedQuestion;
+      });
+      if (!replaced) {
+        const reviewIndex = nextPostQuestions.findIndex((question) => question.phase === 'review');
+        if (reviewIndex < 0) nextPostQuestions.push(generatedQuestion);
+        else nextPostQuestions.splice(reviewIndex, 0, generatedQuestion);
+      }
+      const nextLesson = {
+        ...currentLesson,
+        postQuestions: nextPostQuestions,
+        version: Number(currentLesson.version || 0) + 1,
+        qualityReport: null,
+        inspectionStatus: null,
+        status: 'draft',
+        updatedAt: new Date().toISOString(),
+      };
+      const nextContent = { ...current, [lesson.id]: nextLesson };
+      writeTeacherContent(nextContent);
+      setAllContent(nextContent);
+      return generatedQuestion;
+    };
+    try {
+      if (contentMutationLocked) throw new Error('整课后台任务正在处理，完成后才能生成题池');
+      const slotsById = new Map(slotsToGenerate.map((slot) => [slot.id, slot]));
+      let stopped = false;
+      try {
+        await generateQuestionSlotsConcurrently({
+          purpose: 'post',
+          lesson: lessonPayload,
+          knowledgePoints: [knowledgePoint],
+          countPerKnowledgePoint: 1,
+          reviewCount: 0,
+          assessmentMatrices: { [knowledgePointId]: assessmentMatrix },
+          skipAssessmentMatrixPlanning: true,
+          poolBlueprintSlots: slotsToGenerate,
+          teacherInstruction: '按每个评估矩阵插槽独立生成一道证据题，不修改矩阵或插槽。',
+        }, {
+          signal: controller.signal,
+          onEvent: (event) => {
+            const slot = slotsById.get(event.slotId);
+            if (event.type === 'status') {
+              setQuestionGeneration((current) => ({
+                ...current,
+                status: { message: `${event.message} · 共 ${slotsToGenerate.length} 个插槽` },
+              }));
+              return;
+            }
+            if (!slot) return;
+            if (event.type === 'slot-started') {
+              updateSlot(slot.id, { status: 'running', error: '' });
+              return;
+            }
+            if (event.type === 'slot-complete') {
+              try {
+                const generatedQuestion = persistGeneratedQuestion(slot, event.data || {});
+                successCount += 1;
+                updateSlot(slot.id, { status: 'success', questionId: generatedQuestion.id, error: '' });
+              } catch (error) {
+                failedCount += 1;
+                updateSlot(slot.id, { status: 'failed', error: error.message || '保存失败' });
+              }
+              completedCount += 1;
+            } else if (event.type === 'slot-error') {
+              failedCount += 1;
+              completedCount += 1;
+              updateSlot(slot.id, { status: 'failed', error: event.message || '生成失败' });
+            }
+            setQuestionGeneration((current) => ({
+              ...current,
+              status: { message: `30 路并发生成 · 已完成 ${completedCount} / ${slotsToGenerate.length}` },
+            }));
+          },
+        });
+      } catch (error) {
+        if (isGenerationCancelled(error) || controller.signal.aborted) stopped = true;
+        else throw error;
+      }
+      stopped = stopped || controller.signal.aborted;
+      setQuestionGeneration((current) => ({
+        ...current,
+        phase: stopped || failedCount > 0 ? 'partial' : 'completed',
+        status: { message: stopped ? '生成已停止，已成功题目均已保留' : failedCount > 0 ? '部分插槽生成失败，可单独重试' : '矩阵要求的全部插槽已生成' },
+        slots: (current.slots || []).map((slot) => (
+          stopped && ['pending', 'running'].includes(slot.status) ? { ...slot, status: 'stopped' } : slot
+        )),
+      }));
+      if (stopped) setNotice(noticeMessage('warning', `已停止生成，保留 ${successCount} 道已生成题目`));
+      else if (failedCount > 0) setNotice(noticeMessage('warning', `${successCount} 道题已保存，${failedCount} 个插槽生成失败，可单独重试`));
+      else setNotice(`已按矩阵要求生成并保存 ${successCount} 道题，矩阵未改动`);
+    } catch (error) {
+      if (!isGenerationCancelled(error)) setNotice(noticeMessage('error', error.message || '题池生成失败'));
+    } finally {
+      if (questionPoolAbortRef.current === controller) questionPoolAbortRef.current = null;
+    }
+  };
+
+  const stopKnowledgePointQuestionPool = () => {
+    questionPoolAbortRef.current?.abort(generationCancelledError());
   };
 
   const friendlyTaskError = (error, stage) => {
@@ -2050,6 +2314,15 @@ export default function TeacherContentRoute() {
               assessmentMatrices={base.assessmentMatrices || selectedPublishedVersion?.contentPackage?.assessmentMatrices}
               knowledgePoints={lesson.knowledgePoints}
               questions={knowledgeQuestions}
+              assessmentQuestionSlots={base.assessmentQuestionSlots || {}}
+              onGenerateMatrix={generateKnowledgePointAssessmentMatrix}
+              onGenerateSlots={generateKnowledgePointQuestionSlots}
+              onGenerateQuestions={generateKnowledgePointQuestionPool}
+              generatingMatrixKnowledgePointId={questionGeneration.mode === 'knowledge-matrix' ? questionGeneration.scope : ''}
+              generatingQuestionsKnowledgePointId={questionGeneration.mode === 'knowledge-questions' && questionGeneration.phase === 'running' ? questionGeneration.scope : ''}
+              questionGeneration={questionGeneration}
+              onStopQuestions={stopKnowledgePointQuestionPool}
+              generationDisabled={contentMutationLocked || viewingHistoricalVersion}
             />
             <TeacherQuestionReview
               key="single-practice-pool"

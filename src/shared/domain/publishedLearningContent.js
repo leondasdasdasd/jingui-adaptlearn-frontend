@@ -55,6 +55,7 @@ export function normalizePublishedContentPackage(content = {}) {
       lesson: content.lesson,
       knowledgeObjectives: content.knowledgeObjectives || [],
       assessmentMatrices: content.assessmentMatrices || {},
+      assessmentQuestionSlots: content.assessmentQuestionSlots || {},
       diagnosticQuestionPool: normalizeQuestions(content.diagnosticQuestionPool || []),
       learningContent: {
         composite: readyRuntime(content.learningContent.composite),
@@ -88,6 +89,7 @@ export function normalizePublishedContentPackage(content = {}) {
     lesson: content.lesson,
     knowledgeObjectives: objectives,
     assessmentMatrices: content.assessmentMatrices || {},
+    assessmentQuestionSlots: content.assessmentQuestionSlots || {},
     diagnosticQuestionPool: normalizeQuestions(questions.filter((item) => String(item.purpose).toUpperCase() === 'PRE')),
     learningContent: {
       composite: readyRuntime(content.openMaic),

@@ -3,7 +3,9 @@ export const PRACTICE_POOL_SIZE_PER_KNOWLEDGE_POINT = 15;
 export const PRACTICE_POOL_MIN_SIZE_PER_KNOWLEDGE_POINT = PRACTICE_POOL_SIZE_PER_KNOWLEDGE_POINT;
 // Operational guard only. Product acceptance treats 15 as a floor, while the
 // planner may create a larger reusable pool without increasing one session.
-export const PRACTICE_POOL_MAX_SIZE_PER_KNOWLEDGE_POINT = 30;
+// A sparse assessment matrix can contain up to 12 cells with 6 recommended
+// profiles each. Matrix-driven pools must be able to materialize all of them.
+export const PRACTICE_POOL_MAX_SIZE_PER_KNOWLEDGE_POINT = 72;
 // Composite review is sized from the evidence blueprint instead of the old
 // fixed six-question fallback. Six is still a sensible minimum for one/two
 // point lessons, while larger lessons receive one independent slot per point.
@@ -76,7 +78,10 @@ const PRACTICE_POOL_ASSESSMENT_FOCI = Object.freeze([
 
 const RECOMMENDED_TYPES_BY_DIFFICULTY = Object.freeze({
   1: ['single_choice', 'judgement', 'fill_blank', 'text_marker'],
-  2: ['single_choice', 'judgement', 'fill_blank', 'classification', 'matching', 'text_marker', 'ordering'],
+  2: [
+    'single_choice', 'judgement', 'fill_blank', 'classification', 'matching', 'text_marker', 'ordering',
+    'short_answer',
+  ],
   3: [
     'single_choice', 'multiple_choice', 'fill_blank', 'classification', 'matching',
     'line_connect', 'text_marker', 'word_builder', 'ordering', 'short_answer',

@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { CheckCircle2, Grid3X3, Link2 } from 'lucide-react';
+import {
+  CheckCircle2, CircleX, Clock3, Grid3X3, Link2, LoaderCircle, RefreshCw, Sparkles, Square,
+} from 'lucide-react';
 import './KnowledgeAssessmentMatrix.css';
 
 const DOMAINS = [
@@ -38,6 +40,14 @@ const QUESTION_TYPE_LABELS = {
   word_builder: '组式题',
 };
 
+const DIFFICULTY_LABELS = {
+  D1: '基础识别',
+  D2: '直接理解',
+  D3: '标准应用',
+  D4: '变式综合',
+  D5: '迁移应用',
+};
+
 function list(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
   if (typeof value === 'string' && value.trim()) return [value.trim()];
@@ -55,6 +65,14 @@ function normalizeCell(cell, knowledgePointId) {
   const domain = String(cell?.domain || '').toUpperCase();
   const level = String(cell?.targetLevel || cell?.level || '').toUpperCase();
   if (!DOMAINS.some((item) => item.id === domain) || !LEVELS.some((item) => item.id === level)) return null;
+  const recommendedQuestionProfiles = list(
+    cell.recommendedQuestionProfiles || cell.recommendedQuestionTypes || cell.questionTypes,
+  ).map((item) => (typeof item === 'string'
+    ? { questionType: item, difficulty: '' }
+    : {
+        questionType: String(item?.questionType || item?.type || '').trim(),
+        difficulty: String(item?.difficulty || '').trim().toUpperCase(),
+      })).filter((item) => item.questionType);
   return {
     ...cell,
     cellId: String(cell.cellId || cell.matrixCellId || `${knowledgePointId}:${domain}:${level}`),
@@ -64,8 +82,14 @@ function normalizeCell(cell, knowledgePointId) {
     observableBehavior: String(cell.observableBehavior || cell.targetBehavior || '').trim(),
     evidenceCriteria: list(cell.evidenceCriteria || cell.evidence),
     commonMisconceptions: list(cell.commonMisconceptions || cell.misconceptions),
-    recommendedQuestionTypes: list(cell.recommendedQuestionTypes || cell.questionTypes),
+    recommendedQuestionProfiles,
+    recommendedQuestionTypes: [...new Set(recommendedQuestionProfiles.map((item) => item.questionType))],
     minimumIndependentEvidence: Math.max(0, Number(cell.minimumIndependentEvidence || cell.minimumEvidence || 0)),
+    requiredSlotCount: Math.max(
+      1,
+      Number(cell.minimumIndependentEvidence || cell.minimumEvidence || 0),
+      recommendedQuestionProfiles.length,
+    ),
   };
 }
 
@@ -127,7 +151,7 @@ function CellDetail({ cell, questions }) {
         </div>
         <span className="assessment-matrix-evidence-count">
           <CheckCircle2 size={15} aria-hidden="true" />
-          {`${questions.length} / ${cell.minimumIndependentEvidence || 0} 条题目证据`}
+          {`${questions.length} / ${cell.requiredSlotCount} 道题型覆盖`}
         </span>
       </header>
 
@@ -154,8 +178,13 @@ function CellDetail({ cell, questions }) {
           <section>
             <h4>建议题型</h4>
             <div className="assessment-matrix-type-list">
-              {cell.recommendedQuestionTypes.length
-                ? cell.recommendedQuestionTypes.map((type) => <span key={type}>{QUESTION_TYPE_LABELS[type] || type}</span>)
+              {cell.recommendedQuestionProfiles.length
+                ? cell.recommendedQuestionProfiles.map((profile) => (
+                    <span key={`${profile.questionType}-${profile.difficulty || 'legacy'}`}>
+                      {QUESTION_TYPE_LABELS[profile.questionType] || profile.questionType}
+                      {profile.difficulty && <b>{`${profile.difficulty} · ${DIFFICULTY_LABELS[profile.difficulty] || ''}`}</b>}
+                    </span>
+                  ))
                 : <span>未指定</span>}
             </div>
           </section>
@@ -167,7 +196,7 @@ function CellDetail({ cell, questions }) {
                   <li key={question.id || `${cell.cellId}-${question.displayNumber}`}>
                     <span>{question.displayNumber}</span>
                     <p>{question.stem || '未命名题目'}</p>
-                    <small>{QUESTION_TYPE_LABELS[question.type] || question.type || '题目'}</small>
+                    <small>{`${QUESTION_TYPE_LABELS[question.type] || question.type || '题目'}${question.difficulty ? ` · ${question.difficulty}` : ''}`}</small>
                   </li>
                 ))}
               </ol>
@@ -179,7 +208,20 @@ function CellDetail({ cell, questions }) {
   );
 }
 
-export default function KnowledgeAssessmentMatrix({ assessmentMatrices, knowledgePoints = [], questions = [] }) {
+export default function KnowledgeAssessmentMatrix({
+  assessmentMatrices,
+  knowledgePoints = [],
+  questions = [],
+  assessmentQuestionSlots = {},
+  onGenerateMatrix,
+  onGenerateSlots,
+  onGenerateQuestions,
+  generatingMatrixKnowledgePointId = '',
+  generatingQuestionsKnowledgePointId = '',
+  questionGeneration = null,
+  onStopQuestions,
+  generationDisabled = false,
+}) {
   const matrices = useMemo(
     () => normalizeMatrices(assessmentMatrices, knowledgePoints),
     [assessmentMatrices, knowledgePoints],
@@ -207,10 +249,31 @@ export default function KnowledgeAssessmentMatrix({ assessmentMatrices, knowledg
   const applicableCells = (selectedMatrix?.cells || []).filter((cell) => cell.role !== 'NOT_APPLICABLE');
   const selectedCell = applicableCells.find((cell) => cell.cellId === selectedCellId) || applicableCells[0] || null;
   const evidenceSatisfiedCells = applicableCells.filter((cell) => (
-    (coverage.get(cell.cellId) || []).length >= cell.minimumIndependentEvidence
+    (coverage.get(cell.cellId) || []).length >= cell.requiredSlotCount
   )).length;
   const coreCells = applicableCells.filter((cell) => cell.role === 'CORE').length;
   const hasGeneratedMatrix = (selectedMatrix?.cells || []).length > 0;
+  const isGeneratingMatrix = generatingMatrixKnowledgePointId === selectedMatrix?.knowledgePointId;
+  const isGeneratingQuestions = generatingQuestionsKnowledgePointId === selectedMatrix?.knowledgePointId;
+  const selectedQuestionGeneration = questionGeneration?.scope === selectedMatrix?.knowledgePointId
+    ? questionGeneration : null;
+  const generatedSlots = selectedQuestionGeneration?.slots || [];
+  const questionSlots = Array.isArray(assessmentQuestionSlots)
+    ? assessmentQuestionSlots.filter((slot) => slot.knowledgePointId === selectedMatrix?.knowledgePointId)
+    : assessmentQuestionSlots?.[selectedMatrix?.knowledgePointId] || [];
+  const generatedSlotState = new Map(generatedSlots.map((slot) => [slot.id, slot]));
+  const displayedSlots = questionSlots.map((slot) => ({
+    ...slot,
+    ...(generatedSlotState.get(slot.id) || {}),
+    matrixCode: slot.matrixCellCode || `${slot.domain}-${slot.targetLevel}`,
+    status: generatedSlotState.get(slot.id)?.status || 'ready',
+  }));
+  const successfulSlots = generatedSlots.filter((slot) => slot.status === 'success').length;
+  const failedSlots = generatedSlots.filter((slot) => slot.status === 'failed').length;
+  const waitingSlots = generatedSlots.filter((slot) => ['pending', 'running', 'stopped'].includes(slot.status)).length;
+  const canRetryFailedSlots = selectedQuestionGeneration?.phase === 'partial'
+    && generatedSlots.some((slot) => ['failed', 'stopped'].includes(slot.status));
+  const generationBusy = Boolean(generatingMatrixKnowledgePointId || generatingQuestionsKnowledgePointId);
   const moveKnowledgePointFocus = (event) => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault();
@@ -232,17 +295,120 @@ export default function KnowledgeAssessmentMatrix({ assessmentMatrices, knowledg
           <div>
             <h2 id="assessment-matrix-title">知识点评估矩阵</h2>
             <p>{hasGeneratedMatrix
-              ? `${applicableCells.length} 个适用格 · ${coreCells} 个核心格 · ${selectedMatrix.generationSource === 'SERVER_FALLBACK' ? '系统保底' : '豆包生成'} · ${selectedMatrix.reviewStatus === 'APPROVED' ? '已确认' : '待发布确认'}`
+              ? `${applicableCells.length} 个适用格 · ${coreCells} 个核心格 · ${selectedMatrix.generationSource === 'SERVER_FALLBACK' ? '系统保底' : 'AI 生成'} · ${selectedMatrix.reviewStatus === 'APPROVED' ? '已确认' : '待发布确认'}`
               : '当前知识点尚未生成评估矩阵'}</p>
           </div>
         </div>
         {hasGeneratedMatrix && (
-          <div className="assessment-matrix-coverage-summary" aria-label={`${evidenceSatisfiedCells} 个适用格达到最低题目证据要求，共 ${applicableCells.length} 个`}>
-            <span>证据达标</span>
-            <strong>{evidenceSatisfiedCells}<small>{` / ${applicableCells.length}`}</small></strong>
+          <div className="assessment-matrix-header-actions">
+            <div className="assessment-matrix-coverage-summary" aria-label={`${evidenceSatisfiedCells} 个适用格达到最低题目证据要求，共 ${applicableCells.length} 个`}>
+              <span>证据达标</span>
+              <strong>{evidenceSatisfiedCells}<small>{` / ${applicableCells.length}`}</small></strong>
+            </div>
+            <div className="assessment-matrix-action-buttons">
+              {typeof onGenerateMatrix === 'function' && (
+                <button
+                  className="assessment-matrix-action secondary"
+                  type="button"
+                  disabled={generationDisabled || generationBusy}
+                  aria-busy={isGeneratingMatrix ? 'true' : undefined}
+                  onClick={() => onGenerateMatrix(selectedMatrix.knowledgePointId)}
+                >
+                  {isGeneratingMatrix
+                    ? <LoaderCircle className="assessment-matrix-spinner" size={15} aria-hidden="true" />
+                    : <RefreshCw size={15} aria-hidden="true" />}
+                  {isGeneratingMatrix ? '矩阵生成中' : '重新生成矩阵'}
+                </button>
+              )}
+              {typeof onGenerateSlots === 'function' && !isGeneratingQuestions && (
+                <button
+                  className="assessment-matrix-action secondary"
+                  type="button"
+                  disabled={generationDisabled || generationBusy}
+                  onClick={() => onGenerateSlots(selectedMatrix.knowledgePointId)}
+                >
+                  <Grid3X3 size={15} aria-hidden="true" />
+                  {questionSlots.length ? '重新生成插槽' : '生成题目插槽'}
+                </button>
+              )}
+              {typeof onGenerateQuestions === 'function' && (
+                isGeneratingQuestions && typeof onStopQuestions === 'function' ? (
+                  <button
+                    className="assessment-matrix-action stop"
+                    type="button"
+                    onClick={onStopQuestions}
+                  >
+                    <Square size={14} fill="currentColor" aria-hidden="true" />
+                    停止生成
+                  </button>
+                ) : (
+                  <button
+                    className="assessment-matrix-action primary"
+                    type="button"
+                    disabled={generationDisabled || generationBusy || questionSlots.length === 0}
+                    title={questionSlots.length ? undefined : '请先生成并确认题目插槽'}
+                    onClick={() => onGenerateQuestions(selectedMatrix.knowledgePointId)}
+                  >
+                    <Sparkles size={15} aria-hidden="true" />
+                    {canRetryFailedSlots ? '重试失败插槽' : '按插槽生成题目'}
+                  </button>
+                )
+              )}
+            </div>
           </div>
         )}
       </header>
+
+      {displayedSlots.length > 0 && (
+        <section className="assessment-slot-progress" aria-live="polite" aria-label="题目插槽">
+          <header>
+            <div>
+              <strong>题目插槽</strong>
+              <span>{selectedQuestionGeneration?.status?.message || `${displayedSlots.length} 个独立命题合同，覆盖矩阵推荐题型与最低证据要求`}</span>
+            </div>
+            {generatedSlots.length > 0 && <div className="assessment-slot-counts">
+              <span className="success">成功 <b>{successfulSlots}</b></span>
+              <span className="failed">失败 <b>{failedSlots}</b></span>
+              <span>待处理 <b>{waitingSlots}</b></span>
+            </div>}
+          </header>
+          <div className="assessment-slot-list">
+            {displayedSlots.map((slot, index) => {
+              const label = `${slot.matrixCode} · ${slot.difficulty}`;
+              const statusLabel = {
+                ready: '插槽已就绪', pending: '等待', running: '生成中', success: '题目已生成', failed: '生成失败', stopped: '已停止',
+              }[slot.status] || '插槽已就绪';
+              return (
+                <article
+                  className={`assessment-slot-item ${slot.status}`}
+                  key={slot.id}
+                  title={slot.error || `插槽 ${index + 1} · ${statusLabel}`}
+                >
+                  <div className="assessment-slot-state-icon">
+                    {slot.status === 'running' && <LoaderCircle className="assessment-matrix-spinner" size={15} aria-hidden="true" />}
+                    {slot.status === 'success' && <CheckCircle2 size={15} aria-hidden="true" />}
+                    {slot.status === 'failed' && <CircleX size={15} aria-hidden="true" />}
+                    {['pending', 'stopped'].includes(slot.status) && <Clock3 size={15} aria-hidden="true" />}
+                    {slot.status === 'ready' && <Grid3X3 size={15} aria-hidden="true" />}
+                  </div>
+                  <div className="assessment-slot-contract">
+                    <header>
+                      <strong>{`插槽 ${index + 1} · ${label}`}</strong>
+                      <span>{`${QUESTION_TYPE_LABELS[slot.questionType] || slot.questionType} · ${ROLE_META[slot.matrixRole]?.label || slot.matrixRole || '支撑'}`}</span>
+                    </header>
+                    <p>{slot.observableBehavior || '未填写目标行为'}</p>
+                    <dl>
+                      <div><dt>本槽证据</dt><dd>{slot.evidenceCriterion || slot.evidenceCriteria?.[0] || '未填写'}</dd></div>
+                      <div><dt>变化要求</dt><dd>{slot.variationRequirement || slot.assessmentFocus || '未填写'}</dd></div>
+                    </dl>
+                  </div>
+                  <span className="assessment-slot-status">{statusLabel}</span>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       <div className="assessment-matrix-kp-tabs" role="tablist" aria-label="选择知识点" onKeyDown={moveKnowledgePointFocus}>
         {matrices.map((matrix) => (
@@ -327,7 +493,21 @@ export default function KnowledgeAssessmentMatrix({ assessmentMatrices, knowledg
           <div className="assessment-matrix-empty" role="status">
             <Grid3X3 size={24} aria-hidden="true" />
             <strong>尚未生成评估矩阵</strong>
-            <span>完成整课生成后将在此显示该知识点的适用格与题目覆盖。</span>
+            <span>先生成并确认该知识点的评估矩阵。</span>
+            {typeof onGenerateMatrix === 'function' && (
+              <button
+                className="assessment-matrix-generate"
+                type="button"
+                disabled={generationDisabled || generationBusy}
+                aria-busy={isGeneratingMatrix ? 'true' : undefined}
+                onClick={() => onGenerateMatrix(selectedMatrix.knowledgePointId)}
+              >
+                {isGeneratingMatrix
+                  ? <LoaderCircle className="assessment-matrix-spinner" size={15} aria-hidden="true" />
+                  : <Sparkles size={15} aria-hidden="true" />}
+                {isGeneratingMatrix ? 'AI 生成中' : '生成评估矩阵'}
+              </button>
+            )}
           </div>
         )}
       </div>
