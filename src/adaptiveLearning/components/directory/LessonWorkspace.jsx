@@ -8,12 +8,18 @@ import {
   Target,
   Sparkles,
   Zap,
+  Trophy,
+  Network,
 } from "lucide-react";
 
 /**
- * 课时自适应核心工作台
+ * 课时自适应核心工作台（分开的两段式结构 + 底部固定小测栏）
+ * 第一段：独立课时概览卡片（包含问候、章节面包屑、课时大标题、用时与全书认知画像入口，避免误认为单课140考点）
+ * 第二段：独立核心考点梳理卡片（整齐陈列本课的核心考点与评测状态）
+ * 底部固定栏：固定在工作区底部的自适应小测行动栏，不随考点数量上下跳动
  */
 export default function LessonWorkspace({
+  courseName = "七年级数学 · 上册",
   selectedChapter,
   selectedSection,
   progress,
@@ -21,9 +27,12 @@ export default function LessonWorkspace({
   onStart,
   onContinue,
   onLearnKnowledge,
+  onOpenKnowledgeMap,
+  masteredKpCount = 0,
+  totalKpCount = 0,
 }) {
   const currentLessonProgress =
-    progress?.lessonId === selectedSection.id ? progress : null;
+    progress?.lessonId === selectedSection?.id ? progress : null;
   const isUnlocked = Boolean(currentLessonProgress?.preAssessmentCompleted);
   const progressByKp = Object.fromEntries(
     (currentLessonProgress?.items || []).map((item) => [item.id, item]),
@@ -32,37 +41,67 @@ export default function LessonWorkspace({
     (item) => item.state === "complete" || item.state === "mastered",
   ).length;
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 6) return "夜深了，注意休息";
+    if (hour < 12) return "早晨好";
+    if (hour < 14) return "中午好";
+    if (hour < 18) return "下午好";
+    return "晚上好";
+  };
+
   return (
     <div className="modern-workspace-container">
-      <section className="modern-lesson-stage">
-        {/* 顶部元数据与面包屑 */}
-        <div className="stage-top-badge-row">
-          <div className="chapter-breadcrumb-tag">
-            <BookMarked size={14} />
-            <span>
-              {selectedChapter?.title} · {selectedSection?.index}
+      {/* ================= 第一段：欢迎与概览卡片 ================= */}
+      <section className="lesson-overview-card">
+        <div className="overview-card-left">
+          <h1 className="overview-welcome-title">{getGreeting()}，开启今天的学习吧</h1>
+        </div>
+
+        <div className="overview-card-right">
+          <button
+            type="button"
+            className="minimal-portrait-btn group"
+            onClick={onOpenKnowledgeMap}
+            title="查看已掌握考点与认知画像"
+            aria-label="查看已掌握考点与认知画像"
+          >
+            <Trophy size={16} className="text-amber-500 flex-shrink-0" />
+            <span className="portrait-label">已掌握考点</span>
+            <span className="portrait-count">
+              {masteredKpCount}/{totalKpCount}
+            </span>
+            <ChevronRight
+              size={14}
+              className="text-slate-400 group-hover:translate-x-0.5 group-hover:text-indigo-600 transition-transform"
+            />
+          </button>
+        </div>
+      </section>
+
+      {/* ================= 第二段：课时与核心考点梳理卡片（含底部固定操作条） ================= */}
+      <section className="lesson-knowledge-card">
+        <div className="knowledge-section-header">
+          <div className="flex items-center gap-3">
+            <div className="lesson-index-tag">
+              {selectedSection.index || "当前课时"}
+            </div>
+            <h2 className="text-xl font-extrabold text-slate-800 m-0 tracking-tight">
+              {selectedSection.title}
+            </h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="knowledge-count-badge">
+              共 {selectedSection.knowledgePoints.length} 个考点
+            </span>
+            <span className="lesson-time-pill">
+              <Clock3 size={13} className="text-slate-400" />
+              <span>建议用时 约 {selectedSection.estimatedMinutes || 20} 分钟</span>
             </span>
           </div>
-          <div className="lesson-time-pill">
-            <Clock3 size={14} className="text-slate-400" />
-            <span>建议用时 约 {selectedSection.estimatedMinutes || 20} 分钟</span>
-          </div>
         </div>
 
-        {/* 课时主标题 */}
-        <h1 className="stage-lesson-title">{selectedSection.title}</h1>
-
-        {/* 知识点网格 */}
-        <div className="knowledge-section-header">
-          <h2>
-            <Target size={18} className="text-indigo-600" />
-            <span>核心考点</span>
-          </h2>
-          <span className="knowledge-count-badge">
-            共 {selectedSection.knowledgePoints.length} 个
-          </span>
-        </div>
-
+        {/* 考点网格 */}
         <div className="modern-knowledge-grid">
           {selectedSection.knowledgePoints.map((kp, index) => {
             const pItem = progressByKp[kp.id];
@@ -133,14 +172,17 @@ export default function LessonWorkspace({
           })}
         </div>
 
-        {/* 底部行动卡片 */}
-        <div className="modern-action-dock">
+        {/* 占位撑开，保证即使考点数量少，底部操作条也能稳定吸底 */}
+        <div className="knowledge-card-spacer" />
+
+        {/* ================= 底部固定小测行动条 ================= */}
+        <div className="fixed-bottom-action-dock">
           <div className="action-dock-info">
-            <strong>
-              {currentLessonProgress
-                ? `已完成 ${completedCount}/${selectedSection.knowledgePoints.length} 个考点评测`
-                : "本课自适应小测"}
-            </strong>
+            {currentLessonProgress ? (
+              <strong>
+                已完成 {completedCount}/{selectedSection.knowledgePoints.length} 个考点评测
+              </strong>
+            ) : null}
           </div>
 
           {currentLessonProgress ? (
@@ -151,7 +193,7 @@ export default function LessonWorkspace({
               onClick={onContinue}
             >
               <Zap size={18} />
-              <span>{currentLessonProgress.actionLabel || "继续学习"}</span>
+              <span>{currentLessonProgress.actionLabel || "继续小测"}</span>
               <ChevronRight size={18} />
             </button>
           ) : (
@@ -177,3 +219,4 @@ export default function LessonWorkspace({
     </div>
   );
 }
+

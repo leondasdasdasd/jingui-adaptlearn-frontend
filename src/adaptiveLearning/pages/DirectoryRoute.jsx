@@ -15,7 +15,11 @@ import {
   useLearningSession,
 } from "../session/LearningSessionContext";
 import { storageKeys } from "../shared/contracts/storageKeys";
-import { course } from "../shared/domain/courseCatalog";
+import {
+  ALL_COURSES,
+  course as defaultCourse,
+  getCourseById,
+} from "../shared/domain/courseCatalog";
 import { isMasteredValue } from "../shared/domain/masteryPolicy";
 import { writeJson } from "../shared/infrastructure/browserStorage";
 import {
@@ -54,11 +58,13 @@ import {
   normalizeStudentClassroomDirectory,
 } from "../student/domain/studentClassroomDirectory";
 
-const courseLessons = course.chapters.flatMap((chapter) =>
-  chapter.sections.map((section) => ({ chapter, section })),
+const allCatalogLessons = ALL_COURSES.flatMap((c) =>
+  c.chapters.flatMap((chapter) =>
+    chapter.sections.map((section) => ({ chapter, section, course: c })),
+  ),
 );
 const catalogKnowledgeById = Object.fromEntries(
-  courseLessons.flatMap(({ section }) =>
+  allCatalogLessons.flatMap(({ section }) =>
     section.knowledgePoints.map((knowledgePoint) => [
       knowledgePoint.id,
       knowledgePoint,
@@ -81,7 +87,7 @@ function selectionForPublishedContent(contentVersion, publishedLesson) {
       (item) => item.textbookLessonId || item.lessonId,
     );
     const sources = sourceLessonIds
-      .map((id) => courseLessons.find((item) => item.section.id === id))
+      .map((id) => allCatalogLessons.find((item) => item.section.id === id))
       .filter(Boolean);
     const knowledgePoints = (content.knowledgeObjectives || []).map(
       (objective) => ({
@@ -109,7 +115,7 @@ function selectionForPublishedContent(contentVersion, publishedLesson) {
       questionDistribution: publishedLesson.questionDistribution,
     };
   }
-  const lesson = courseLessons.find(
+  const lesson = allCatalogLessons.find(
     (item) => item.section.id === contentVersion.textbookLessonId,
   );
   if (!lesson) throw new Error("该课堂对应的教材课时暂未在学生端启用");
@@ -188,11 +194,11 @@ function resumeState(session) {
     },
   );
   const lessonMastered = planHasNoTargets || masteryCoversWholeLesson;
-  const currentLessonIndex = courseLessons.findIndex(
+  const currentLessonIndex = allCatalogLessons.findIndex(
     (item) => item.section.id === session.selection.section.id,
   );
   const nextLesson =
-    currentLessonIndex >= 0 ? courseLessons[currentLessonIndex + 1] : null;
+    currentLessonIndex >= 0 ? allCatalogLessons[currentLessonIndex + 1] : null;
   const completedPlanKnowledgePointIds = (plan?.units || [])
     .slice(0, plan?.currentIndex || 0)
     .filter((unit) =>
@@ -316,6 +322,28 @@ export default function DirectoryRoute() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { session, setSession } = useLearningSession();
+  const [selectedCourseId, setSelectedCourseId] = useState(() => {
+    try {
+      const stored = localStorage.getItem("adaptive-selected-course-id");
+      if (stored && ALL_COURSES.some((c) => c.id === stored)) {
+        return stored;
+      }
+    } catch {}
+    return defaultCourse.id;
+  });
+
+  const activeCourse = useMemo(() => {
+    return getCourseById(selectedCourseId);
+  }, [selectedCourseId]);
+
+  const handleSelectCourse = (newCourse) => {
+    if (!newCourse) return;
+    setSelectedCourseId(newCourse.id);
+    try {
+      localStorage.setItem("adaptive-selected-course-id", newCourse.id);
+    } catch {}
+  };
+
   const [entryState, setEntryState] = useState({ loading: false, error: "" });
   const [restoreState, setRestoreState] = useState(() => ({
     loading: Boolean(readClassStudentIdentity()?.accessToken),
@@ -700,10 +728,11 @@ export default function DirectoryRoute() {
       )}
       {!restoreState.loading && (
         <DirectoryPage
-          course={course}
+          course={activeCourse}
+          onSelectCourse={handleSelectCourse}
           progress={
             progress
-              ? { ...progress, lessonTitle: session.selection.section.title }
+              ? { ...progress, lessonTitle: session.selection?.section?.title }
               : null
           }
           directoryMode={directoryMode}
@@ -718,9 +747,16 @@ export default function DirectoryRoute() {
           onContinue={() => {
             if (!progress) return;
             if (progress.nextLessonId) {
-              const lesson = courseLessons.find(
-                (item) => item.section.id === progress.nextLessonId,
+              const activeCourseLessons = activeCourse.chapters.flatMap((ch) =>
+                ch.sections.map((s) => ({ chapter: ch, section: s })),
               );
+              const lesson =
+                activeCourseLessons.find(
+                  (item) => item.section.id === progress.nextLessonId,
+                ) ||
+                allCatalogLessons.find(
+                  (item) => item.section.id === progress.nextLessonId,
+                );
               if (lesson) {
                 start({
                   chapter: lesson.chapter,

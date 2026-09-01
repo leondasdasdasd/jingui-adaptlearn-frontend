@@ -1,11 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { BarChart3, Presentation, BookOpen } from "lucide-react";
 
 import AppShell from "./AppShell";
-import DirectoryHeaderBanner from "./directory/DirectoryHeaderBanner";
 import ChapterNavigator from "./directory/ChapterNavigator";
 import LessonWorkspace from "./directory/LessonWorkspace";
-import ClassroomWorkspace from "./directory/ClassroomWorkspace";
+import CourseSwitcher from "./directory/CourseSwitcher";
 import "../styles/directory-modern.css";
 
 /**
@@ -14,17 +12,11 @@ import "../styles/directory-modern.css";
 export default function DirectoryPage({
   course,
   progress,
-  directoryMode = "textbook",
-  classroomDirectory = { status: "idle", items: [] },
-  selectedClassroomId,
-  onModeChange,
-  onSelectClassroom,
-  onRetryClassrooms,
-  onEnterClassroom,
   onContinue,
   onOpenKnowledgeMap,
   onStart,
   onLearnKnowledge,
+  onSelectCourse,
   localExperience = false,
   busy = false,
 }) {
@@ -45,25 +37,20 @@ export default function DirectoryPage({
   const [selectedSection, setSelectedSection] = useState(
     () => progressLocation?.section || course.chapters[0]?.sections[0] || null,
   );
-  const [openClassroom, setOpenClassroom] = useState(
-    selectedClassroomId || classroomDirectory.items[0]?.id || "",
-  );
-
-  const selectedClassroom =
-    classroomDirectory.items.find((item) => item.id === selectedClassroomId) ||
-    classroomDirectory.items.find((item) => item.id === openClassroom) ||
-    classroomDirectory.items[0] ||
-    null;
-
-  useEffect(() => {
-    if (selectedClassroomId) setOpenClassroom(selectedClassroomId);
-  }, [selectedClassroomId]);
 
   useEffect(() => {
     if (!progressLocation) return;
     setSelectedSection(progressLocation.section);
     setOpenChapter(progressLocation.chapter.id);
   }, [progressLocation]);
+
+  // 当课程切换时，重置选中的章节与课时
+  useEffect(() => {
+    if (course?.chapters?.[0]?.sections?.[0]) {
+      setSelectedSection(course.chapters[0].sections[0]);
+      setOpenChapter(course.chapters[0].id);
+    }
+  }, [course?.id]);
 
   const selectedChapter = useMemo(
     () =>
@@ -76,11 +63,6 @@ export default function DirectoryPage({
   const chooseSection = (chapter, section) => {
     setSelectedSection(section);
     setOpenChapter(chapter.id);
-  };
-
-  const chooseClassroom = (classroom) => {
-    setOpenClassroom(openClassroom === classroom.id ? "" : classroom.id);
-    onSelectClassroom(classroom.id);
   };
 
   // 统计掌握知识点数
@@ -107,50 +89,30 @@ export default function DirectoryPage({
     <AppShell
       title="智能自适应学习"
       shellClassName="directory-app-shell"
+      actions={
+        <CourseSwitcher
+          currentCourse={course}
+          onSelectCourse={onSelectCourse}
+        />
+      }
     >
       <div
         className="modern-directory-root"
         aria-busy={busy}
         inert={busy || undefined}
       >
-        {/* 顶部学生氛围激励横幅 */}
-        <DirectoryHeaderBanner
-          courseName={course.name}
-          masteredCount={masteredKpCount}
-          totalCount={totalKpCount}
-          onOpenKnowledgeMap={onOpenKnowledgeMap}
-        />
-
-        {/* 主双栏布局 */}
         <div className="modern-directory-layout">
-          {/* 左侧：章节树 & 课堂列表 */}
+          {/* 左侧：章节课时导航 */}
           <ChapterNavigator
             course={course}
-            openChapter={openChapter}
             selectedSection={selectedSection}
-            onToggleChapter={(chapterId) =>
-              setOpenChapter(openChapter === chapterId ? "" : chapterId)
-            }
             onChooseSection={chooseSection}
-            directoryMode={directoryMode}
-            onModeChange={onModeChange}
-            classroomDirectory={classroomDirectory}
-            openClassroom={openClassroom}
-            selectedClassroom={selectedClassroom}
-            onToggleClassroom={chooseClassroom}
           />
 
-          {/* 右侧：课时/课堂工作台 */}
-          {directoryMode === "classroom" ? (
-            <ClassroomWorkspace
-              classroom={selectedClassroom}
-              directoryState={classroomDirectory}
-              busy={busy}
-              onEnterClassroom={onEnterClassroom}
-              onRetry={onRetryClassrooms}
-            />
-          ) : selectedSection ? (
+          {/* 右侧：课时自适应工作台 */}
+          {selectedSection ? (
             <LessonWorkspace
+              courseName={course.name}
               selectedChapter={selectedChapter}
               selectedSection={selectedSection}
               progress={progress}
@@ -159,6 +121,9 @@ export default function DirectoryPage({
               onStart={onStart}
               onContinue={onContinue}
               onLearnKnowledge={onLearnKnowledge}
+              onOpenKnowledgeMap={onOpenKnowledgeMap}
+              masteredKpCount={masteredKpCount}
+              totalKpCount={totalKpCount}
             />
           ) : (
             <div className="p-12 text-center text-slate-400">
@@ -170,3 +135,4 @@ export default function DirectoryPage({
     </AppShell>
   );
 }
+

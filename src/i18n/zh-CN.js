@@ -3833,13 +3833,13 @@ export default {
   "adaptiveLearning.feedback.masteryUpdated": "模型更新 {$delta}",
   "adaptiveLearning.feedback.masteryProgressAria":
     "掌握度从 {$before}% 变化到 {$after}%",
-  "adaptiveLearning.history.title": "做题记录",
+  "adaptiveLearning.history.title": "学习记录",
   "adaptiveLearning.history.clearFilters": "清除筛选",
-  "adaptiveLearning.history.syncing": "正在同步服务端做题记录…",
+  "adaptiveLearning.history.syncing": "正在同步服务端学习记录…",
   "adaptiveLearning.history.localFallback":
-    "服务端做题记录同步失败，当前显示本机记录。",
+    "服务端学习记录同步失败，当前显示本机记录。",
   "adaptiveLearning.history.retrySync": "重新同步",
-  "adaptiveLearning.history.filtersAria": "做题记录筛选",
+  "adaptiveLearning.history.filtersAria": "学习记录筛选",
   "adaptiveLearning.history.lesson": "课时",
   "adaptiveLearning.history.allLessons": "全部课时",
   "adaptiveLearning.history.knowledgePoint": "知识点",
@@ -3868,7 +3868,7 @@ export default {
   "adaptiveLearning.history.visibleCount": "已显示 {$visible} / {$total} 条",
   "adaptiveLearning.history.loadMore": "加载更多",
   "adaptiveLearning.history.noFilteredRecords": "没有符合条件的作答记录",
-  "adaptiveLearning.history.noRecords": "还没有做题记录",
+  "adaptiveLearning.history.noRecords": "还没有学习记录",
   "adaptiveLearning.history.clearFiltersHint": "可以清除筛选，看看全部作答。",
   "adaptiveLearning.history.noRecordsHint":
     "完成一次课前小测或练习后，记录会显示在这里。",
