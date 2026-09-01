@@ -1,6 +1,6 @@
 {
-  "name": "自适应智能学习平台",
-  "description": "基于 React + DVA + 数学认知诊断模型的初中数学自适应学习与课前小测系统",
+  "name": "云谷课堂 2.0 - 自适应学习系统",
+  "description": "基于云谷课堂2.0设计语言的自适应数学学习与智能评测系统，包含学生主页、课前小测、个性化练习、学习进度与做题记录。",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
