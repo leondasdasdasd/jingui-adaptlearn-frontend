@@ -1,0 +1,90 @@
+@media (max-width: 820px) {
+  .student-attempt-toolbar label {
+    flex: 1 1 150px;
+  }
+}
+
+@media (max-width: 640px) {
+  .student-attempt-history-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .student-attempt-toolbar {
+    align-items: stretch;
+  }
+
+  .student-attempt-toolbar label {
+    min-width: calc(50% - 6px);
+    flex: 1 1 calc(50% - 6px);
+  }
+
+  .student-attempt-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .student-attempt-stats > div:nth-child(3) {
+    border-left: 0;
+    border-top: 1px solid var(--student-progress-border);
+  }
+
+  .student-attempt-stats > div:nth-child(4) {
+    border-top: 1px solid var(--student-progress-border);
+  }
+
+  .student-attempt-row {
+    grid-template-columns: 1fr auto;
+    gap: 8px 12px;
+  }
+
+  .student-attempt-state {
+    grid-column: 1;
+    grid-row: 1;
+    padding: 0;
+  }
+
+  .student-attempt-detail-button {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .student-attempt-main {
+    grid-column: 1 / -1;
+  }
+
+  .student-attempt-labels time {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .student-attempt-drawer > aside {
+    width: 100%;
+    height: 92vh;
+    top: auto;
+    bottom: 0;
+    border: 0;
+    border-radius: 11px 11px 0 0;
+  }
+
+  .student-attempt-drawer > aside > header {
+    padding: 0 16px 0 20px;
+  }
+
+  .student-attempt-drawer-body {
+    padding: 20px 20px 24px;
+  }
+
+  .student-attempt-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-attempt-detail-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .student-attempt-detail-facts > div:nth-child(even) {
+    padding-left: 0;
+    border-left: 0;
+  }
+}

@@ -1,0 +1,210 @@
+/* stylelint-disable no-duplicate-selectors -- 相同组件在不同断点内分阶段覆盖。 */
+
+@media (max-width: 820px) {
+  .pre-result-summary {
+    min-height: 0;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .pre-result-summary-score {
+    min-width: 0;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    align-items: center;
+    gap: 8px 12px;
+    text-align: left;
+  }
+
+  .pre-result-summary-score strong {
+    margin: 0;
+  }
+
+  .pre-result-summary-score .pre-result-focus-count {
+    margin: 0 0 0 auto;
+    text-align: right;
+  }
+
+  .pre-mastery-card {
+    grid-template-columns: minmax(0, 1fr) minmax(190px, 0.9fr);
+    gap: 16px;
+  }
+
+  .pre-mastery-questions {
+    min-height: 0;
+    padding: 16px 0 0;
+    grid-column: 1 / -1;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    border-top: 1px solid var(--color-border-subtle);
+    border-left: 0;
+  }
+
+  .pre-mastery-questions .pre-question-grid.compact {
+    width: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .pre-result-wrap {
+    padding-bottom: 92px;
+  }
+
+  .pre-result-summary {
+    min-height: 0;
+    padding: 16px;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .pre-result-summary-icon {
+    width: 48px;
+    height: 48px;
+    align-self: start;
+    border-radius: var(--radius-sm);
+  }
+
+  .pre-result-summary-copy h1 {
+    font-size: var(--font-size-title-sm);
+  }
+
+  .pre-result-summary-copy p {
+    font-size: var(--font-size-body-sm);
+  }
+
+  .pre-result-summary-score {
+    min-width: 0;
+    padding-top: 14px;
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--color-primary-200);
+    text-align: left;
+  }
+
+  .pre-result-summary-score strong {
+    margin: 0;
+    font-size: var(--font-size-title-xl);
+  }
+
+  .pre-answer-detail {
+    margin-top: 12px;
+    padding: 12px;
+  }
+
+  .pre-question-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .pre-question-number {
+    min-height: 70px;
+    padding: 8px 4px;
+  }
+
+  .pre-question-number-value {
+    font-size: var(--font-size-title-sm);
+  }
+
+  .pre-answer-detail {
+    padding-top: 10px;
+  }
+
+  .pre-answer-detail-switcher {
+    padding: 12px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .pre-question-grid.compact {
+    justify-content: flex-start;
+  }
+
+  .pre-answer-detail-card > header {
+    padding: 14px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pre-answer-detail-stem,
+  .pre-answer-detail-answers,
+  .pre-answer-detail-feedback {
+    margin: 12px;
+  }
+
+  .pre-answer-detail-stem > div {
+    font-size: var(--font-size-body);
+  }
+
+  .pre-answer-detail-answers,
+  .pre-mastery-list {
+    grid-template-columns: 1fr;
+  }
+
+  .pre-mastery-card {
+    padding: 12px;
+    display: block;
+  }
+
+  .pre-mastery-card > header.pre-mastery-identity {
+    display: flex;
+  }
+
+  .pre-mastery-metric {
+    margin-top: 16px;
+  }
+
+  .pre-mastery-confidence {
+    gap: 4px 8px;
+  }
+
+  .pre-mastery-questions {
+    min-height: 0;
+    margin-top: 16px;
+    padding: 16px 0 0;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    border-top: 1px solid var(--color-border-subtle);
+    border-left: 0;
+  }
+
+  .pre-result-fixed-action {
+    min-height: 68px;
+    padding: 8px 12px max(8px, env(safe-area-inset-bottom));
+  }
+
+  .pre-result-fixed-action > div {
+    min-height: 52px;
+    gap: 12px;
+  }
+
+  .pre-result-fixed-copy span {
+    display: none;
+  }
+
+  .pre-result-fixed-action .primary-button {
+    min-width: 132px;
+  }
+}
+
+@media (max-width: 380px) {
+  .pre-result-summary-icon {
+    display: none;
+  }
+
+  .pre-result-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .pre-question-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pre-result-fixed-copy strong {
+    font-size: var(--font-size-body-sm);
+  }
+}

@@ -1,0 +1,53 @@
+.student-report-row strong,
+.student-report-row span,
+.student-report-row b {
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.student-report-row b {
+  color: var(--classroom-primary);
+}
+
+.student-report-summary {
+  color: var(--text-secondary);
+}
+
+.report-attention {
+  color: var(--color-feedback-warning-fg);
+}
+
+.report-attention.danger {
+  color: var(--error);
+}
+
+.report-normal {
+  color: var(--success);
+}
+
+.report-ratio-list {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.report-ratio-list > div {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-radius: var(--radius-control);
+  background: var(--page);
+}
+
+.report-ratio-list span {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.report-ratio-list strong {
+  font-size: 14px;
+}

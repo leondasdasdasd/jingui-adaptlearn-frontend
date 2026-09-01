@@ -1,0 +1,217 @@
+.teacher-dropdown-logout-btn:focus-visible,
+.teacher-dropdown-logout-btn:hover:not(:disabled) {
+  outline: 0;
+  background: #fff1f2;
+}
+
+/* Sidebar Styling */
+
+.teacher-sidebar {
+  min-height: calc(100vh - 64px);
+  padding: 20px 14px;
+  display: flex;
+  grid-column: 1;
+  grid-row: 2;
+  flex-direction: column;
+  position: sticky;
+  top: 64px;
+  border-right: 1px solid var(--border);
+  background: #ffffff;
+  transition:
+    padding 200ms ease,
+    width 200ms ease;
+  z-index: 30;
+}
+
+.teacher-sidebar-toggle {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  z-index: 2;
+  top: 22px;
+  right: -14px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  transition: all 180ms ease;
+}
+
+.teacher-sidebar-toggle:hover {
+  color: var(--primary);
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+  transform: scale(1.08);
+}
+
+.teacher-nav-group-label {
+  padding: 0 10px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--weak);
+}
+
+.teacher-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.teacher-nav-link,
+.teacher-nav-disabled {
+  height: 44px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 160ms ease;
+  position: relative;
+}
+
+.teacher-nav-icon-box {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  border-radius: 8px;
+  color: var(--helper);
+  transition: all 160ms ease;
+}
+
+.teacher-nav-link:hover {
+  color: var(--text);
+  background: #f8fafc;
+}
+
+.teacher-nav-link:hover .teacher-nav-icon-box {
+  color: var(--primary);
+  background: var(--brand-soft);
+}
+
+.teacher-nav-link.active {
+  color: var(--primary);
+  background: var(--brand-soft);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(79, 70, 229, 0.12);
+}
+
+.teacher-nav-link.active .teacher-nav-icon-box {
+  color: #ffffff;
+  background: var(--primary-gradient);
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
+}
+
+.teacher-nav-label {
+  white-space: nowrap;
+  flex: 1;
+}
+
+.teacher-nav-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.teacher-nav-badge.ai {
+  color: #4f46e5;
+  background: #e0e7ff;
+}
+
+.teacher-nav-badge.live {
+  color: #dc2626;
+  background: #fee2e2;
+  animation: live-pulse 1.8s ease-in-out infinite;
+}
+
+.teacher-nav-badge.feature {
+  color: #0284c7;
+  background: #e0f2fe;
+}
+
+@keyframes live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+}
+
+.teacher-sidebar-card {
+  margin-top: auto;
+  padding: 14px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #f8fafc 0%, #eef2ff 100%);
+  border: 1px solid rgba(79, 70, 229, 0.12);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.04);
+}
+
+.teacher-sidebar-card-icon {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--primary);
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.1);
+}
+
+.teacher-sidebar-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.teacher-sidebar-card-body strong {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.teacher-sidebar-card-body p {
+  margin: 0;
+  font-size: 11px;
+  color: var(--helper);
+  line-height: 1.4;
+}
+
+.teacher-app.sidebar-collapsed .teacher-sidebar {
+  padding: 20px 8px;
+}
+
+.teacher-app.sidebar-collapsed .teacher-nav-link {
+  justify-content: center;
+  padding: 0;
+  height: 44px;
+}
+
+.teacher-app.sidebar-collapsed .teacher-nav-label,
+.teacher-app.sidebar-collapsed .teacher-nav-badge,
+.teacher-app.sidebar-collapsed .teacher-nav-group-label,
+.teacher-app.sidebar-collapsed .teacher-sidebar-card {
+  display: none;
+}

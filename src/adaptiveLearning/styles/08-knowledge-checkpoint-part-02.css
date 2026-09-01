@@ -1,0 +1,201 @@
+.knowledge-checkpoint-question-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.knowledge-checkpoint-question-legend i {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 3px;
+  background: var(--border);
+}
+
+.knowledge-checkpoint-question-legend i.correct {
+  background: var(--color-feedback-success-fg);
+}
+
+.knowledge-checkpoint-question-legend i.partial {
+  background: var(--color-feedback-warning-fg);
+}
+
+.knowledge-checkpoint-question-legend i.incorrect {
+  background: var(--color-feedback-danger-fg);
+}
+
+.knowledge-checkpoint-question-legend i.pending {
+  background: var(--helper);
+}
+
+.knowledge-checkpoint-attempt-table-wrap {
+  margin-top: 14px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: #fff;
+}
+
+.knowledge-checkpoint-attempt-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.knowledge-checkpoint-attempt-table th {
+  padding: 10px 12px;
+  color: var(--helper);
+  background: var(--page);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.knowledge-checkpoint-attempt-table td {
+  padding: 11px 12px;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.knowledge-checkpoint-attempt-table td.up {
+  color: var(--color-feedback-success-fg);
+  font-weight: 600;
+}
+
+.knowledge-checkpoint-attempt-table td.down {
+  color: var(--color-feedback-danger-fg);
+  font-weight: 600;
+}
+
+.knowledge-checkpoint-attempt-table button {
+  padding: 0;
+  border: 0;
+  color: var(--primary);
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.knowledge-checkpoint-attempt-table button:hover {
+  text-decoration: underline;
+}
+
+.knowledge-checkpoint-action {
+  margin: 0;
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 20;
+  width: 100%;
+  padding: 12px var(--space-page-x) env(safe-area-inset-bottom);
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(255, 255, 255, 0.96);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -8px 20px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.knowledge-checkpoint-action .primary-button {
+  width: min(220px, 100%);
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.knowledge-question-detail {
+  padding-bottom: 20px;
+}
+
+.knowledge-question-detail-header {
+  padding: 14px 0 12px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.knowledge-question-detail-header > div:first-child > span {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.knowledge-question-detail-header h1 {
+  margin: 5px 0 0;
+  color: var(--color-brand-ink);
+  font-size: 22px;
+}
+
+.knowledge-question-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.knowledge-question-detail-meta > strong {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.knowledge-question-detail-meta > strong.correct {
+  color: var(--color-feedback-success-fg);
+}
+
+.knowledge-question-detail-meta > strong.partial {
+  color: var(--color-feedback-warning-fg);
+}
+
+.knowledge-question-detail-meta > strong.incorrect {
+  color: var(--color-feedback-danger-fg);
+}
+
+.knowledge-question-detail .knowledge-checkpoint-question-index {
+  margin-top: 0;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.knowledge-question-detail-card {
+  margin-top: 12px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: #fff;
+}
+
+.detail-section-label {
+  display: block;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.knowledge-question-detail-card h2 {
+  margin: 8px 0 0;
+  color: var(--color-brand-ink);
+  font-size: 19px;
+  line-height: 1.65;
+  font-weight: 500;
+}
+
+.knowledge-question-evidence {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.knowledge-question-evidence > div {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--page);
+}

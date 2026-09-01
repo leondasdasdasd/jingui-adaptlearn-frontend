@@ -1,0 +1,112 @@
+.knowledge-row.progress-row {
+  grid-template-columns: 42px minmax(0, 1fr) 112px;
+  cursor: default;
+}
+
+.knowledge-row.progress-row:hover {
+  border-color: var(--border);
+}
+
+.knowledge-row.progress-row.current {
+  border-color: var(--color-primary-200);
+  background: var(--brand-soft);
+}
+
+.knowledge-row.progress-row.complete {
+  border-color: var(--color-feedback-success-border);
+  background: var(--success-bg);
+}
+
+.kp-number {
+  color: var(--weak);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kp-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.kp-content strong {
+  color: var(--text);
+  font-size: 15px;
+}
+
+.kp-content small {
+  color: var(--helper);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.check-box {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 5px;
+  color: #fff;
+}
+
+.selected .check-box {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.kp-inline-progress {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.kp-inline-progress strong {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.kp-inline-progress small {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.kp-inline-progress.current strong,
+.kp-inline-progress.current small {
+  color: var(--primary);
+}
+
+.kp-inline-progress.complete strong,
+.kp-inline-progress.complete small {
+  color: var(--success);
+}
+
+.start-bar {
+  margin: var(--space-panel) calc(var(--space-panel) * -1) 0;
+  min-height: 72px;
+  padding: 16px var(--space-panel);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--border);
+  background: var(--color-surface-section);
+}
+
+.start-bar.single-action {
+  justify-content: flex-end;
+}
+
+.start-bar.single-action .primary-button {
+  width: auto;
+  min-width: 176px;
+  flex: 0 0 auto;
+}
+
+.start-bar > span {
+  color: var(--helper);
+  font-size: 14px;
+}

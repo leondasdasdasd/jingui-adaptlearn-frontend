@@ -1,0 +1,840 @@
+.curriculum-batch-page {
+  --batch-primary: var(--classroom-primary);
+  --batch-primary-hover: var(--classroom-primary-hover);
+  --batch-text: var(--text);
+  --batch-secondary: var(--text-secondary);
+  --batch-helper: var(--helper);
+  --batch-weak: var(--helper);
+  --batch-border: var(--border);
+  --batch-page: var(--page);
+  --batch-brand-bg: var(--classroom-primary-soft);
+  --batch-success: var(--classroom-feedback-success-fg);
+  --batch-success-border: var(--classroom-feedback-success-border);
+  --batch-success-bg: var(--classroom-feedback-success-bg);
+  --batch-warning: var(--classroom-feedback-warning-fg);
+  --batch-warning-border: var(--classroom-feedback-warning-border);
+  --batch-warning-bg: var(--classroom-feedback-warning-bg);
+  --batch-error: var(--classroom-feedback-danger-fg);
+  --batch-error-border: var(--classroom-feedback-danger-border);
+  --batch-error-bg: var(--classroom-feedback-danger-bg);
+  --batch-info: var(--classroom-feedback-info-fg);
+  --batch-info-border: var(--classroom-feedback-info-border);
+  --batch-info-bg: var(--classroom-feedback-info-bg);
+
+  color: var(--batch-text);
+}
+
+/* Textbook Filter Panel (Collapsible) */
+.curriculum-filter-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--batch-border);
+  border-radius: var(--classroom-radius-card);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 14px;
+  animation: filter-slide-down 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes filter-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.curriculum-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--batch-border);
+}
+
+.curriculum-filter-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--batch-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.curriculum-filter-close-btn {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  border: 1px solid var(--batch-border);
+  background: var(--page);
+  color: var(--batch-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+
+.curriculum-filter-close-btn:hover {
+  background: var(--batch-brand-bg);
+  border-color: var(--batch-primary);
+  color: var(--batch-primary);
+}
+
+.curriculum-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.curriculum-filter-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 76px;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--batch-secondary);
+}
+
+.curriculum-filter-options {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.subject-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--batch-border);
+  background: var(--page);
+  color: var(--batch-text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.subject-filter-chip:hover:not(:disabled) {
+  border-color: var(--batch-primary);
+  color: var(--batch-primary);
+  background: var(--batch-brand-bg);
+}
+
+.subject-filter-chip.active {
+  border-color: var(--batch-primary);
+  background: var(--batch-primary);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+.subject-filter-chip.disabled {
+  opacity: 0.65;
+  background: #f8fafc;
+  border-style: dashed;
+  cursor: not-allowed;
+  color: var(--batch-helper);
+}
+
+.grade-filter-chip,
+.publisher-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--batch-border);
+  background: var(--surface);
+  color: var(--batch-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.grade-filter-chip:hover,
+.publisher-filter-chip:hover {
+  border-color: var(--batch-primary);
+  color: var(--batch-primary);
+  background: var(--batch-brand-bg);
+}
+
+.grade-filter-chip.active,
+.publisher-filter-chip.active {
+  border-color: var(--batch-primary);
+  background: var(--batch-brand-bg);
+  color: var(--batch-primary);
+  font-weight: 600;
+}
+
+.filter-divider {
+  height: 1px;
+  background: var(--batch-border);
+  width: 100%;
+  margin: 2px 0;
+}
+
+/* Switch Textbook Button beside title */
+.batch-course-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.batch-switch-textbook-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 14px;
+  border: 1px solid var(--batch-border);
+  background: var(--batch-page);
+  color: var(--batch-primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.batch-switch-textbook-btn:hover,
+.batch-switch-textbook-btn.active {
+  background: var(--batch-brand-bg);
+  border-color: var(--batch-primary);
+  color: var(--batch-primary);
+}
+
+.batch-switch-textbook-btn .filter-arrow {
+  transition: transform 0.2s ease;
+}
+
+.batch-switch-textbook-btn .filter-arrow.open {
+  transform: rotate(180deg);
+}
+
+.batch-toolbar {
+  min-height: 64px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border: 1px solid var(--batch-border);
+  border-radius: var(--classroom-radius-card);
+  background: var(--surface);
+}
+
+.batch-course-title,
+.batch-toolbar-actions,
+.batch-course-title > div,
+.batch-chapter > header > div,
+.batch-row-actions,
+.batch-generation-status,
+.batch-generation-slot,
+.batch-content-status {
+  display: flex;
+  align-items: center;
+}
+
+.batch-course-title {
+  min-width: 0;
+  gap: 10px;
+}
+
+.batch-course-title > span {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  color: var(--batch-primary);
+  background: var(--batch-brand-bg);
+}
+
+.batch-course-title > div {
+  min-width: 0;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.batch-course-title strong {
+  overflow: hidden;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.batch-course-title small {
+  color: var(--batch-helper);
+  font-size: 12px;
+}
+
+.batch-toolbar-actions {
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.batch-generate-selected {
+  min-width: 150px;
+}
+
+.batch-toolbar .teacher-primary {
+  min-height: 36px;
+  padding: 0 16px;
+  border-color: var(--batch-primary);
+  border-radius: var(--classroom-radius-control);
+  color: var(--surface);
+  background: var(--batch-primary);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.batch-toolbar .teacher-primary:hover {
+  background: var(--batch-primary-hover);
+}
+
+.batch-toolbar .teacher-primary:disabled {
+  border-color: var(--batch-border);
+  color: var(--batch-helper);
+  background: var(--disabled);
+  opacity: 1;
+}
+
+.batch-notice {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--batch-border);
+  border-radius: var(--classroom-radius-control);
+  color: var(--batch-secondary);
+  background: var(--surface);
+  font-size: 13px;
+}
+
+.batch-notice.info {
+  border-color: var(--batch-info-border);
+  color: var(--batch-info);
+  background: var(--batch-info-bg);
+}
+
+.batch-notice.success {
+  border-color: var(--batch-success-border);
+  color: var(--batch-success);
+  background: var(--batch-success-bg);
+}
+
+.batch-notice.error {
+  border-color: var(--batch-error-border);
+  color: var(--batch-error);
+  background: var(--batch-error-bg);
+}
+
+.batch-chapter-list {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.batch-chapter {
+  overflow: hidden;
+  border: 1px solid var(--batch-border);
+  border-radius: var(--classroom-radius-card);
+  background: var(--surface);
+}
+
+.batch-chapter > header {
+  min-height: 52px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--batch-border);
+  background: var(--batch-page);
+}
+
+.batch-chapter > header > div {
+  min-width: 0;
+  gap: 10px;
+}
+
+.batch-chapter > header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.batch-chapter > header span,
+.batch-chapter > header small {
+  color: var(--batch-helper);
+  font-size: 12px;
+}
+
+.batch-chapter-select {
+  height: 32px;
+  padding: 0 10px;
+  flex: 0 0 auto;
+  border: 1px solid var(--batch-border);
+  border-radius: var(--classroom-radius-control);
+  color: var(--batch-secondary);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.batch-chapter-select:hover,
+.batch-chapter-select[aria-pressed="true"] {
+  border-color: var(--classroom-primary);
+  color: var(--batch-primary);
+  background: var(--batch-brand-bg);
+}
+
+.batch-row {
+  min-height: 66px;
+  padding: 8px 12px;
+  display: grid;
+  grid-template-columns:
+    28px minmax(180px, 1fr)
+    max-content 42px max-content minmax(190px, auto);
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--batch-border);
+  background: var(--surface);
+  transition: background-color 0.2s;
+}
+
+.batch-row:last-child {
+  border-bottom: 0;
+}
+
+.batch-row:hover {
+  background: var(--batch-brand-bg);
+}
+
+.batch-row.selected {
+  background: var(--batch-brand-bg);
+}
+
+.batch-checkbox {
+  width: 28px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.batch-checkbox input {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  opacity: 0;
+}
+
+.batch-checkbox span {
+  width: 16px;
+  height: 16px;
+  display: block;
+  position: relative;
+  border: 1px solid var(--batch-border);
+  border-radius: 4px;
+  background: var(--surface);
+}
+
+.batch-checkbox input:focus-visible + span {
+  outline: 2px solid var(--classroom-primary);
+  outline-offset: 2px;
+}
+
+.batch-checkbox input:checked + span {
+  border-color: var(--batch-primary);
+  background: var(--batch-primary);
+}
+
+.batch-checkbox input:checked + span::after {
+  width: 7px;
+  height: 4px;
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  transform: rotate(-45deg);
+  border-bottom: 2px solid #fff;
+  border-left: 2px solid #fff;
+}
+
+.batch-lesson-link {
+  min-width: 0;
+  min-height: 48px;
+  padding: 4px 0;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  color: var(--batch-text);
+  background: transparent;
+  text-align: left;
+}
+
+.batch-lesson-code {
+  color: var(--batch-helper);
+  font-size: 12px;
+}
+
+.batch-lesson-name {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.batch-lesson-name strong {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.batch-lesson-name small {
+  overflow: hidden;
+  color: var(--batch-helper);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.batch-content-status,
+.batch-generation-status {
+  width: max-content;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  justify-self: start;
+  height: 24px;
+  padding: 0 8px;
+  gap: 4px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.batch-content-status svg,
+.batch-generation-status svg {
+  flex: 0 0 auto;
+}
+
+.batch-generation-slot {
+  min-width: 0;
+}
+
+.batch-content-status.success,
+.batch-generation-status.success {
+  border-color: var(--batch-success-border);
+  color: var(--batch-success);
+  background: var(--batch-success-bg);
+}
+
+.batch-content-status.warning,
+.batch-generation-status.warning {
+  border-color: var(--batch-warning-border);
+  color: var(--batch-warning);
+  background: var(--batch-warning-bg);
+}
+
+.batch-content-status.muted,
+.batch-generation-status.muted {
+  border-color: var(--batch-border);
+  color: var(--batch-helper);
+  background: var(--disabled);
+}
+
+.batch-generation-status.info {
+  border-color: var(--batch-info-border);
+  color: var(--batch-info);
+  background: var(--batch-info-bg);
+}
+
+.batch-generation-status.error {
+  border-color: var(--batch-error-border);
+  color: var(--batch-error);
+  background: var(--batch-error-bg);
+}
+
+.batch-version {
+  color: var(--batch-helper);
+  font-size: 12px;
+}
+
+.batch-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: max-content;
+  white-space: nowrap;
+}
+
+.batch-row-actions button {
+  height: 32px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: var(--classroom-radius-control);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.batch-generate-one {
+  border: 1px solid var(--classroom-primary);
+  color: var(--batch-primary);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.batch-generate-one:hover {
+  background: var(--batch-brand-bg);
+}
+
+.batch-generate-one:disabled {
+  color: var(--batch-weak);
+  border-color: var(--batch-border);
+  background: var(--disabled);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.batch-start-class-btn {
+  border: 1px solid var(--batch-primary);
+  background: var(--batch-primary);
+  color: #ffffff !important;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+  transition: all 0.15s ease;
+}
+
+.batch-start-class-btn:hover {
+  background: var(--batch-primary-hover);
+  border-color: var(--batch-primary-hover);
+}
+
+.batch-review-link {
+  border: 1px solid var(--batch-border);
+  color: var(--batch-secondary);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.batch-review-link:hover {
+  border-color: var(--batch-primary);
+  color: var(--batch-primary);
+  background: var(--batch-brand-bg);
+  text-decoration: none;
+}
+
+.batch-review-link span {
+  white-space: nowrap;
+  word-break: keep-all;
+  flex-shrink: 0;
+}
+
+.batch-chapter-select:focus-visible,
+.batch-lesson-link:focus-visible,
+.batch-row-actions button:focus-visible,
+.batch-toolbar button:focus-visible {
+  outline: 0;
+  box-shadow: var(--classroom-focus-ring);
+}
+
+.batch-spin {
+  animation: batch-spin 900ms linear infinite;
+}
+
+@keyframes batch-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1180px) {
+  .batch-row {
+    grid-template-columns:
+      28px minmax(160px, 1fr)
+      max-content max-content minmax(180px, auto);
+  }
+
+  .batch-version {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .batch-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .batch-toolbar-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .batch-toolbar-actions .batch-generate-selected {
+    margin-left: auto;
+  }
+
+  .batch-row {
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    gap: 5px 10px;
+    padding: 10px 12px;
+  }
+
+  .batch-lesson-link {
+    grid-column: 2;
+  }
+
+  .batch-content-status {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .batch-generation-slot {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .batch-row-actions {
+    grid-column: 3;
+    grid-row: 1 / 4;
+    align-self: stretch;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .batch-toolbar {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .batch-course-title strong {
+    max-width: 210px;
+  }
+
+  .batch-toolbar-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .batch-toolbar-actions .teacher-neutral {
+    width: 100%;
+  }
+
+  .batch-toolbar-actions .batch-generate-selected {
+    width: 100%;
+    min-width: 0;
+    grid-column: 1 / -1;
+    margin-left: 0;
+  }
+
+  .batch-chapter > header {
+    min-height: 58px;
+    padding: 8px 12px;
+  }
+
+  .batch-chapter > header > div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .batch-chapter > header > div > span {
+    display: none;
+  }
+
+  .batch-chapter > header h2 {
+    font-size: 14px;
+  }
+
+  .batch-chapter-select {
+    padding: 0 8px;
+  }
+
+  .batch-row {
+    grid-template-columns: 22px minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .batch-checkbox {
+    width: 22px;
+    grid-row: 1;
+  }
+
+  .batch-lesson-link {
+    grid-column: 2;
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+
+  .batch-lesson-name small {
+    display: none;
+  }
+
+  .batch-content-status {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .batch-generation-slot {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .batch-row-actions {
+    grid-column: 2;
+    grid-row: 4;
+    margin-top: 5px;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .batch-row-actions button {
+    flex: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .batch-spin {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}

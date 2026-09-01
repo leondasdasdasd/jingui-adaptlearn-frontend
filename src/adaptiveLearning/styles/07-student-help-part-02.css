@@ -1,0 +1,22 @@
+.teacher-help-modal header > button {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 8px;
+  color: var(--helper);
+  background: transparent;
+}
+
+.teacher-help-modal header > button:hover {
+  background: var(--page);
+}
+
+.teacher-help-reasons {
+  padding: 16px 20px 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}

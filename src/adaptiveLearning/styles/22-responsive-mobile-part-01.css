@@ -1,0 +1,104 @@
+@media (max-width: 560px) {
+  .question-review-actions .teacher-secondary {
+    flex: 1;
+  }
+
+  .teacher-page-header {
+    align-items: flex-start;
+  }
+
+  .teacher-page-heading {
+    gap: 8px;
+  }
+
+  .teacher-header-back {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .teacher-header-back span {
+    display: none;
+  }
+
+  .teacher-header-actions {
+    gap: 6px;
+  }
+
+  .teacher-header-publish-status {
+    display: none;
+  }
+
+  .teacher-version-switch > span,
+  .teacher-version-switch > svg {
+    display: none;
+  }
+
+  .teacher-version-switch {
+    padding-left: 6px;
+  }
+
+  .teacher-version-switch select {
+    min-width: 104px;
+  }
+
+  .teacher-agent-collapsed {
+    top: auto;
+    bottom: 24px;
+  }
+
+  .teacher-question-agent {
+    width: 100%;
+  }
+
+  .teacher-agent-head {
+    min-height: 60px;
+    padding: 10px 14px;
+  }
+
+  .teacher-question-agent .ai-assistant-content {
+    padding: 14px 12px;
+  }
+
+  .teacher-question-agent .ai-assistant-composer-area {
+    padding: 10px 12px 12px;
+  }
+
+  .learning-resource-state {
+    min-height: calc(100dvh - 112px);
+    padding: 44px 8px;
+  }
+
+  .learning-resource-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .learning-resource-actions .primary-button,
+  .learning-resource-actions .secondary-button {
+    width: 100%;
+  }
+
+  .app-header.quiz-header {
+    height: auto;
+    min-height: 72px;
+    padding: 9px 12px;
+    grid-template-columns: 44px minmax(0, 1fr);
+    row-gap: 6px;
+  }
+
+  .quiz-header .header-title strong {
+    font-size: 14px;
+  }
+
+  .quiz-header .header-side-right {
+    grid-column: 2;
+    justify-content: flex-start;
+  }
+
+  .quiz-header-meta {
+    width: 100%;
+    gap: 12px;
+    font-size: 12px;
+  }
+}

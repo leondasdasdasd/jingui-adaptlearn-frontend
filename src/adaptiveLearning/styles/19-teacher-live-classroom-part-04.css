@@ -1,0 +1,90 @@
+.drawer-tabs button {
+  height: 34px;
+  border: 0;
+  border-radius: 5px;
+  color: var(--text-secondary);
+  background: transparent;
+  font-size: 12px;
+}
+
+.drawer-tabs button.active {
+  color: var(--primary);
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(1, 17, 61, 0.08);
+}
+
+.drawer-tabs button span {
+  margin-left: 4px;
+  color: var(--helper);
+}
+
+.student-question-history {
+  margin-top: 10px;
+}
+
+.student-drawer article {
+  margin-bottom: 8px;
+  padding: 11px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.student-drawer article div {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.student-drawer article p {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.student-drawer article small {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.student-drawer article b {
+  font-size: 12px;
+}
+
+.student-drawer article em {
+  grid-column: 1 / -1;
+  color: var(--helper);
+  font-size: 12px;
+  font-style: normal;
+}
+
+.question-unanswered {
+  grid-column: 1 / -1;
+  width: fit-content;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: var(--color-feedback-warning-fg);
+  background: var(--color-feedback-warning-bg);
+  font-size: 12px;
+}
+
+.student-dialogue-history {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.student-dialogue {
+  max-width: 86%;
+  align-self: flex-start;
+}
+
+.student-dialogue.user {
+  align-self: flex-end;
+}

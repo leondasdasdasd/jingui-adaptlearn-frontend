@@ -1,0 +1,55 @@
+.openmaic-review-preview header > div,
+.openmaic-review-preview header a,
+.openmaic-preview-actions button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.openmaic-review-preview header strong {
+  font-size: 13px;
+}
+
+.openmaic-review-preview header a {
+  color: var(--primary);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.openmaic-review-preview iframe {
+  width: 100%;
+  height: 604px;
+  display: block;
+  border: 0;
+  background: #fff;
+}
+
+.openmaic-confirm-status {
+  padding: 2px 7px;
+  border-radius: 999px;
+  color: #8a5a00;
+  background: #fff4d6;
+  font-size: 12px;
+}
+
+.openmaic-confirm-status.confirmed {
+  color: #087f5b;
+  background: #e6f7f1;
+}
+
+.openmaic-empty,
+.openmaic-generating {
+  min-height: 604px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: var(--helper);
+  text-align: center;
+}
+
+.openmaic-empty svg,
+.openmaic-generating svg {
+  color: var(--primary);
+}

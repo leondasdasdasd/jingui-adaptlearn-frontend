@@ -1,0 +1,252 @@
+/* ==========================================================================
+   课堂学习成果统计（全新重构：学生分析 & 知识点分析）
+   ========================================================================== */
+
+/* 顶部高颜值整合信息 Hero Card */
+.report-hero-card {
+  margin-bottom: 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  overflow: hidden;
+}
+
+.hero-main-info {
+  padding: 22px 28px;
+  background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hero-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-tags {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.hero-tag.textbook {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.hero-tag.class-badge {
+  background: #f3e8ff;
+  color: #6b21a8;
+  border: 1px solid #e9d5ff;
+}
+
+.hero-time-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #475569;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 5px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.time-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+.time-item.duration {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.hero-time-badge .divider {
+  color: #94a3b8;
+}
+
+.hero-title {
+  margin: 2px 0 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.hero-chapters-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.chapters-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.chapters-tags-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chapter-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #334155;
+  font-weight: 500;
+}
+
+/* 4个核心累计数据指标网格 */
+.hero-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: #ffffff;
+}
+
+.hero-metric-item {
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-right: 1px solid #f1f5f9;
+}
+
+.hero-metric-item:last-child {
+  border-right: none;
+}
+
+.hero-metric-item.highlight-green {
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+}
+
+.metric-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.metric-icon.blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.metric-icon.purple {
+  background: #faf5ff;
+  color: #9333ea;
+}
+
+.metric-icon.orange {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.metric-icon.green {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.metric-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.metric-val {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.metric-val strong {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.metric-val small {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.metric-val .pre-mastery {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.metric-val .arrow {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.metric-val .post-mastery {
+  font-size: 20px;
+  font-weight: 700;
+  color: #15803d;
+}
+
+.metric-val .badge-gain {
+  font-size: 12px;
+  font-weight: 700;
+  color: #166534;
+  background: #dcfce7;
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+
+@media (max-width: 1024px) {
+  .hero-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-metric-item {
+    border-bottom: 1px solid #f1f5f9;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}

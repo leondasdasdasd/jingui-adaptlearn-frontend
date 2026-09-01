@@ -1,0 +1,269 @@
+.teacher-agent-task-toggle > strong {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacher-agent-task-state-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--helper);
+  box-shadow: 0 0 0 3px var(--color-surface-disabled);
+}
+
+.teacher-agent-task-card[data-process-status="active"]
+  .teacher-agent-task-state-dot {
+  background: var(--classroom-primary);
+  box-shadow: 0 0 0 3px var(--classroom-primary-soft);
+  animation: teacher-agent-task-pulse 1.8s ease-in-out infinite;
+}
+
+.teacher-agent-task-card[data-process-status="completed"]
+  .teacher-agent-task-state-dot {
+  background: var(--color-feedback-success-ring);
+  box-shadow: 0 0 0 3px var(--classroom-feedback-success-bg);
+}
+
+.teacher-agent-task-card[data-process-status="attention"]
+  .teacher-agent-task-state-dot {
+  background: var(--classroom-feedback-danger-fg);
+  box-shadow: 0 0 0 3px var(--classroom-feedback-danger-bg);
+}
+
+.teacher-agent-task-status {
+  min-width: 0;
+  color: var(--classroom-primary);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.teacher-agent-task-card[data-process-status="completed"]
+  .teacher-agent-task-status {
+  color: var(--classroom-feedback-success-fg);
+}
+
+.teacher-agent-task-card[data-process-status="cancelled"]
+  .teacher-agent-task-status {
+  color: var(--helper);
+}
+
+.teacher-agent-task-card[data-process-status="attention"]
+  .teacher-agent-task-status {
+  color: var(--classroom-feedback-danger-fg);
+}
+
+.teacher-agent-task-chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--helper);
+  transition: transform 180ms ease;
+}
+
+.teacher-agent-task-toggle[aria-expanded="true"] .teacher-agent-task-chevron {
+  transform: rotate(180deg);
+}
+
+.teacher-agent-task-body {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.teacher-agent-task-message {
+  margin: 0 0 10px;
+  color: var(--helper);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.teacher-agent-task-progress {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--disabled);
+}
+
+.teacher-agent-task-progress > span {
+  height: 100%;
+  display: block;
+  border-radius: inherit;
+  background: var(--classroom-primary);
+  transition: width 300ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.teacher-agent-task-groups {
+  display: grid;
+  gap: 0;
+  margin-top: 10px;
+}
+
+.teacher-agent-task-group {
+  min-width: 0;
+  min-height: 50px;
+  padding: 8px 4px;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.teacher-agent-task-group:last-child {
+  border-bottom: 0;
+}
+
+.teacher-agent-task-group > div {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.teacher-agent-task-group strong,
+.teacher-agent-task-group small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacher-agent-task-group strong {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.teacher-agent-task-group small {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.teacher-agent-task-group-icon {
+  display: inline-grid;
+  place-items: center;
+  color: var(--helper);
+}
+
+.teacher-agent-task-group.ready .teacher-agent-task-group-icon {
+  color: var(--classroom-feedback-success-fg);
+}
+
+.teacher-agent-task-group.generating {
+  background: var(--classroom-primary-soft);
+}
+
+.teacher-agent-task-group.generating .teacher-agent-task-group-icon {
+  color: var(--classroom-primary);
+}
+
+.teacher-agent-task-group.failed .teacher-agent-task-group-icon {
+  color: var(--classroom-feedback-danger-fg);
+}
+
+.teacher-agent-task-group-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--helper);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.teacher-agent-task-issues {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--classroom-feedback-danger-border);
+  border-radius: var(--classroom-radius-control);
+  color: var(--classroom-feedback-danger-fg);
+  background: var(--classroom-feedback-danger-bg);
+}
+
+.teacher-agent-task-issues strong {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.teacher-agent-task-issues ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+@keyframes teacher-agent-task-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.teacher-agent-plan {
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+  border: 1px solid
+    color-mix(in srgb, var(--classroom-primary) 24%, var(--border));
+  border-radius: var(--classroom-radius-card);
+  background: var(--classroom-primary-soft);
+}
+
+.teacher-agent-plan > header > div {
+  display: grid;
+  gap: 3px;
+}
+
+.teacher-agent-plan > header strong {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.teacher-agent-plan > header small {
+  color: var(--helper);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.teacher-agent-plan-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--classroom-primary) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.teacher-agent-plan-run svg {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+}
+
+.teacher-agent-plan ol {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  list-style: none;
+}
+
+.teacher-agent-plan li {
+  min-width: 0;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--classroom-radius-control);
+  background: var(--surface);
+}
+
+.teacher-agent-plan li[data-status="running"],
+.teacher-agent-plan li[data-status="submitted"] {
+  border-color: var(--classroom-feedback-info-border);
+}

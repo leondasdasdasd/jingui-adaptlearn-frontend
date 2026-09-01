@@ -1,0 +1,58 @@
+.teacher-help-reasons button {
+  min-height: 44px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  background: #fff;
+  font-size: 14px;
+  text-align: left;
+}
+
+.teacher-help-reasons button:hover {
+  border-color: #bfdbfe;
+  background: var(--classroom-primary-soft);
+}
+
+.teacher-help-reasons button.selected {
+  border-color: var(--classroom-primary);
+  color: var(--classroom-primary);
+  background: var(--classroom-primary-soft);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.18);
+}
+
+.teacher-help-reasons button > span {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  border: 1px solid #94a3b8;
+  border-radius: 50%;
+}
+
+.teacher-help-reasons button.selected > span {
+  border: 4px solid var(--classroom-primary);
+}
+
+.teacher-help-reasons.invalid button {
+  border-color: var(--classroom-feedback-danger-border);
+}
+
+.teacher-help-reason-error {
+  margin: 0;
+  padding: 0 20px 4px;
+  color: var(--classroom-feedback-danger-fg);
+  font-size: 12px;
+}
+
+.teacher-help-modal > form > label {
+  padding: 8px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+}

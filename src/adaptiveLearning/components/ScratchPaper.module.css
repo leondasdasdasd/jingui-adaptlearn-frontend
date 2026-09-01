@@ -1,0 +1,168 @@
+.trigger {
+  position: fixed;
+  z-index: var(--layout-z-drawer, 50);
+  right: 24px;
+  bottom: 96px;
+  height: 40px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--color-feedback-success-border);
+  border-radius: var(--radius-control, 8px);
+  color: var(--color-feedback-success-fg);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-panel);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--motion-default) var(--motion-easing),
+    background-color var(--motion-default) var(--motion-easing),
+    border-color var(--motion-default) var(--motion-easing),
+    box-shadow var(--motion-default) var(--motion-easing);
+}
+
+.trigger:hover {
+  border-color: var(--color-feedback-success-ring);
+  background: var(--color-feedback-success-bg);
+}
+
+.trigger svg {
+  flex: 0 0 auto;
+}
+
+.triggerInline {
+  position: static;
+  z-index: auto;
+  right: auto;
+  bottom: auto;
+  height: 34px;
+  padding: 0 11px;
+  border-color: var(--color-border-default);
+  color: var(--color-text-secondary);
+  box-shadow: none;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.triggerInline:hover {
+  border-color: var(--color-primary-200);
+  color: var(--color-primary-700);
+  background: var(--color-surface-card-soft);
+}
+
+.dialog {
+  background: transparent;
+}
+
+.body,
+.boardBody,
+.canvasWrap {
+  background: transparent;
+}
+
+.boardBody,
+.canvasWrap {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.boardBody {
+  display: flex;
+  overflow: hidden;
+}
+
+.canvasWrap {
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actions :global(.icon-button) {
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  opacity: 1;
+}
+
+.opacityControl {
+  height: 32px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-control, 8px);
+  color: var(--color-text-muted);
+  background: var(--color-surface-card-default);
+}
+
+.opacityControl input {
+  width: 64px;
+  accent-color: var(--color-primary-600);
+  cursor: pointer;
+}
+
+.opacityControl output {
+  width: 34px;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--color-text-muted);
+  background: color-mix(
+    in srgb,
+    var(--color-surface-card-default) 88%,
+    transparent
+  );
+  font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  .trigger {
+    right: 16px;
+    bottom: 164px;
+  }
+
+  .triggerInline {
+    position: static;
+    right: auto;
+    bottom: auto;
+  }
+
+  .opacityControl input {
+    width: 52px;
+  }
+}
+
+@media (max-width: 420px) {
+  .opacityControl {
+    padding-inline: 6px;
+  }
+
+  .opacityControl output {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger {
+    transition: none;
+  }
+}

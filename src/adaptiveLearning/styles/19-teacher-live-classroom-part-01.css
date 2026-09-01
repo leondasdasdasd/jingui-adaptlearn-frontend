@@ -1,0 +1,182 @@
+.row-progress > span {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--color-primary-100);
+}
+
+.row-progress i {
+  height: 100%;
+  display: block;
+  background: var(--color-primary-600);
+}
+
+.row-progress b {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.alert-text,
+.ok-text {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.alert-text.danger {
+  color: var(--color-feedback-danger-fg);
+}
+
+.alert-text.warning {
+  color: var(--color-feedback-warning-fg);
+}
+
+.ok-text {
+  color: var(--color-feedback-success-fg);
+}
+
+.live-alerts > button {
+  width: 100%;
+  min-height: 76px;
+  padding: 11px 13px;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  background: #fff;
+  text-align: left;
+}
+
+.live-alerts > button:hover {
+  background: var(--color-feedback-warning-bg);
+}
+
+.live-alerts > button svg {
+  margin-top: 2px;
+  color: #d58b00;
+}
+
+.live-alerts button div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.live-alerts strong {
+  font-size: 12px;
+}
+
+.live-alerts p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.live-alerts small {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.live-attention-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.live-attention-panel > section {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.live-attention-panel section > header {
+  min-height: 52px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.live-attention-panel section > header > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.live-attention-panel h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.live-attention-panel header span {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.live-help-requests header svg {
+  color: var(--classroom-feedback-info-fg);
+}
+
+.live-ai-alerts header svg {
+  color: #d97706;
+}
+
+.live-attention-panel article,
+.derived-alert-card {
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+}
+
+.live-help-requests article {
+  box-shadow: inset 3px 0 var(--classroom-feedback-info-fg);
+}
+
+.live-help-requests article.acknowledged {
+  box-shadow: inset 3px 0 var(--classroom-feedback-success-fg);
+}
+
+.persistent-help-inbox {
+  margin: 0 0 18px;
+}
+
+.persistent-help-inbox .live-help-requests {
+  border-color: var(--classroom-feedback-info-border);
+  box-shadow: 0 8px 24px rgba(1, 17, 61, 0.06);
+}
+
+.attention-alert-card.warning {
+  box-shadow: inset 3px 0 #f59e0b;
+}
+
+.attention-alert-card.danger {
+  box-shadow: inset 3px 0 var(--classroom-feedback-danger-fg);
+  background: var(--classroom-feedback-danger-bg);
+}
+
+.attention-card-main,
+.derived-alert-card {
+  width: 100%;
+  min-height: 76px;
+  padding: 11px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  border: 0;
+  color: var(--text);
+  background: transparent;
+  text-align: left;
+}
+
+.attention-card-main:hover,
+.derived-alert-card:hover {
+  background: #fafbfd;
+}

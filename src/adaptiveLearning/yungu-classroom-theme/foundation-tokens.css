@@ -1,0 +1,353 @@
+/* stylelint-disable color-function-notation -- 主题兼容层保留现有颜色函数格式。 */
+
+/*
+ * 云谷课堂 2.0 visual compatibility layer.
+ *
+ * The current product predates the official token names, so this file keeps
+ * the canonical tokens as the source and maps the existing aliases to them.
+ * Feature CSS should consume the canonical variables below for new work.
+ */
+:root {
+  font-size: 100%;
+
+  --font-family-zh:
+    "Alibaba PuHuiTi 3.0", "Alibaba PuHuiTi", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+  --font-family-latin:
+    "Nunito Sans", -apple-system, blinkmacsystemfont, "Segoe UI", roboto,
+    "Helvetica Neue", arial, sans-serif;
+  --font-family-sans:
+    "Nunito Sans", "Alibaba PuHuiTi 3.0", "Alibaba PuHuiTi", -apple-system,
+    blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-family-question:
+    "Noto Serif SC Variable", "Source Han Serif SC", "Noto Serif CJK SC",
+    "Songti SC", "STSong", "SimSun", serif;
+  --font-size-caption: 0.75rem;
+  --font-size-body-sm: 0.8125rem;
+  --font-size-body: 0.875rem;
+  --font-size-body-lg: 1rem;
+  --font-size-title-sm: 1.125rem;
+  --font-size-title-md: 1.25rem;
+  --font-size-title-lg: 1.5rem;
+  --font-size-title-xl: 1.75rem;
+  --color-brand-ink: #01113d;
+  --color-brand-title: #27345a;
+  --color-brand-deep: #021a43;
+  --color-surface-app: #fcfdfe;
+  --color-surface-workspace: #f8f9fa;
+  --color-surface-section: #f7f8f9;
+  --color-surface-table-header: #f6f7f9;
+  --color-surface-card-default: #ffffff;
+  --color-surface-card-soft: #fafbfd;
+  --color-surface-disabled: #f2f3f5;
+  --color-surface-control-default: #edeef1;
+  --color-surface-control-hover: #d9dce2;
+  --color-surface-control-active: #bfc3ce;
+  --color-border-default: #e6e7ec;
+  --color-border-subtle: #f1f5f9;
+  --color-border-strong: #cbd5e1;
+  --color-text-emphasis: #01113d;
+  --color-text-primary: #27345a;
+  --color-text-default: #475569;
+  --color-text-secondary: #475569;
+  --color-text-muted: #5a6481;
+  --color-text-weak: #5a6481;
+  --color-text-placeholder: #5a6481;
+  --color-text-disabled: #cbd5e1;
+  --color-text-inverse: #ffffff;
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-feedback-success-bg: #e9fff7;
+  --color-feedback-success-border: #8feed0;
+  --color-feedback-success-ring: #16c894;
+  --color-feedback-success-fg: #047857;
+  --color-feedback-warning-bg: #fffbeb;
+  --color-feedback-warning-border: #fcd34d;
+  --color-feedback-warning-ring: #f59e0b;
+  --color-feedback-warning-fg: #d97706;
+  --color-feedback-danger-bg: #fff8f8;
+  --color-feedback-danger-border: #ffe4e6;
+  --color-feedback-danger-ring: #fda4af;
+  --color-feedback-danger-fg: #e11d48;
+  --color-feedback-danger-badge-bg: #ffe4e6;
+  --color-feedback-danger-badge-fg: #9f1239;
+  --color-feedback-info-bg: oklch(96.2% 0.018 272.314deg);
+  --color-feedback-info-border: oklch(93% 0.034 272.788deg / 0.5);
+  --color-feedback-info-fg: oklch(58.5% 0.233 277.117deg);
+  --color-feedback-creative-bg: oklch(97.7% 0.014 308.299deg);
+  --color-feedback-creative-border: oklch(94.6% 0.033 307.174deg / 0.5);
+  --color-feedback-creative-fg: oklch(62.7% 0.265 303.9deg);
+  --color-feedback-teal-bg: oklch(98.4% 0.019 200.873deg);
+  --color-feedback-teal-border: oklch(95.6% 0.045 203.388deg / 0.5);
+  --color-feedback-teal-fg: oklch(71.5% 0.143 215.221deg);
+  --color-feedback-card-bg: #ffffff;
+  --color-feedback-card-border: #e2e8f0;
+  --color-feedback-card-title: #64748b;
+  --color-action-success-hover: #18d19b;
+  --color-action-success-active: #12b887;
+  --color-overlay-scrim: rgb(0 0 0 / 0.4);
+  --color-table-row-hover: rgb(248 250 252 / 0.9);
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  --shadow-hairline: 0 1px 2px rgb(0 0 0 / 0.02);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-card-hover: 0 4px 12px rgb(1 17 61 / 0.06);
+  --shadow-panel: 0 12px 28px rgb(0 17 61 / 0.06);
+  --shadow-left-drawer: -4px 0 24px rgb(0 0 0 / 0.02);
+  --shadow-modal: 0 20px 50px rgb(1 17 61 / 0.25);
+  --shadow-primary-button: 0 2px 4px rgb(37 99 235 / 0.2);
+  --shadow-primary-hero: 0 16px 36px rgb(37 99 235 / 0.18);
+  --shadow-primary-glow: 0 0 0 8px rgb(219 234 254 / 0.42);
+  --focus-ring: 0 0 0 2px rgb(59 130 246 / 0.22);
+  --motion-fast: 150ms;
+  --motion-default: 200ms;
+  --motion-easing: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Legacy aliases. Remove them only after feature CSS has been migrated. */
+  --primary: var(--color-primary-600);
+  --primary-hover: var(--color-primary-700);
+  --primary-active: var(--color-primary-800);
+  --link: var(--color-primary-700);
+  --brand-soft: var(--color-primary-50);
+  --text: var(--color-text-emphasis);
+  --text-secondary: var(--color-text-secondary);
+  --helper: var(--color-text-muted);
+  --weak: var(--color-text-weak);
+  --muted: var(--color-text-muted);
+  --border: var(--color-border-default);
+  --disabled: var(--color-surface-disabled);
+  --surface: var(--color-surface-card-default);
+  --page: var(--color-surface-workspace);
+  --success: var(--color-feedback-success-fg);
+  --success-bg: var(--color-feedback-success-bg);
+  --warning: var(--color-feedback-warning-fg);
+  --warning-bg: var(--color-feedback-warning-bg);
+  --error: var(--color-feedback-danger-fg);
+  --error-bg: var(--color-feedback-danger-bg);
+  --radius-control: var(--radius-sm);
+  --radius-card: var(--radius-md);
+  --space-panel: var(--space-6);
+  --classroom-feedback-success-bg: var(--color-feedback-success-bg);
+  --classroom-feedback-success-border: var(--color-feedback-success-border);
+  --classroom-feedback-success-fg: var(--color-feedback-success-fg);
+  --classroom-feedback-warning-bg: var(--color-feedback-warning-bg);
+  --classroom-feedback-warning-border: var(--color-feedback-warning-border);
+  --classroom-feedback-warning-ring: var(--color-feedback-warning-ring);
+  --classroom-feedback-warning-fg: var(--color-feedback-warning-fg);
+  --classroom-feedback-danger-bg: var(--color-feedback-danger-bg);
+  --classroom-feedback-danger-border: var(--color-feedback-danger-border);
+  --classroom-feedback-danger-fg: var(--color-feedback-danger-fg);
+  --classroom-feedback-info-bg: var(--color-feedback-info-bg);
+  --classroom-feedback-info-border: var(--color-feedback-info-border);
+  --classroom-feedback-info-fg: var(--color-feedback-info-fg);
+  --classroom-toast-shadow: var(--shadow-modal);
+  --classroom-help-shadow: var(--shadow-panel);
+  --classroom-ai-panel-width: 340px;
+  --gradient-header-ai: linear-gradient(90deg, rgb(239 246 255 / 0.5), #ffffff);
+  --gradient-primary-soft: linear-gradient(
+    135deg,
+    var(--color-primary-50),
+    #ffffff 72%
+  );
+  --gradient-success-soft: linear-gradient(
+    135deg,
+    var(--color-feedback-success-bg),
+    #ffffff 74%
+  );
+  --gradient-warning-soft: linear-gradient(
+    135deg,
+    var(--color-feedback-warning-bg),
+    #ffffff 74%
+  );
+  --gradient-creative-soft: linear-gradient(
+    135deg,
+    var(--color-feedback-creative-bg),
+    #ffffff 74%
+  );
+}
+
+html {
+  color-scheme: light;
+  background: var(--color-surface-workspace);
+}
+
+body {
+  color: var(--color-text-default);
+  background: var(--color-surface-workspace);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-body);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-rendering: optimizelegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  letter-spacing: 0;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-placeholder);
+  opacity: 1;
+}
+
+:is(input, select, textarea)[aria-invalid="true"] {
+  border-color: var(--color-feedback-danger-ring) !important;
+  background: var(--color-feedback-danger-bg);
+  box-shadow: 0 0 0 2px rgb(253 164 175 / 0.16);
+}
+
+:is(
+  button,
+  input,
+  select,
+  textarea,
+  a,
+  summary,
+  [role="button"],
+  [role="tab"]
+):focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  color: var(--color-text-weak);
+  border-color: var(--color-border-default);
+  background: var(--color-surface-disabled);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+:is(button[aria-busy="true"], [aria-busy="true"] button) {
+  cursor: progress;
+}
+
+:is(.primary-button, .teacher-primary) {
+  min-height: 36px;
+  height: 36px;
+  padding-inline: 16px;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-inverse);
+  background: var(--color-primary-600);
+  box-shadow: var(--shadow-primary-button);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  transition:
+    color var(--motion-default) var(--motion-easing),
+    background-color var(--motion-default) var(--motion-easing),
+    border-color var(--motion-default) var(--motion-easing),
+    box-shadow var(--motion-default) var(--motion-easing),
+    transform var(--motion-fast) var(--motion-easing);
+}
+
+:is(.primary-button, .teacher-primary):hover:not(:disabled) {
+  background: var(--color-primary-700);
+}
+
+:is(.primary-button, .teacher-primary):active:not(:disabled) {
+  background: var(--color-primary-800);
+  transform: scale(0.99);
+}
+
+.primary-button.large {
+  min-height: 40px;
+  height: 40px;
+  padding-inline: 24px;
+  font-size: var(--font-size-body);
+}
+
+:is(.neutral-button, .teacher-neutral) {
+  min-height: 36px;
+  height: 36px;
+  padding-inline: 16px;
+  gap: 8px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-emphasis);
+  background: var(--color-surface-control-default);
+  box-shadow: var(--shadow-hairline);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  transition:
+    color var(--motion-default) var(--motion-easing),
+    background-color var(--motion-default) var(--motion-easing),
+    border-color var(--motion-default) var(--motion-easing);
+}
+
+:is(.neutral-button, .teacher-neutral):hover:not(:disabled) {
+  color: var(--color-text-emphasis);
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-control-hover);
+}
+
+:is(.neutral-button, .teacher-neutral):active:not(:disabled) {
+  background: var(--color-surface-control-active);
+}
+
+.teacher-student-home-entry {
+  height: 32px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  border: 1px solid var(--color-primary-200);
+  border-radius: 8px;
+  color: var(--color-primary-700);
+  background: var(--color-primary-50);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.teacher-student-home-entry:hover {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-100);
+}
+
+.teacher-student-home-entry:active {
+  background: var(--color-primary-200);
+}
+
+.quiz-action-secondary .neutral-button,
+.classroom-create-panel > header .teacher-neutral {
+  flex: 0 0 auto;
+}
+
+.end-classroom-modal footer .teacher-neutral {
+  height: 40px;
+  padding-inline: 20px;
+}

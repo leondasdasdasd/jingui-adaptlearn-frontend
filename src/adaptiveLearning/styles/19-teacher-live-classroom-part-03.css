@@ -1,0 +1,57 @@
+.student-drawer header > button {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--page);
+  font-size: 20px;
+}
+
+.drawer-metrics {
+  margin: 18px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.drawer-metrics > div {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.drawer-metrics > div + div {
+  border-left: 1px solid var(--border);
+}
+
+.drawer-metrics span {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.drawer-warning {
+  padding: 12px;
+  display: flex;
+  gap: 8px;
+  border-radius: 8px;
+  color: #8b2f2f;
+  background: var(--error-bg);
+}
+
+.drawer-warning p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.drawer-tabs {
+  margin-top: 18px;
+  padding: 3px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  border-radius: var(--radius-control);
+  background: var(--disabled);
+}

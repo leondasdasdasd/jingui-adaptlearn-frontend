@@ -1,0 +1,321 @@
+.overlay {
+  --drawing-dialog-header-height: 64px;
+  --drawing-dialog-control-size: 32px;
+  --drawing-dialog-handle-size: 32px;
+  --drawing-dialog-icon-size: 12px;
+  --drawing-dialog-space-tight: 8px;
+  --drawing-dialog-space: 16px;
+  --drawing-dialog-space-wide: 24px;
+
+  position: fixed;
+  inset: 0;
+  z-index: var(--layout-z-modal, 60);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--drawing-dialog-space-wide);
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.nonModalOverlay {
+  z-index: var(--layout-z-drawer, 50);
+  pointer-events: none;
+}
+
+.nonModalDialog {
+  pointer-events: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.dialog {
+  container-type: inline-size;
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border, #e6e7ec);
+  border-radius: var(--radius-card, 16px);
+  color: var(--text, #01113d);
+  background: var(--surface, #fff);
+  box-shadow: var(--classroom-toast-shadow, 0 20px 50px rgba(1, 17, 61, 0.25));
+  outline: 0;
+  will-change: width, height, transform;
+}
+
+.dialog:focus-visible {
+  box-shadow:
+    var(--classroom-focus-ring, 0 0 0 2px rgba(59, 130, 246, 0.22)),
+    var(--classroom-toast-shadow, 0 20px 50px rgba(1, 17, 61, 0.25));
+}
+
+.header {
+  min-height: var(--drawing-dialog-header-height);
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--drawing-dialog-space);
+  padding: 0 20px 0 var(--drawing-dialog-space-wide);
+  border-bottom: 1px solid var(--border, #e6e7ec);
+  background: var(--surface, #fff);
+}
+
+.titleRegion {
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: var(--drawing-dialog-space-tight);
+  cursor: move;
+  touch-action: none;
+  user-select: none;
+}
+
+.moveHandle {
+  width: var(--drawing-dialog-control-size);
+  height: var(--drawing-dialog-control-size);
+  flex: 0 0 var(--drawing-dialog-control-size);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control, 8px);
+  color: var(--helper, #5a6481);
+  background: transparent;
+  cursor: move;
+  transition:
+    color 150ms cubic-bezier(0.2, 0, 0, 1),
+    background-color 150ms cubic-bezier(0.2, 0, 0, 1),
+    border-color 150ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.moveHandle:hover {
+  border-color: var(--classroom-primary, #2563eb);
+  color: var(--classroom-primary, #2563eb);
+  background: var(--classroom-primary-soft, #eff6ff);
+}
+
+.moveHandle:focus-visible,
+.resizeHandle:focus-visible {
+  border-radius: var(--radius-control, 8px);
+  outline: 0;
+  box-shadow: var(--classroom-focus-ring, 0 0 0 2px rgba(59, 130, 246, 0.22));
+}
+
+.title {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--text, #01113d);
+  font-size: 1rem;
+  line-height: 1.4;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.headerCenter {
+  min-width: 0;
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.headerCenter::-webkit-scrollbar {
+  display: none;
+}
+
+.headerActions {
+  min-width: 0;
+  grid-column: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--drawing-dialog-space-tight);
+}
+
+.body {
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  background: var(--page, #f8f9fa);
+}
+
+.resizeHandle {
+  position: absolute;
+  z-index: 2;
+  width: var(--drawing-dialog-handle-size);
+  height: var(--drawing-dialog-handle-size);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  touch-action: none;
+}
+
+.resizeHandle::after {
+  width: var(--drawing-dialog-icon-size);
+  height: var(--drawing-dialog-icon-size);
+  position: absolute;
+  content: "";
+  border-color: var(--helper, #5a6481);
+  border-style: solid;
+  transition: border-color 150ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.resizeHandle:hover::after,
+.resizeHandle:focus-visible::after {
+  border-color: var(--classroom-primary, #2563eb);
+}
+
+.topleft,
+.topright {
+  top: 0;
+}
+
+.bottomleft,
+.bottomright {
+  bottom: 0;
+}
+
+.topleft,
+.bottomleft {
+  left: 0;
+}
+
+.topright,
+.bottomright {
+  right: 0;
+}
+
+.topleft,
+.bottomright {
+  cursor: nwse-resize;
+}
+
+.topright,
+.bottomleft {
+  cursor: nesw-resize;
+}
+
+.topleft::after {
+  top: var(--drawing-dialog-space-tight);
+  left: var(--drawing-dialog-space-tight);
+  border-width: 1px 0 0 1px;
+}
+
+.topright::after {
+  top: var(--drawing-dialog-space-tight);
+  right: var(--drawing-dialog-space-tight);
+  border-width: 1px 1px 0 0;
+}
+
+.bottomleft::after {
+  bottom: var(--drawing-dialog-space-tight);
+  left: var(--drawing-dialog-space-tight);
+  border-width: 0 0 1px 1px;
+}
+
+.bottomright::after {
+  right: var(--drawing-dialog-space-tight);
+  bottom: var(--drawing-dialog-space-tight);
+  border-width: 0 1px 1px 0;
+}
+
+@container (max-width: 680px) {
+  .header {
+    min-height: 96px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title actions"
+      "center center";
+    gap: var(--drawing-dialog-space-tight);
+    padding: var(--drawing-dialog-space-tight) 40px;
+  }
+
+  .titleRegion {
+    grid-area: title;
+  }
+
+  .headerCenter {
+    width: 100%;
+    grid-area: center;
+    grid-column: auto;
+    justify-content: flex-start;
+  }
+
+  .headerActions {
+    grid-area: actions;
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .overlay {
+    padding: 0;
+    align-items: stretch;
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  .dialog {
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none;
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+    transform: none !important;
+  }
+
+  .header {
+    min-height: 56px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title actions"
+      "center center";
+    gap: var(--drawing-dialog-space-tight);
+    padding: max(12px, env(safe-area-inset-top)) var(--drawing-dialog-space);
+  }
+
+  .titleRegion {
+    grid-area: title;
+    cursor: default;
+    touch-action: auto;
+  }
+
+  .moveHandle,
+  .resizeHandle {
+    display: none;
+  }
+
+  .headerCenter {
+    width: 100%;
+    grid-area: center;
+    grid-column: auto;
+    justify-content: flex-start;
+  }
+
+  .headerActions {
+    grid-area: actions;
+    grid-column: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moveHandle,
+  .resizeHandle::after {
+    transition: none;
+  }
+}

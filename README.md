@@ -1,56 +1,54 @@
-# 自适应学习前端交接包
+# 自适应学习纯前端包
 
-这是从 `jingui-adaptlearn-demo` 抽出的 React + Vite 前端源码快照，适合在其他目录或工具中独立进行视觉与交互优化。
+这是从 `question-test-main` 抽出的教师端 + 学生端前端仓库，适合在 AI Studio 或本地继续优化视觉、交互与动效。
 
-## 快照信息
+## 技术基线
 
-- 导出时间：2026-08-31 UTC
-- 来源分支：`codex/full-baseline-20260831`
-- 来源提交：`592dccb87c95`
-- 内容：导出时工作区内的最新 `src/`、`public/` 与入口文件
+- React `16.14.0`
+- DVA `2.4.1` / React Router 4
+- Vite `4.5.14`
+- 主路由：`/#/adaptive-learning/*`
+- 样式作用域：`.adaptive-learning-root`
 
-## 立即运行
+不要升级到 React 18/19，不要改成 iframe。画板使用 Fabric，不使用要求 React 18 的 tldraw。
 
-建议使用 Node.js 20 或更高版本。
+## 本地运行
 
 ```bash
+nvm use
 npm install
 cp .env.example .env.local
 npm run dev
 ```
 
-云主机访问：`http://leon.local.yungu-inc.org:5180`
+访问：`http://leon.local.yungu-inc.org:5180/#/adaptive-learning/teacher/textbook-lessons`
 
-生产构建检查：
+学生入口：`http://leon.local.yungu-inc.org:5180/#/adaptive-learning/student/home`
 
-```bash
-npm run build
+## 数据边界
+
+```text
+页面 -> application/domain -> repository/adapter -> 同源 API
 ```
 
-## 包含范围
+- `/api/*`：测验平台登录、课程、班级和学生。
+- `/adaptive-api/*`：生成、批改、语音与 OpenMAIC BFF。
+- `/classroom-api/*`：由 BFF 校验登录态后访问课堂服务。
+- `/openmaic/*`、`/_next/*`：OpenMAIC 前端运行时。
 
-- `src/`：学生端、教师端、共享组件、页面、样式和浏览器端数据逻辑
-- `public/`：图标和答题反馈音频
-- `index.html`：Vite 页面入口
-- `vite.config.js`：独立开发服务与三类后端代理
-- `package.json` / `package-lock.json`：仅保留前端运行依赖
+`src/services/` 中的课程、班级和学生 adapter 是显式占位实现，不提供模拟花名册。接入真实测验项目时必须替换为宿主实现。
 
-不包含后端源码、OpenMAIC 源码、数据库、密钥、`.env`、依赖目录、构建产物和运行日志。
+纯视觉修改和生产构建不要求启动后端；真实登录、班级、学生、生成、课堂与学习链路需要对应本机服务。
 
-## 后端依赖边界
+## 当前范围
 
-纯视觉修改和 `npm run build` 不需要后端。真实业务数据与完整交互仍依赖原项目服务：
+- 教师内容准备、矩阵、插槽、按插槽新增题、质检、发布和开课。
+- 一堂课关联多个课时，选课与关联课时分离。
+- 学生真实账号主页、诊断、学习、练习、反馈、结果与历史。
+- 教师课堂、学生详情与课堂报告。
+- OpenMAIC 教师后台保留，默认学生视图，专业模式显式开启。
+- 中英文资源快照与云谷课堂 2.0 主题样式。
 
-| 前端路径 | 默认代理目标 | 用途 |
-| --- | --- | --- |
-| `/api/*` | `http://127.0.0.1:8787` | BFF、登录、生成、批改、语音 |
-| `/classroom-api/*` | `http://127.0.0.1:8788` | 课堂、学生、作答、报告 |
-| `/openmaic/*`、`/_next/*` | `http://127.0.0.1:3100` | 互动课堂运行时 |
+## 安全边界
 
-后端地址不同，复制 `.env.example` 为 `.env.local` 后修改三个 `*_PROXY_TARGET`。不要把服务端密钥改成 `VITE_*` 变量；`VITE_*` 会进入浏览器构建产物。
-
-未连接后端时，应用仍可启动，但教师身份、真实课堂数据、生成、批改、语音和互动课堂等页面会显示加载失败或不可用状态，这不是前端包缺文件。
-
-## 优化后回合并
-
-建议在本目录单独初始化 Git，按页面或组件分批提交。回合并到主项目时优先带回 `src/` 和 `public/` 的明确改动，不要用整个目录覆盖主仓库，也不要带回 `.env.local`、`dist/` 或 `node_modules/`。
+仓库不包含后端、数据库、Cookie、token、服务密钥、真实 `.env`、`node_modules` 或构建产物。不要把服务端密钥改成 `VITE_*` 变量，因为它们会进入浏览器构建结果。

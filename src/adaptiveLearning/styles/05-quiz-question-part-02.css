@@ -1,0 +1,164 @@
+.practice-intervention-body > div {
+  margin-top: 20px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid #e6e7ec;
+  border-radius: 11px;
+  background: #f7f8f9;
+}
+
+.practice-intervention-body span {
+  color: #5a6481;
+}
+
+.practice-intervention-body strong {
+  overflow: hidden;
+  color: #01113d;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.practice-intervention-modal footer {
+  height: 56px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid #e6e7ec;
+}
+
+.practice-intervention-modal footer .primary-button {
+  height: 32px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@keyframes practice-intervention-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 640px) {
+  .practice-intervention-modal {
+    padding: 16px;
+    align-items: end;
+  }
+
+  .practice-intervention-modal > section {
+    width: 100%;
+  }
+
+  .practice-intervention-modal header {
+    padding: 0 20px;
+  }
+
+  .practice-intervention-body {
+    padding: 24px 20px;
+  }
+
+  .practice-intervention-modal footer {
+    padding: 0 20px;
+  }
+
+  .practice-intervention-modal footer .primary-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.written-answer {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.written-answer.subjective {
+  min-height: 0;
+  flex: 1;
+}
+
+.written-answer > label {
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.written-answer input,
+.written-answer textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  outline: none;
+  color: var(--text);
+  background: #fff;
+  font-size: 16px;
+  line-height: 1.65;
+  resize: vertical;
+}
+
+.written-answer textarea {
+  min-height: 132px;
+}
+
+.written-answer input:focus,
+.written-answer textarea:focus {
+  border-color: var(--primary);
+}
+
+.written-answer input:disabled,
+.written-answer textarea:disabled {
+  background: #f2f3f5;
+  cursor: not-allowed;
+}
+
+.inline-fill-answer {
+  width: 100%;
+  color: var(--text);
+  font-family: var(--font-family-question);
+  font-size: 20px;
+  line-height: 2.35;
+}
+
+.inline-fill-fragment {
+  display: inline;
+}
+
+.inline-fill-blank {
+  max-width: calc(100% - 16px);
+  margin: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.inline-fill-blank.is-formula-target .inline-fill-input-shell {
+  border-radius: var(--radius-control);
+  box-shadow: 0 0 0 3px var(--color-primary-100);
+  cursor: pointer;
+}
+
+.inline-fill-blank.is-formula-target input,
+.inline-fill-blank.is-formula-target .inline-fill-math-field {
+  border-color: var(--color-primary-400);
+  color: var(--color-primary-700);
+  background: var(--color-primary-50);
+  cursor: pointer;
+}

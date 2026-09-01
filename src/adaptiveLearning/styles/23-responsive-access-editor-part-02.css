@@ -1,0 +1,250 @@
+.student-access-heading > span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  color: #0445fc;
+  background: #f2f5ff;
+}
+
+.student-access-heading h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.student-access-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.student-access-links > header small {
+  color: #5a6481;
+  font-size: 13px;
+}
+
+.student-access-toggle {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  flex: 0 0 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e6e7ec;
+  border-radius: 7px;
+  color: #27355a;
+  background: #fff;
+}
+
+.student-access-toggle:hover {
+  color: #0445fc;
+  background: #f7f8f9;
+}
+
+.student-access-toggle svg {
+  transition: transform 0.2s ease;
+}
+
+.student-access-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.student-access-links > .teacher-notice {
+  margin: 12px 16px 0;
+}
+
+.student-access-links > .student-access-table {
+  display: block;
+  margin: 0;
+}
+
+.student-access-table-head,
+.classroom-links.student-access-links article {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(140px, 0.8fr) minmax(
+      280px,
+      auto
+    );
+  align-items: center;
+  gap: 16px;
+}
+
+.student-access-table-head {
+  min-height: 40px;
+  padding: 0 16px;
+  color: #5a6481;
+  background: #f7f8f9;
+  border-bottom: 1px solid #e6e7ec;
+  font-size: 13px;
+}
+
+.student-access-table-head span:last-child {
+  text-align: right;
+}
+
+.classroom-links.student-access-links article {
+  min-height: 56px;
+  padding: 11px 16px;
+  border: 0;
+  border-bottom: 1px solid #e6e7ec;
+  background: #fff;
+  transition: background-color 0.2s;
+}
+
+.classroom-links.student-access-links article:last-child {
+  border-bottom: 0;
+}
+
+.classroom-links.student-access-links article:hover {
+  background: #f2f6ff;
+}
+
+.student-access-name {
+  color: #01113d;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.student-access-status {
+  width: fit-content;
+  min-height: 24px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 5px;
+  border-radius: 4px;
+  color: #5a6481;
+  background: #f2f3f5;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.student-access-status.active {
+  color: #2e7d66;
+  background: #eaf8f4;
+}
+
+.student-access-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.student-access-actions button {
+  height: 32px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid #e6e7ec;
+  border-radius: 7px;
+  color: #01113d;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.student-access-actions button:hover:not(:disabled) {
+  background: #f7f8f9;
+}
+
+.student-access-actions button.primary {
+  border-color: #0445fc;
+  color: #fff;
+  background: #0445fc;
+}
+
+.student-access-actions button.primary:hover:not(:disabled) {
+  border-color: #043dcd;
+  background: #043dcd;
+}
+
+.student-access-actions button.danger {
+  border-color: transparent;
+  color: #ff6559;
+  background: transparent;
+}
+
+.student-access-actions button.danger:hover:not(:disabled) {
+  color: #e23b3b;
+  background: #ffeaea;
+}
+
+@media (max-width: 760px) {
+  .student-access-links > header {
+    min-height: 64px;
+    padding: 10px 12px;
+  }
+
+  .student-access-header-actions {
+    gap: 8px;
+  }
+
+  .student-access-links > header small {
+    max-width: 170px;
+    text-align: right;
+  }
+
+  .student-access-table-head {
+    display: none;
+  }
+
+  .classroom-links.student-access-links article {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+    padding: 12px;
+  }
+
+  .student-access-status {
+    justify-self: end;
+  }
+
+  .student-access-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 420px) {
+  .student-access-header-actions small {
+    display: none;
+  }
+
+  .student-access-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .student-access-actions button {
+    width: 100%;
+  }
+
+  .student-access-actions button:only-child,
+  .student-access-actions button.primary {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .student-help-floating {
+    right: 16px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+
+  .student-help-floating .teacher-help-control,
+  .student-help-floating .teacher-help-button,
+  .student-help-floating .teacher-help-pending-button {
+    width: auto;
+  }
+
+  .student-help-floating .teacher-help-status {
+    width: min(390px, calc(100vw - 32px));
+  }
+}

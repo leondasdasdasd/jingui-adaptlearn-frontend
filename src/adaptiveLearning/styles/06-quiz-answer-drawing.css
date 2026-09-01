@@ -1,0 +1,210 @@
+.answer-composer {
+  min-height: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.answer-composer:hover {
+  border-color: #cbd5e1;
+}
+
+.answer-composer:focus-within {
+  border-color: var(--classroom-primary);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+}
+
+.answer-rich-editor {
+  min-height: 210px;
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.answer-rich-editor-editable {
+  width: 100%;
+  min-height: 210px;
+  padding: 16px;
+  overflow: hidden auto;
+  color: var(--text-secondary);
+  background: transparent;
+  font-size: 15px;
+  line-height: 1.75;
+  outline: 0;
+}
+
+.answer-rich-editor-editable [data-slate-placeholder] {
+  color: var(--weak) !important;
+  opacity: 1 !important;
+}
+
+.answer-rich-editor.disabled,
+.answer-rich-editor.disabled .answer-rich-editor-editable {
+  background: var(--disabled);
+  cursor: not-allowed;
+}
+
+.answer-rich-paragraph {
+  min-height: 26px;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.answer-rich-paragraph + .answer-rich-paragraph {
+  margin-top: 4px;
+}
+
+.answer-rich-image-node {
+  width: 100%;
+  position: relative;
+}
+
+.answer-rich-image-block {
+  max-width: 100%;
+  min-width: min(240px, 100%);
+  margin: 10px 0;
+  display: block;
+  overflow: visible;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: grab;
+  transition: box-shadow 160ms ease;
+}
+
+.answer-rich-image-block:active {
+  cursor: grabbing;
+}
+
+.answer-rich-image-block.selected {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+}
+
+.answer-rich-image-canvas {
+  width: 100%;
+  position: relative;
+  overflow: visible;
+  border-radius: 8px;
+  background: #fff;
+  line-height: 0;
+}
+
+.answer-rich-image-canvas img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  display: block;
+  border-radius: inherit;
+  object-fit: contain;
+}
+
+.answer-rich-image-resize {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  z-index: 2;
+  right: -7px;
+  bottom: -7px;
+  display: block;
+  border: 2px solid #fff;
+  border-radius: 4px;
+  opacity: 0;
+  background: var(--classroom-primary);
+  box-shadow: 0 1px 4px rgba(31, 45, 61, 0.28);
+  cursor: nwse-resize;
+  touch-action: none;
+  transition: opacity 160ms ease;
+}
+
+.answer-rich-image-resize:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.24);
+}
+
+.answer-rich-image-resize:focus-visible,
+.answer-rich-image-block:hover .answer-rich-image-resize,
+.answer-rich-image-block.selected .answer-rich-image-resize {
+  opacity: 1;
+}
+
+.answer-rich-editor.disabled .answer-rich-image-block {
+  cursor: not-allowed;
+}
+
+.answer-tools {
+  min-height: 56px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  background: #fafbfd;
+}
+
+.answer-voice-row {
+  display: contents;
+}
+
+.photo-answer {
+  display: contents;
+}
+
+.answer-tool-button,
+.answer-voice-button {
+  height: 34px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--classroom-primary);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.answer-tool-button:focus-visible,
+.answer-voice-button:focus-visible {
+  border-color: var(--classroom-primary);
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+}
+
+.answer-tool-button:hover:not(:disabled),
+.answer-voice-button:hover:not(:disabled) {
+  border-color: var(--classroom-primary);
+  background: var(--classroom-primary-soft);
+}
+
+.answer-voice-button.recording {
+  color: #fff;
+  border-color: var(--error);
+  background: var(--error);
+  animation: voice-pulse 1.4s ease-in-out infinite;
+}
+
+.answer-voice-row > small,
+.photo-answer > .field-error {
+  max-width: 220px;
+  position: absolute;
+  right: 12px;
+  top: calc(100% + 8px);
+  color: var(--error);
+  font-size: 12px;
+}

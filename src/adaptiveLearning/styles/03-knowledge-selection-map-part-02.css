@@ -1,0 +1,128 @@
+.knowledge-map-summary strong {
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.knowledge-map-legend {
+  margin: 18px 0 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.knowledge-map-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.knowledge-map-legend i,
+.knowledge-map-point > i {
+  width: 8px;
+  height: 8px;
+  display: block;
+  flex: 0 0 auto;
+  border: 1px solid var(--weak);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.knowledge-map-legend .mastered i,
+.knowledge-map-point.mastered > i {
+  border-color: var(--success);
+  background: var(--success);
+}
+
+.knowledge-map-legend .skilled i,
+.knowledge-map-point.skilled > i {
+  border-color: var(--success);
+  background: var(--success);
+}
+
+.knowledge-map-legend .needs-review i,
+.knowledge-map-point.needs-review > i {
+  border-color: var(--warning);
+  background: var(--warning);
+}
+
+.knowledge-map-legend .studying i,
+.knowledge-map-point.studying > i {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.knowledge-map-legend .preview i,
+.knowledge-map-point.preview > i {
+  border-color: var(--classroom-primary);
+  background: var(--surface);
+}
+
+.knowledge-map-board {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.knowledge-map-chapter {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: #fff;
+}
+
+.knowledge-map-chapter > header {
+  min-height: 68px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--page);
+}
+
+.knowledge-map-chapter > header > span {
+  min-width: 54px;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.knowledge-map-chapter h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.knowledge-map-chapter p {
+  margin: 3px 0 0;
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.knowledge-map-lessons {
+  padding: 0 18px;
+}
+
+.knowledge-map-lessons article {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.knowledge-map-lessons article:last-child {
+  border-bottom: 0;
+}
+
+.knowledge-map-lesson-title {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-content: start;
+  gap: 2px 8px;
+}

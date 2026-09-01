@@ -1,0 +1,243 @@
+.question-work-tool:focus-visible {
+  outline: 0;
+  box-shadow: var(--focus-ring);
+}
+
+.question-work-tool:disabled {
+  color: var(--color-text-weak);
+  background: var(--color-surface-disabled);
+  cursor: not-allowed;
+}
+
+.formula-targeting-hint {
+  margin: -8px 0 16px;
+  color: var(--color-primary-700);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: right;
+}
+
+.difficulty-stars {
+  min-width: max-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--helper);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.difficulty-stars-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.difficulty-stars-icons .filled {
+  color: #f59e0b;
+  fill: currentcolor;
+}
+
+.difficulty-stars-icons .empty {
+  color: #d8dee8;
+  fill: transparent;
+}
+
+.question-label {
+  color: var(--helper);
+  font-size: 13px;
+}
+
+.question-card h1 {
+  max-width: 100%;
+  margin: 0 0 24px;
+  color: var(--text);
+  font-family: var(--font-family-question);
+  font-size: 17px;
+  line-height: 1.75;
+  font-weight: 500;
+}
+
+.question-platform-player,
+.option-list {
+  font-family: var(--font-family-question);
+}
+
+.question-platform-player *:not(.katex, .katex *),
+.option-list *:not(.katex, .katex *) {
+  font-family: var(--font-family-question) !important;
+}
+
+.option-list {
+  display: grid;
+  gap: 10px;
+}
+
+.option-row {
+  width: 100%;
+  min-height: 58px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: #fff;
+  color: var(--text-secondary);
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.option-row:hover:not(:disabled) {
+  border-color: var(--color-primary-200);
+  background: var(--color-surface-card-soft);
+}
+
+.option-row.active {
+  border-color: var(--primary);
+  color: var(--text);
+  background: var(--brand-soft);
+}
+
+.option-row.correct {
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+
+.option-row.wrong {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+.option-key {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  color: var(--helper);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.option-key.square {
+  border-radius: 6px;
+}
+
+.active .option-key {
+  border-color: var(--primary);
+  color: #fff;
+  background: var(--primary);
+}
+
+.correct .option-key {
+  border-color: var(--success);
+  color: #fff;
+  background: var(--success);
+}
+
+.wrong .option-key {
+  border-color: var(--error);
+  color: #fff;
+  background: var(--error);
+}
+
+.feedback {
+  margin-top: 22px;
+  padding: 16px 18px;
+  border-radius: var(--radius-control);
+}
+
+.feedback.error {
+  color: #912e2e;
+  background: var(--error-bg);
+}
+
+.feedback strong {
+  font-size: 14px;
+}
+
+.feedback p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.practice-intervention-modal {
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  position: fixed;
+  z-index: 80;
+  inset: 0;
+}
+
+.practice-intervention-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.practice-intervention-modal > section {
+  width: min(480px, 100%);
+  position: relative;
+  overflow: hidden;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  animation: practice-intervention-enter 180ms ease-out;
+}
+
+.practice-intervention-modal header {
+  height: 56px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #e6e7ec;
+}
+
+.practice-intervention-modal header > span {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 7px;
+  color: var(--primary);
+  background: var(--brand-soft);
+}
+
+.practice-intervention-modal header div {
+  min-width: 0;
+}
+
+.practice-intervention-modal header small {
+  display: block;
+  color: #5a6481;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.practice-intervention-modal h2 {
+  margin: 0;
+  color: #01113d;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.practice-intervention-body {
+  padding: 32px;
+  color: #01113d;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.practice-intervention-body p {
+  margin: 0;
+}

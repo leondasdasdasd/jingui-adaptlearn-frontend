@@ -1,0 +1,296 @@
+.quiz-header-meta strong {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.question-timer {
+  min-height: 30px;
+  padding: 0 9px;
+  border-radius: var(--radius-control);
+  color: var(--primary);
+  background: var(--brand-soft);
+}
+
+.top-progress {
+  height: 3px;
+  background: var(--color-primary-100);
+  position: sticky;
+  top: 64px;
+  z-index: 20;
+}
+
+.top-progress span {
+  height: 100%;
+  display: block;
+  background: var(--primary);
+  transition: width 240ms ease;
+}
+
+.main-content {
+  width: calc(100% - (2 * var(--space-page-x)));
+  margin: 0 auto;
+  padding: 12px 0 24px;
+}
+
+.main-content.compact {
+  width: calc(100% - (2 * var(--space-page-x)));
+}
+
+.main-content.immersive {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+
+.main-content:has(> .directory-layout) {
+  padding: var(--space-panel) 0;
+}
+
+.persistence-notice {
+  min-height: 36px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 64px;
+  z-index: 19;
+  border-bottom: 1px solid var(--classroom-feedback-warning-border);
+  color: var(--classroom-feedback-warning-fg);
+  background: var(--classroom-feedback-warning-bg);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.persistence-notice.conflict,
+.persistence-notice.error {
+  border-color: var(--classroom-feedback-danger-border);
+  color: var(--classroom-feedback-danger-fg);
+  background: var(--classroom-feedback-danger-bg);
+}
+
+.primary-button {
+  min-height: 40px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: var(--radius-control);
+  color: #fff;
+  background: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background 180ms ease,
+    transform 120ms ease;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.primary-button:active:not(:disabled) {
+  background: var(--primary-active);
+  transform: translateY(1px);
+}
+
+.primary-button.large {
+  min-height: 48px;
+  padding: 0 22px;
+  font-size: 15px;
+}
+
+.secondary-button {
+  height: 32px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  color: var(--primary);
+  background: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.secondary-button:hover {
+  border-color: var(--color-brand-ink);
+  background: var(--color-brand-ink);
+}
+
+.text-button {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  color: var(--primary);
+  background: transparent;
+}
+
+.directory-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: var(--space-page-x);
+  align-items: start;
+}
+
+.chapter-rail,
+.lesson-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+.chapter-rail {
+  overflow: hidden;
+  position: sticky;
+  top: 96px;
+}
+
+.directory-rail-header {
+  border-bottom: 1px solid var(--border);
+}
+
+.directory-segmented {
+  height: 36px;
+  margin: 12px;
+  padding: 2px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  border: 1px solid var(--segmented-border);
+  border-radius: var(--radius-control);
+  background: var(--segmented-bg);
+}
+
+.directory-segmented button {
+  min-width: 0;
+  height: 30px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 0;
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.directory-segmented button:hover {
+  color: var(--primary);
+  background: var(--brand-soft);
+}
+
+.directory-segmented button[aria-pressed="true"] {
+  color: var(--primary);
+  background: var(--surface);
+  box-shadow: var(--segmented-active-shadow);
+}
+
+.directory-narrow-toggle {
+  display: none;
+}
+
+.directory-rail-body {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.chapter-group + .chapter-group {
+  border-top: 1px solid var(--border);
+}
+
+.chapter-button {
+  width: 100%;
+  min-height: 58px;
+  padding: 10px 16px 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  background: #fff;
+  color: var(--text);
+  text-align: left;
+}
+
+.chapter-button:hover {
+  background: var(--page);
+}
+
+.chapter-button span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-weight: 600;
+}
+
+.chapter-button small {
+  color: var(--helper);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.chapter-button svg {
+  color: var(--weak);
+  transition: transform 180ms ease;
+}
+
+.chapter-button svg.rotate {
+  transform: rotate(180deg);
+}
+
+.section-list {
+  padding: 4px 10px 12px;
+}
+
+.section-button {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 10px;
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--text-secondary);
+  text-align: left;
+}
+
+.section-button span {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.section-button strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.section-button svg {
+  color: var(--weak);
+}
+
+.section-button:hover {
+  background: var(--page);
+}
+
+.section-button.active {
+  color: var(--primary);
+  background: var(--brand-soft);
+}
+
+.section-button.active span,
+.section-button.active svg {
+  color: var(--primary);
+}

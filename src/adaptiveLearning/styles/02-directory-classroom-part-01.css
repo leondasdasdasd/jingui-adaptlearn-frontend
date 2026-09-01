@@ -1,0 +1,77 @@
+.kp-inline-progress em {
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.pre-answer-review {
+  margin-top: 1.25rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: #fff;
+}
+
+.pre-answer-review-list {
+  display: grid;
+  gap: 0;
+}
+
+.pre-answer-review-item {
+  padding: 1rem 1.375rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.pre-answer-review-item:last-child {
+  border-bottom: 0;
+}
+
+.pre-answer-review-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pre-answer-review-head strong {
+  font-size: 0.875rem;
+}
+
+.pre-answer-review-head span {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  color: #b42318;
+  background: #fff0ee;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.pre-answer-review-item.correct .pre-answer-review-head span {
+  color: #087f5b;
+  background: #e6f7f1;
+}
+
+.pre-answer-review-item.partial .pre-answer-review-head span {
+  color: #9a5b00;
+  background: #fff3d6;
+}
+
+.pre-answer-review-item p {
+  margin: 0.45rem 0 0;
+  color: var(--helper);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.pre-answer-review-item .pre-answer-review-stem {
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+.result-answer-mastery {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 8px;
+}

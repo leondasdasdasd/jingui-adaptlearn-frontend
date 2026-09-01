@@ -1,0 +1,459 @@
+/* stylelint-disable color-function-notation, no-duplicate-selectors -- 兼容层按原控件覆盖矩阵组织。 */
+
+/* Opt-in dark secondary and success actions from the canonical button matrix. */
+:is(
+  .secondary-button,
+  .teacher-secondary,
+  .secondary-dark-button,
+  .teacher-secondary-dark
+),
+:is(.success-button, .teacher-success) {
+  min-height: 36px;
+  height: 36px;
+  padding-inline: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  transition:
+    color var(--motion-default) var(--motion-easing),
+    background-color var(--motion-default) var(--motion-easing),
+    border-color var(--motion-default) var(--motion-easing),
+    transform var(--motion-fast) var(--motion-easing);
+}
+
+:is(
+  .secondary-button,
+  .teacher-secondary,
+  .secondary-dark-button,
+  .teacher-secondary-dark
+) {
+  border-color: var(--color-brand-ink);
+  background: var(--color-brand-ink);
+}
+
+:is(
+    .secondary-button,
+    .teacher-secondary,
+    .secondary-dark-button,
+    .teacher-secondary-dark
+  ):hover:not(:disabled) {
+  background: rgb(1 17 61 / 0.9);
+}
+
+:is(
+    .secondary-button,
+    .teacher-secondary,
+    .secondary-dark-button,
+    .teacher-secondary-dark
+  ):active:not(:disabled) {
+  background: var(--color-brand-deep);
+  transform: scale(0.99);
+}
+
+:is(.success-button, .teacher-success) {
+  background: var(--color-feedback-success-ring);
+}
+
+:is(.success-button, .teacher-success):hover:not(:disabled) {
+  background: var(--color-action-success-hover);
+}
+
+:is(.success-button, .teacher-success):active:not(:disabled) {
+  background: var(--color-action-success-active);
+  transform: scale(0.99);
+}
+
+#root
+  :is(
+    .primary-button,
+    .teacher-primary,
+    .secondary-button,
+    .teacher-secondary,
+    .secondary-dark-button,
+    .teacher-secondary-dark,
+    .neutral-button,
+    .teacher-neutral,
+    .success-button,
+    .teacher-success
+  ):disabled {
+  color: var(--color-text-weak);
+  border-color: var(--color-border-default);
+  background: var(--color-surface-disabled);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 1;
+  transform: none;
+}
+
+:is(.icon-button, .teacher-header-back, .teacher-agent-close) {
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+}
+
+:is(.icon-button, .teacher-header-back, .teacher-agent-close):hover:not(
+    :disabled
+  ) {
+  color: var(--color-text-primary);
+  background: var(--color-surface-section);
+}
+
+.app-header,
+.teacher-page-header {
+  border-color: var(--color-border-default);
+  background: rgb(255 255 255 / 0.96);
+}
+
+.teacher-sidebar {
+  border-color: var(--color-border-default);
+  background: var(--color-surface-card-default);
+}
+
+.teacher-sidebar nav a {
+  border-radius: var(--radius-sm);
+  transition:
+    color var(--motion-default) var(--motion-easing),
+    background-color var(--motion-default) var(--motion-easing);
+}
+
+.teacher-sidebar nav a.active {
+  color: var(--color-primary-600);
+  background: var(--color-primary-50);
+}
+
+.teacher-main {
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgb(219 234 254 / 0.28),
+      transparent 28rem
+    ),
+    var(--color-surface-workspace);
+}
+
+.teacher-page-header {
+  box-shadow: 0 1px 0 rgb(1 17 61 / 0.02);
+}
+
+.teacher-page-body {
+  padding: 24px var(--space-page-x) 56px;
+}
+
+.teacher-page-header h1,
+.teacher-brand strong,
+.app-header h1,
+.lesson-heading h1,
+.result-wrap h1 {
+  color: var(--color-text-primary);
+}
+
+.teacher-brand > span,
+.brand-mark {
+  color: var(--color-text-inverse);
+  background: linear-gradient(
+    145deg,
+    var(--color-primary-600),
+    var(--color-primary-500)
+  );
+  box-shadow: var(--shadow-primary-button);
+}
+
+.brand-logo,
+.teacher-brand > .brand-logo {
+  width: 36px;
+  height: 36px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 36px;
+  overflow: hidden;
+  border-radius: 11px;
+  background: transparent;
+  box-shadow: 0 4px 12px rgb(4 69 252 / 0.18);
+}
+
+.brand-logo svg {
+  width: 36px;
+  height: 36px;
+  display: block;
+}
+
+.brand-logo-tile {
+  fill: #0445fc;
+}
+
+.brand-logo-stem,
+.brand-logo-branch,
+.brand-logo-branch-muted {
+  fill: none;
+  stroke: var(--color-text-inverse);
+  stroke-width: 2.8;
+  stroke-linecap: round;
+}
+
+.brand-logo-branch-muted {
+  opacity: 0.58;
+}
+
+.brand-logo-node-origin,
+.brand-logo-node-active {
+  fill: var(--color-text-inverse);
+}
+
+.brand-logo-node-option {
+  fill: var(--color-text-inverse);
+  opacity: 0.72;
+}
+
+.brand-logo-node-core {
+  fill: #0445fc;
+}
+
+.teacher-brand strong {
+  font-weight: 600;
+}
+
+.teacher-sidebar nav a {
+  position: relative;
+}
+
+.teacher-sidebar nav a:hover:not(.active) {
+  color: var(--color-text-emphasis);
+  background: var(--color-surface-section);
+}
+
+.teacher-sidebar nav a.active::before {
+  width: 3px;
+  height: 20px;
+  position: absolute;
+  left: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-600);
+  content: "";
+}
+
+:is(
+  .chapter-rail,
+  .lesson-panel,
+  .question-card,
+  .content-summary-row,
+  .report-summary,
+  .content-object-summary,
+  .content-review-layout,
+  .live-banner,
+  .live-kpis > div,
+  .live-students,
+  .live-alerts,
+  .mastery-report,
+  .report-bottom > section,
+  .student-detail-summary,
+  .student-learning-timeline,
+  .student-learning-overview,
+  .student-question-page,
+  .student-dialogue-page,
+  .student-class-report,
+  .knowledge-secondary-report,
+  .classroom-create-panel
+) {
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-card);
+}
+
+:is(
+  .chapter-rail,
+  .lesson-panel,
+  .question-card,
+  .batch-toolbar,
+  .batch-chapter,
+  .classroom-plan-table,
+  .classroom-plan-create,
+  .classroom-plan-confirm,
+  .classroom-plan-review,
+  .student-class-report,
+  .knowledge-secondary-report,
+  .classroom-score-card,
+  .result-list,
+  .pre-answer-review
+):hover {
+  border-color: var(--color-border-strong);
+}
+
+:is(
+  .content-object-summary,
+  .openmaic-scope-tabs,
+  .student-detail-tabs,
+  .teacher-score-filter
+) {
+  border-radius: var(--radius-md);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-card);
+}
+
+:is(
+  .content-object-summary > button,
+  .openmaic-scope-tabs button,
+  .student-detail-tabs button,
+  .teacher-score-filter button
+) {
+  border-radius: var(--radius-sm);
+  transition:
+    color var(--motion-default) var(--motion-easing),
+    background-color var(--motion-default) var(--motion-easing),
+    border-color var(--motion-default) var(--motion-easing),
+    box-shadow var(--motion-default) var(--motion-easing);
+}
+
+:is(
+    .content-object-summary > button,
+    .openmaic-scope-tabs button,
+    .student-detail-tabs button,
+    .teacher-score-filter button
+  ):hover:not(:disabled, .active) {
+  color: var(--color-text-emphasis);
+  background: var(--color-surface-section);
+}
+
+:is(
+  .content-object-summary > button.active,
+  .openmaic-scope-tabs button.active,
+  .student-detail-tabs button.active,
+  .teacher-score-filter button.active
+) {
+  color: var(--color-primary-700);
+  border-color: var(--color-primary-200);
+  background: var(--color-primary-50);
+  box-shadow: inset 0 0 0 1px var(--color-primary-200);
+}
+
+:is(
+  .knowledge-row,
+  .option-row,
+  .content-object-summary > button,
+  .student-report-row,
+  .report-row,
+  .live-student-row
+) {
+  transition:
+    color var(--motion-default) var(--motion-easing),
+    background-color var(--motion-default) var(--motion-easing),
+    border-color var(--motion-default) var(--motion-easing),
+    box-shadow var(--motion-default) var(--motion-easing);
+}
+
+:is(.knowledge-row, .option-row):hover:not(:disabled) {
+  border-color: var(--color-primary-200);
+  box-shadow: var(--shadow-card-hover);
+}
+
+:is(
+  .written-answer input,
+  .written-answer textarea,
+  .teacher-help-modal textarea,
+  .question-editor-form select,
+  .question-editor-form textarea,
+  .content-assistant textarea,
+  .openmaic-scene-select select,
+  .classroom-create-fields input,
+  .classroom-create-fields textarea,
+  .classroom-create-fields select
+) {
+  min-height: 36px;
+  padding-inline: 16px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-default);
+  background: var(--color-surface-card-default);
+  font-size: var(--font-size-body);
+}
+
+:is(
+    .written-answer input,
+    .written-answer textarea,
+    .teacher-help-modal textarea,
+    .question-editor-form select,
+    .question-editor-form textarea,
+    .content-assistant textarea,
+    .openmaic-scene-select select,
+    .classroom-create-fields input,
+    .classroom-create-fields textarea,
+    .classroom-create-fields select
+  ):hover:not(:disabled) {
+  border-color: var(--color-border-strong);
+}
+
+:is(
+  .written-answer input,
+  .written-answer textarea,
+  .teacher-help-modal textarea,
+  .question-editor-form select,
+  .question-editor-form textarea,
+  .content-assistant textarea,
+  .openmaic-scene-select select,
+  .classroom-create-fields input,
+  .classroom-create-fields textarea,
+  .classroom-create-fields select
+):focus {
+  border-color: var(--color-primary-500);
+  outline: 0;
+  box-shadow: var(--focus-ring);
+}
+
+.teacher-status {
+  min-height: 32px;
+  padding-inline: 12px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-body-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.teacher-status.success {
+  color: var(--color-feedback-success-fg);
+  border-color: var(--color-feedback-success-border);
+  background: var(--color-feedback-success-bg);
+}
+
+.teacher-status.warning {
+  color: var(--color-feedback-warning-fg);
+  border-color: var(--color-feedback-warning-border);
+  background: var(--color-feedback-warning-bg);
+}
+
+.teacher-status.info {
+  color: var(--color-feedback-info-fg);
+  border-color: var(--color-feedback-info-border);
+  background: var(--color-feedback-info-bg);
+}
+
+.teacher-status.muted {
+  color: var(--color-text-muted);
+  border-color: var(--color-border-default);
+  background: var(--color-surface-disabled);
+}
+
+:is(.teacher-status, .status-tag).danger {
+  color: var(--color-feedback-danger-badge-fg);
+  border-color: var(--color-feedback-danger-border);
+  background: var(--color-feedback-danger-badge-bg);
+}
+
+:is(.teacher-status, .status-tag).creative {
+  color: var(--color-feedback-creative-fg);
+  border-color: var(--color-feedback-creative-border);
+  background: var(--color-feedback-creative-bg);
+}
+
+:is(.teacher-status, .status-tag).teal {
+  color: var(--color-feedback-teal-fg);
+  border-color: var(--color-feedback-teal-border);
+  background: var(--color-feedback-teal-bg);
+}

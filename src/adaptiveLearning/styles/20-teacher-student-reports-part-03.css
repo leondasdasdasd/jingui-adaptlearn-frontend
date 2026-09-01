@@ -1,0 +1,101 @@
+.student-learning-overview > div {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.student-learning-overview > div:last-child {
+  border-bottom: 0;
+}
+
+.student-learning-overview span {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.student-learning-overview strong {
+  font-size: 13px;
+}
+
+.student-question-table-head,
+.student-question-page article {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) 90px 90px 100px 140px;
+  align-items: center;
+  gap: 10px;
+}
+
+.student-question-table-head {
+  height: 36px;
+  padding: 0 14px;
+  color: var(--helper);
+  background: var(--page);
+  font-size: 12px;
+}
+
+.student-question-page article {
+  min-height: 82px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+}
+
+.student-question-page article.slow {
+  box-shadow: inset 3px 0 var(--color-feedback-warning-ring);
+  background: var(--color-feedback-warning-bg);
+}
+
+.student-question-page article > div:first-child {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.student-question-page article small,
+.student-question-page article time {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.student-question-page article > div:first-child strong {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.student-question-page article p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.student-question-page article > span {
+  font-size: 12px;
+}
+
+.student-question-page article > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.student-question-page article > div:last-child > strong {
+  font-size: 12px;
+}
+
+.duration-warning {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  color: var(--color-feedback-warning-fg);
+}
+
+.duration-warning b {
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: var(--color-feedback-warning-bg);
+  font-size: 12px;
+}

@@ -1,0 +1,66 @@
+.result-hero p {
+  grid-column: 1;
+  margin: 6px 0 0;
+  font-size: 15px;
+}
+
+.classroom-score-card {
+  margin-top: 20px;
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.classroom-score-card.ready {
+  border-color: #bfdbfe;
+}
+
+.classroom-score-card.insufficient {
+  border-color: var(--classroom-feedback-info-border);
+  background: var(--classroom-feedback-info-bg);
+}
+
+.classroom-score-card > header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.classroom-score-card header > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.classroom-score-card header span {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.classroom-score-card header strong {
+  color: var(--text);
+  font-size: 30px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.classroom-score-card header strong small {
+  margin-left: 2px;
+  font-size: 13px;
+}
+
+.classroom-score-card header em {
+  margin-left: auto;
+  color: var(--helper);
+  font-size: 12px;
+  font-style: normal;
+}
+
+.classroom-score-dimensions {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}

@@ -1,0 +1,203 @@
+/* Main Layout & Page Header */
+.teacher-main {
+  min-width: 0;
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+  z-index: 10;
+}
+
+.teacher-page-header {
+  min-height: 76px;
+  padding: 16px var(--space-page-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.teacher-page-heading {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.teacher-page-heading-leading {
+  flex: 0 0 auto;
+}
+
+.teacher-page-heading-copy {
+  min-width: 0;
+}
+
+.teacher-page-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.teacher-page-header h1 {
+  margin: 0;
+  overflow: hidden;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+.teacher-page-header p {
+  margin: 3px 0 0;
+  overflow: hidden;
+  color: var(--helper);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacher-header-actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+.teacher-header-back {
+  min-height: 38px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: var(--shadow-subtle);
+  transition: all 160ms ease;
+}
+
+.teacher-header-back:hover {
+  color: var(--primary);
+  border-color: #cbd5e1;
+  background: var(--brand-soft);
+  transform: translateX(-1px);
+}
+
+.teacher-header-back:focus-visible {
+  outline: 0;
+  border-color: var(--primary);
+  box-shadow: var(--classroom-focus-ring);
+}
+
+.teacher-header-publish-status {
+  min-height: 34px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--classroom-feedback-warning-border);
+  border-radius: var(--radius-control);
+  color: var(--classroom-feedback-warning-fg);
+  background: var(--classroom-feedback-warning-bg);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.teacher-header-publish-status.published {
+  border-color: var(--classroom-feedback-success-border);
+  color: var(--classroom-feedback-success-fg);
+  background: var(--classroom-feedback-success-bg);
+}
+
+.teacher-header-publish-status.processing {
+  border-color: var(--classroom-feedback-info-border);
+  color: var(--classroom-feedback-info-fg);
+  background: var(--classroom-feedback-info-bg);
+}
+
+.teacher-header-publish-status.empty {
+  border-color: var(--border);
+  color: var(--text-secondary);
+  background: var(--page);
+}
+
+.teacher-version-switch {
+  min-height: 36px;
+  padding: 0 8px 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: var(--shadow-subtle);
+}
+
+.teacher-version-switch select {
+  min-width: 112px;
+  height: 32px;
+  padding: 0 24px 0 4px;
+  border: 0;
+  border-radius: var(--radius-control);
+  color: var(--text);
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.teacher-version-switch:focus-within {
+  border-color: var(--primary);
+  box-shadow: var(--classroom-focus-ring);
+}
+
+.teacher-page-body {
+  padding: 24px var(--space-page-x) 56px;
+}
+
+/* Button System */
+.teacher-primary,
+.teacher-secondary {
+  height: 38px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: var(--radius-control);
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.teacher-primary {
+  border: 1px solid transparent;
+  color: #ffffff;
+  background: var(--primary-gradient);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+}
+
+.teacher-primary:hover:not(:disabled) {
+  background: var(--primary-gradient-hover);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+  transform: translateY(-1px);
+}
+
+.teacher-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(79, 70, 229, 0.2);
+}

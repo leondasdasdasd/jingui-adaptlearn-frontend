@@ -1,0 +1,160 @@
+.student-help-floating {
+  position: fixed;
+  z-index: 50;
+  right: 24px;
+  bottom: max(24px, env(safe-area-inset-bottom));
+}
+
+.teacher-help-control {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.teacher-help-button {
+  height: 40px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  color: var(--classroom-primary);
+  background: #fff;
+  box-shadow: var(--classroom-help-shadow);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    color 200ms cubic-bezier(0.2, 0, 0, 1),
+    background-color 200ms cubic-bezier(0.2, 0, 0, 1),
+    border-color 200ms cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.teacher-help-button:hover:not(:disabled) {
+  border-color: #bfdbfe;
+  background: var(--classroom-primary-soft);
+}
+
+.teacher-help-button > i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--classroom-feedback-success-fg);
+  box-shadow: 0 0 0 3px var(--classroom-feedback-success-bg);
+}
+
+.teacher-help-pending-button {
+  height: 40px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--classroom-feedback-info-border);
+  border-radius: 8px;
+  color: var(--classroom-feedback-info-fg);
+  background: var(--classroom-feedback-info-bg);
+  box-shadow: var(--classroom-help-shadow);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.teacher-help-pending-button:hover {
+  border-color: var(--classroom-primary);
+  background: var(--classroom-primary-soft);
+}
+
+.teacher-help-pending-button > i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--classroom-feedback-warning-ring);
+  box-shadow: 0 0 0 3px var(--classroom-feedback-warning-bg);
+}
+
+.teacher-help-status {
+  min-height: 44px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--classroom-feedback-info-border);
+  border-radius: 8px;
+  color: var(--classroom-feedback-info-fg);
+  background: var(--classroom-feedback-info-bg);
+}
+
+.teacher-help-status.acknowledged {
+  border-color: var(--classroom-feedback-success-border);
+  color: var(--classroom-feedback-success-fg);
+  background: var(--classroom-feedback-success-bg);
+}
+
+.teacher-help-status > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.teacher-help-status strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.teacher-help-status-actions {
+  margin-left: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.teacher-help-status-actions button {
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 8px;
+  color: currentcolor;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.teacher-help-status-actions button:hover:not(:disabled) {
+  background: var(--surface);
+}
+
+.teacher-help-cancel {
+  padding: 0 8px;
+}
+
+.teacher-help-collapse {
+  width: 32px;
+  padding: 0;
+}
+
+.teacher-help-error {
+  min-height: 40px;
+  max-width: 280px;
+  margin-left: 8px;
+  padding: 7px 8px 7px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--classroom-feedback-danger-border);
+  border-radius: 8px;
+  color: var(--classroom-feedback-danger-fg);
+  background: var(--classroom-feedback-danger-bg);
+  font-size: 12px;
+}
+
+.teacher-help-error > span {
+  min-width: 0;
+  line-height: 1.4;
+}

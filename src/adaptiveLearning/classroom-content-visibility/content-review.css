@@ -1,0 +1,300 @@
+/* stylelint-disable no-descending-specificity -- 内容层级样式按原顺序覆盖。 */
+
+.classroom-content-outline {
+  margin: 16px 20px;
+  overflow: hidden;
+  border: 1px solid var(--classroom-border);
+  border-radius: 11px;
+  background: #fff;
+}
+
+.classroom-plan-table-detail .classroom-content-outline {
+  margin: 0;
+}
+
+.classroom-content-outline > header {
+  min-height: 56px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--classroom-border);
+}
+
+.classroom-content-outline > header > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.classroom-content-outline h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.classroom-content-outline > header > span {
+  color: var(--classroom-helper);
+  font-size: 12px;
+}
+
+.classroom-content-sources {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--classroom-border);
+}
+
+.classroom-content-sources > strong,
+.classroom-content-knowledge > strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.classroom-content-sources > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.classroom-content-sources span {
+  min-height: 24px;
+  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--classroom-border);
+  border-radius: 4px;
+  color: var(--classroom-secondary);
+  background: var(--classroom-page);
+  font-size: 12px;
+}
+
+.classroom-content-sources small {
+  color: var(--classroom-primary);
+  font-size: 12px;
+}
+
+.classroom-content-mainline {
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.classroom-content-mainline article {
+  min-height: 58px;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--classroom-border);
+  border-radius: 11px;
+}
+
+.classroom-content-mainline article > span {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  color: var(--classroom-primary);
+  background: var(--classroom-brand-soft);
+}
+
+.classroom-content-mainline article > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.classroom-content-mainline strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.classroom-content-mainline small {
+  color: var(--classroom-helper);
+  font-size: 12px;
+}
+
+.classroom-content-mainline a,
+.classroom-content-knowledge a {
+  color: var(--classroom-link);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.classroom-content-mainline b,
+.classroom-content-knowledge b {
+  color: var(--classroom-helper);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.classroom-content-knowledge {
+  padding: 2px 16px 16px;
+}
+
+.classroom-content-knowledge > div {
+  overflow: hidden;
+  border: 1px solid var(--classroom-border);
+  border-radius: 11px;
+}
+
+.classroom-content-knowledge article {
+  min-height: 52px;
+  padding: 8px 12px;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--classroom-border);
+}
+
+.classroom-content-knowledge article:last-child {
+  border-bottom: 0;
+}
+
+.classroom-content-knowledge article:hover {
+  background: var(--color-table-row-hover);
+}
+
+.classroom-content-knowledge article > span {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: var(--classroom-primary);
+  background: var(--classroom-brand-soft);
+  font-size: 12px;
+}
+
+.classroom-content-knowledge article > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.classroom-content-knowledge article strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.classroom-content-knowledge article small {
+  color: var(--classroom-helper);
+  font-size: 12px;
+}
+
+.classroom-content-question-groups {
+  padding: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.classroom-content-questions {
+  overflow: hidden;
+  border: 1px solid var(--classroom-border);
+  border-radius: 7px;
+}
+
+.classroom-content-questions summary {
+  min-height: 40px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  background: var(--classroom-page);
+  font-size: 14px;
+}
+
+.classroom-content-questions summary b {
+  color: var(--classroom-helper);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.classroom-content-questions ol {
+  margin: 0;
+  padding: 6px 16px 10px 38px;
+}
+
+.classroom-content-questions li {
+  padding: 7px 2px;
+  color: var(--classroom-secondary);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.classroom-content-questions p {
+  margin: 0;
+  padding: 12px;
+  color: var(--classroom-helper);
+  font-size: 13px;
+}
+
+.classroom-content-review-total {
+  min-height: 44px;
+  margin: 0 16px 16px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--classroom-border);
+  border-radius: 7px;
+  background: var(--classroom-page);
+  font-size: 13px;
+}
+
+.live-student-row > span:nth-child(2) b {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.live-student-row > span:nth-child(2) small {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 15px;
+}
+
+.student-detail-summary > div:first-child small {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--classroom-helper, #5a6481);
+  line-height: 15px;
+}
+
+.live-classroom-create .classroom-create-fields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.live-classroom-create .classroom-create-fields label {
+  min-width: 0;
+}
+
+.live-classroom-create .classroom-create-fields input,
+.live-classroom-create .classroom-create-fields select,
+.live-classroom-create .classroom-create-fields textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.live-classroom-create .classroom-content-questions li {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}

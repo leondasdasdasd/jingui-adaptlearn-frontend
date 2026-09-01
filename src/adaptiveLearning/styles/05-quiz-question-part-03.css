@@ -1,0 +1,31 @@
+.inline-fill-input-shell {
+  width: var(--inline-fill-width);
+  min-width: 64px;
+  max-width: min(360px, 100%);
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.inline-fill-input-shell input,
+.inline-fill-math-field {
+  width: 100%;
+  max-width: 100%;
+  height: 40px;
+  padding: 4px 10px;
+  color: var(--text);
+  font: inherit;
+  line-height: 1;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-card-default);
+  outline: none;
+  overflow-x: auto;
+}
+
+.inline-fill-input-shell input:hover:not(:disabled),
+.inline-fill-math-field:hover:not([read-only]) {
+  border-color: var(--color-border-strong);
+}

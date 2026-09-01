@@ -1,0 +1,184 @@
+/* ==========================================================================
+   Teacher Horizontal Navigation Layout & Header
+   ========================================================================== */
+.teacher-app-horizontal {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  overflow: hidden auto !important;
+  overscroll-behavior: contain;
+  background: var(--page) !important;
+}
+
+.teacher-horizontal-header {
+  height: 64px !important;
+  padding: 0 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.85) !important;
+  box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.04) !important;
+}
+
+.teacher-horizontal-nav {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 auto 0 28px !important;
+}
+
+.teacher-horizontal-nav-link {
+  height: 40px !important;
+  padding: 0 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border-radius: 12px !important;
+  color: #475569 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  position: relative !important;
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.teacher-horizontal-nav-link:hover {
+  color: #0f172a !important;
+  background: #f1f5f9 !important;
+  transform: translateY(-1px) !important;
+}
+
+.teacher-horizontal-nav-link.active {
+  color: #1d4ed8 !important;
+  background: linear-gradient(
+    135deg,
+    rgba(239, 246, 255, 0.95),
+    rgba(224, 231, 255, 0.75)
+  ) !important;
+  font-weight: 600 !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(59, 130, 246, 0.25),
+    0 2px 8px rgba(37, 99, 235, 0.08) !important;
+}
+
+.teacher-hnav-icon {
+  display: grid !important;
+  place-items: center !important;
+  color: inherit !important;
+  transition: transform 180ms cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.teacher-horizontal-nav-link:hover .teacher-hnav-icon {
+  transform: scale(1.1) !important;
+}
+
+.teacher-hnav-badge {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  padding: 1.5px 7px !important;
+  border-radius: 999px !important;
+  letter-spacing: 0.02em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.teacher-hnav-badge.ai {
+  color: #7e22ce !important;
+  background: linear-gradient(135deg, #f5f3ff, #ede9fe) !important;
+  border: 1px solid #ddd6fe !important;
+}
+
+.teacher-hnav-badge.live {
+  color: #b91c1c !important;
+  background: linear-gradient(135deg, #fee2e2, #fecdd3) !important;
+  border: 1px solid #fca5a5 !important;
+  animation: live-pulse-glow 1.8s ease-in-out infinite !important;
+}
+
+@keyframes live-pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+    transform: scale(1.04);
+  }
+}
+
+.teacher-header-right,
+.teacher-header-right-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+.teacher-header-start-class-btn {
+  height: 40px !important;
+  padding: 0 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%) !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28) !important;
+  cursor: pointer !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.teacher-header-start-class-btn::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  ) !important;
+  transition: 0.5s !important;
+}
+
+.teacher-header-start-class-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #4338ca 100%) !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.42) !important;
+  transform: translateY(-1.5px) !important;
+}
+
+.teacher-header-start-class-btn:hover::after {
+  left: 100% !important;
+}
+
+.teacher-header-start-class-btn:active {
+  transform: scale(0.97) !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2) !important;
+}
+
+.teacher-main-horizontal {
+  width: 100% !important;
+  max-width: 1480px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  flex: 1 !important;
+}

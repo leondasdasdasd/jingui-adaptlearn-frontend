@@ -1,0 +1,536 @@
+/* stylelint-disable no-descending-specificity -- 原页面依赖既有选择器顺序维持级联。 */
+
+/* ==========================================================================
+   按知识点筛选卡片 (Knowledge Point Filter Strip)
+   ========================================================================== */
+.kp-filter-strip-card {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.kp-filter-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.kp-filter-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.kp-filter-title svg {
+  color: #2563eb;
+}
+
+.kp-chips-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.kp-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.kp-chip-btn:hover {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.kp-chip-btn.active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.12);
+}
+
+.kp-chip-btn small {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.kp-chip-btn.active small {
+  color: #3b82f6;
+}
+
+.kp-chip-text {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 知识点筛选激活高亮 Banner */
+.kp-active-banner {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: #f0f7ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.kp-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.banner-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.kp-banner-left h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.kp-banner-stats {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.kp-banner-stats b {
+  color: #0f172a;
+}
+
+.kp-banner-stats b.success-text {
+  color: #16a34a;
+}
+
+.kp-banner-stats .divider {
+  color: #cbd5e1;
+}
+
+.kp-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px solid #93c5fd;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.kp-reset-btn:hover {
+  background: #dbeafe;
+  border-color: #3b82f6;
+}
+
+/* --- 全局记录卡片 --- */
+.global-records-card {
+  margin-top: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+  padding: 12px 16px;
+}
+
+.global-records-header h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* --- Tab 选项卡与 Badge (分段轨精美 Pill) --- */
+.student-detail-tabs {
+  margin-top: 4px;
+  margin-bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.student-detail-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.student-detail-tabs button:hover {
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.student-detail-tabs button.active {
+  background: #ffffff;
+  color: #2563eb;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.tab-count-badge {
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #475569;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.student-detail-tabs button.active .tab-count-badge {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+/* --- 记录面板 (Record Panel) --- */
+.student-home-record-panel {
+  margin-top: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.student-home-record-panel > header {
+  min-height: 48px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+  background: #fafafa;
+}
+
+.student-home-record-panel > header > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.student-home-record-panel h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.student-home-record-panel > header > span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.kp-filter-pill {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1d4ed8;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* --- 学习时间线 --- */
+.student-home-timeline {
+  padding: 12px 16px;
+}
+
+.student-home-timeline article {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 12px;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.student-home-timeline article:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 26px;
+  bottom: 0;
+  width: 2px;
+  background: #e2e8f0;
+}
+
+.timeline-node {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 2px solid #3b82f6;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  z-index: 1;
+}
+
+.tl-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.tl-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tl-title-group strong {
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tl-kp-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 1px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tl-kp-tag:hover {
+  background: #dbeafe;
+}
+
+.tl-head-row time {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.tl-detail-desc {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #475569;
+}
+
+.student-home-timeline small {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* --- 逐题结果与知识点 Badge --- */
+.student-home-attempt-summary {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  gap: 12px;
+}
+
+.student-home-attempt-number {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.attempt-stage-badge {
+  font-size: 11px;
+  color: #64748b;
+  background: #e2e8f0;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.attempt-kp-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #1d4ed8;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 2px 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.attempt-kp-badge-btn:hover {
+  background: #dbeafe;
+}
+
+.student-home-attempt-timing {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* --- 学习支持列表 --- */
+.student-home-support-list article {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.support-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f0fdf4;
+  color: #16a34a;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.support-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.support-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.support-title-row strong {
+  font-size: 13px;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.support-desc {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.student-home-empty {
+  padding: 20px 16px;
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.reset-inline-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border: 1px solid #2563eb;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.reset-inline-btn:hover {
+  background: #eff6ff;
+}
+
+/* 响应式适配 */
+@media (max-width: 900px) {
+  .student-detail-summary.compact {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .student-home-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .student-detail-summary.compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kp-filter-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .kp-active-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .kp-v-timeline-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,568 @@
+/* --- 学生端知识点矩阵掌握情况与点亮地图 (Student Matrix Mastery Card) --- */
+.student-matrix-card {
+  margin-top: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 18px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.student-matrix-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 14px;
+}
+
+.sm-header-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sm-icon-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #2563eb;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.sm-header-title h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.sm-header-title p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* 知识点筛选切片 */
+.sm-kp-selector-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sm-kp-selector-row .selector-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.sm-kp-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.sm-kp-pill {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sm-kp-pill:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.sm-kp-pill.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2);
+}
+
+/* 点亮进度 Summary Banner */
+.sm-summary-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 16px;
+}
+
+.sm-summary-bar.all-complete {
+  background: linear-gradient(135deg, #fefce8 0%, #f0fdf4 100%);
+  border-color: #fde047;
+}
+
+.sm-summary-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sm-progress-ring-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.sparkle-gold {
+  color: #d97706;
+}
+
+.target-blue {
+  color: #2563eb;
+}
+
+.sm-summary-status-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.sm-summary-status-line strong {
+  font-size: 13px;
+  color: #0f172a;
+}
+
+.sm-status-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.sm-status-tag.gold {
+  background: #fef08a;
+  color: #854d0e;
+}
+
+.sm-status-tag.blue {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.sm-summary-desc {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.sm-summary-progress-track {
+  min-width: 140px;
+  text-align: right;
+}
+
+.sm-progress-text {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+.sm-track-bg {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.sm-track-fill {
+  height: 100%;
+  background: #2563eb;
+  transition: width 0.3s ease;
+}
+
+.sm-track-fill.complete {
+  background: linear-gradient(90deg, #16a34a, #ca8a04);
+}
+
+/* 矩阵表格结构 */
+.sm-table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.sm-matrix-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 6px;
+  padding: 8px;
+}
+
+.sm-matrix-table th {
+  padding: 6px;
+  font-size: 12px;
+  color: #475569;
+  background: #f8fafc;
+  border-radius: 6px;
+  vertical-align: middle;
+}
+
+.col-domain-header {
+  width: 120px;
+  text-align: left;
+  font-weight: 700;
+}
+
+.lvl-head-code {
+  font-weight: 800;
+  color: #2563eb;
+}
+
+.lvl-head-name {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.row-domain-header {
+  text-align: left;
+  padding: 8px !important;
+}
+
+.dom-head-code {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.dom-head-name {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* 评估格 Cell 统一样式 */
+.sm-cell {
+  width: 100%;
+  min-height: 72px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.cell-na {
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+}
+
+.cell-na .dash {
+  font-size: 14px;
+}
+
+.cell-na small {
+  font-size: 10px;
+}
+
+.cell-applicable {
+  cursor: pointer;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+}
+
+.cell-applicable:hover {
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+}
+
+.cell-applicable.is-selected {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+/* 已点亮与待点亮效果 */
+.cell-applicable.is-lighted {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+  border-color: #86efac;
+  box-shadow: 0 2px 5px rgba(34, 197, 94, 0.1);
+}
+
+.cell-applicable.is-pending {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+}
+
+.cell-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.cell-code {
+  font-size: 11px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.cell-role-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.cell-role-badge.role-core {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.cell-role-badge.role-support {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.cell-role-badge.role-extension {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.cell-body {
+  margin: 4px 0;
+}
+
+.lighted-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #15803d;
+  background: #dcfce7;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.pending-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.cell-footer {
+  font-size: 10px;
+  color: #64748b;
+}
+
+.evidence-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.evidence-none {
+  color: #94a3b8;
+}
+
+/* 评估格展开 Inspector */
+.sm-cell-detail-inspector {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.inspector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 12px;
+}
+
+.inspector-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.role-badge-lg {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.inspector-title h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.status-pill.lighted {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.status-pill.pending {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.inspector-body {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.inspector-col h5 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.inspector-col p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #475569;
+}
+
+.inspector-col ul {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.inspector-col ul li {
+  margin-bottom: 3px;
+}
+
+.evidence-attempts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.evidence-att-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  font-size: 11px;
+}
+
+.evidence-att-item.pass {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+
+.att-idx {
+  font-weight: 700;
+  color: #64748b;
+}
+
+.att-stem {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #0f172a;
+}
+
+.att-score-tag {
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.att-score-tag.pass {
+  color: #15803d;
+  background: #dcfce7;
+}
+
+.att-score-tag.fail {
+  color: #b45309;
+  background: #fef3c7;
+}
+
+.no-evidence-text {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .inspector-body {
+    grid-template-columns: 1fr;
+  }
+
+  .sm-summary-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sm-summary-progress-track {
+    width: 100%;
+    text-align: left;
+  }
+}
