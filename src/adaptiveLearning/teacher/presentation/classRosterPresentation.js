@@ -54,10 +54,7 @@ export function classRosterCredentialStatus(status) {
 export function classRosterOperationFailed(operation) {
   const copy = new Map([
     ["rotate", ["notice.rotateFailed", "链接生成失败，请稍后重试。"]],
-    [
-      "rotateAll",
-      ["notice.rotateAllFailed", "全班链接生成失败，请稍后重试。"],
-    ],
+    ["rotateAll", ["notice.rotateAllFailed", "全班链接生成失败，请稍后重试。"]],
     ["revoke", ["notice.revokeFailed", "链接停用失败，请稍后重试。"]],
   ]);
   const [key, fallback] = copy.get(operation) || copy.get("rotate");

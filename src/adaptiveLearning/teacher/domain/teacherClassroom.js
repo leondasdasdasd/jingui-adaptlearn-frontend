@@ -411,7 +411,10 @@ export function buildClassroomStudents(snapshot = {}, reports = []) {
     let currentContentDescriptor = { kind: "stage", stageCode: currentStage };
     if (questionStages.has(currentStage) && currentQuestion?.stem) {
       currentContent = currentQuestion.stem;
-      currentContentDescriptor = { kind: "question", text: currentQuestion.stem };
+      currentContentDescriptor = {
+        kind: "question",
+        text: currentQuestion.stem,
+      };
     } else if (currentStage === "knowledge_learning") {
       currentContent = `${currentKnowledgePointName} · 单点讲解`;
       currentContentDescriptor = {

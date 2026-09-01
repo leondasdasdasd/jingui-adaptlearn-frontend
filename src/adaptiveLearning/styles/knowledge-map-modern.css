@@ -53,7 +53,9 @@
   background: #ffffff;
   color: #2563eb;
   font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .knowledge-map-container {
@@ -152,10 +154,22 @@
   height: 100%;
   transition: width 0.3s ease;
 }
-.km-micro-bar-seg.mastered { background: #10b981; }
-.km-micro-bar-seg.studying { background: #3b82f6; }
-.km-micro-bar-seg.needs_review { background: #f59e0b; }
-.km-micro-bar-seg.not_started { background: #cbd5e1; }
+
+.km-micro-bar-seg.mastered {
+  background: #10b981;
+}
+
+.km-micro-bar-seg.studying {
+  background: #3b82f6;
+}
+
+.km-micro-bar-seg.needs_review {
+  background: #f59e0b;
+}
+
+.km-micro-bar-seg.not_started {
+  background: #cbd5e1;
+}
 
 /* 右侧：状态筛选胶囊群（兼统计与筛选） */
 .km-filter-strip {
@@ -207,10 +221,21 @@
   flex-shrink: 0;
 }
 
-.km-filter-btn.mastered .km-filter-dot { background: #10b981; }
-.km-filter-btn.studying .km-filter-dot { background: #3b82f6; }
-.km-filter-btn.needs_review .km-filter-dot { background: #f59e0b; }
-.km-filter-btn.not_started .km-filter-dot { background: #94a3b8; }
+.km-filter-btn.mastered .km-filter-dot {
+  background: #10b981;
+}
+
+.km-filter-btn.studying .km-filter-dot {
+  background: #3b82f6;
+}
+
+.km-filter-btn.needs_review .km-filter-dot {
+  background: #f59e0b;
+}
+
+.km-filter-btn.not_started .km-filter-dot {
+  background: #94a3b8;
+}
 
 .km-filter-num {
   font-size: 11.5px;
@@ -223,6 +248,7 @@
   color: #94a3b8;
   font-weight: normal;
 }
+
 .km-filter-btn.active .km-filter-pct {
   color: #60a5fa;
 }
@@ -359,7 +385,9 @@
   background: #ffffff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
   overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .km-chapter-card:hover {
@@ -377,7 +405,9 @@
   cursor: pointer;
   user-select: none;
   border-bottom: 1px solid transparent;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .km-chapter-card.expanded .km-chapter-header {
@@ -463,7 +493,9 @@
   color: #64748b;
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  transition: transform 0.2s ease, color 0.15s ease;
+  transition:
+    transform 0.2s ease,
+    color 0.15s ease;
 }
 
 .km-chapter-card.expanded .km-chapter-chevron {
@@ -562,6 +594,7 @@
   border-color: #d1fae5;
   background: linear-gradient(180deg, #ffffff 0%, #f7fdfa 100%);
 }
+
 .km-point-card.mastered:hover {
   border-color: #10b981;
   box-shadow: 0 6px 16px rgba(16, 185, 129, 0.12);
@@ -571,6 +604,7 @@
   border-color: #dbeafe;
   background: linear-gradient(180deg, #ffffff 0%, #f6faff 100%);
 }
+
 .km-point-card.studying:hover {
   border-color: #3b82f6;
   box-shadow: 0 6px 16px rgba(59, 130, 246, 0.12);
@@ -580,6 +614,7 @@
   border-color: #fef3c7;
   background: linear-gradient(180deg, #ffffff 0%, #fffdf7 100%);
 }
+
 .km-point-card.needs_review:hover {
   border-color: #f59e0b;
   box-shadow: 0 6px 16px rgba(245, 158, 11, 0.12);
@@ -589,6 +624,7 @@
   border-color: #e2e8f0;
   background: #ffffff;
 }
+
 .km-point-card.not_started:hover {
   border-color: #94a3b8;
 }
@@ -682,10 +718,21 @@
   color: #0f172a;
 }
 
-.km-point-card.mastered .km-point-mastery-val { color: #059669; }
-.km-point-card.studying .km-point-mastery-val { color: #2563eb; }
-.km-point-card.needs_review .km-point-mastery-val { color: #d97706; }
-.km-point-card.not_started .km-point-mastery-val { color: #94a3b8; }
+.km-point-card.mastered .km-point-mastery-val {
+  color: #059669;
+}
+
+.km-point-card.studying .km-point-mastery-val {
+  color: #2563eb;
+}
+
+.km-point-card.needs_review .km-point-mastery-val {
+  color: #d97706;
+}
+
+.km-point-card.not_started .km-point-mastery-val {
+  color: #94a3b8;
+}
 
 .km-point-progress-bar {
   width: 46px;
@@ -701,10 +748,21 @@
   transition: width 0.3s ease;
 }
 
-.km-point-card.mastered .km-point-progress-fill { background: #10b981; }
-.km-point-card.studying .km-point-progress-fill { background: #3b82f6; }
-.km-point-card.needs_review .km-point-progress-fill { background: #f59e0b; }
-.km-point-card.not_started .km-point-progress-fill { background: #cbd5e1; }
+.km-point-card.mastered .km-point-progress-fill {
+  background: #10b981;
+}
+
+.km-point-card.studying .km-point-progress-fill {
+  background: #3b82f6;
+}
+
+.km-point-card.needs_review .km-point-progress-fill {
+  background: #f59e0b;
+}
+
+.km-point-card.not_started .km-point-progress-fill {
+  background: #cbd5e1;
+}
 
 .km-point-action-hint {
   display: inline-flex;
@@ -714,7 +772,9 @@
   font-weight: 600;
   color: #2563eb;
   opacity: 0.85;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
 }
 
 .km-point-card:hover .km-point-action-hint {

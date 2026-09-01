@@ -1,15 +1,15 @@
 import React from "react";
 import {
-  Clock3,
   BookMarked,
-  LockKeyhole,
   CheckCircle2,
   ChevronRight,
-  Target,
-  Sparkles,
-  Zap,
-  Trophy,
+  Clock3,
+  LockKeyhole,
   Network,
+  Sparkles,
+  Target,
+  Trophy,
+  Zap,
 } from "lucide-react";
 
 /**
@@ -17,6 +17,18 @@ import {
  * 第一段：独立课时概览卡片（包含问候、章节面包屑、课时大标题、用时与全书认知画像入口，避免误认为单课140考点）
  * 第二段：独立核心考点梳理卡片（整齐陈列本课的核心考点与评测状态）
  * 底部固定栏：固定在工作区底部的自适应小测行动栏，不随考点数量上下跳动
+ * @param root0
+ * @param root0.courseName
+ * @param root0.selectedChapter
+ * @param root0.selectedSection
+ * @param root0.progress
+ * @param root0.busy
+ * @param root0.onStart
+ * @param root0.onContinue
+ * @param root0.onLearnKnowledge
+ * @param root0.onOpenKnowledgeMap
+ * @param root0.masteredKpCount
+ * @param root0.totalKpCount
  */
 export default function LessonWorkspace({
   courseName = "七年级数学 · 上册",
@@ -55,7 +67,9 @@ export default function LessonWorkspace({
       {/* ================= 第一段：欢迎与概览卡片 ================= */}
       <section className="lesson-overview-card">
         <div className="overview-card-left">
-          <h1 className="overview-welcome-title">{getGreeting()}，开启今天的学习吧</h1>
+          <h1 className="overview-welcome-title">
+            {getGreeting()}，开启今天的学习吧
+          </h1>
         </div>
 
         <div className="overview-card-right">
@@ -96,7 +110,9 @@ export default function LessonWorkspace({
             </span>
             <span className="lesson-time-pill">
               <Clock3 size={13} className="text-slate-400" />
-              <span>建议用时 约 {selectedSection.estimatedMinutes || 20} 分钟</span>
+              <span>
+                建议用时 约 {selectedSection.estimatedMinutes || 20} 分钟
+              </span>
             </span>
           </div>
         </div>
@@ -106,7 +122,7 @@ export default function LessonWorkspace({
           {selectedSection.knowledgePoints.map((kp, index) => {
             const pItem = progressByKp[kp.id];
             const isMastered =
-              pItem?.state === "mastered" || (pItem?.mastery >= 85);
+              pItem?.state === "mastered" || pItem?.mastery >= 85;
             const isNeedsReview = pItem?.state === "needs_review";
 
             return (
@@ -117,12 +133,21 @@ export default function LessonWorkspace({
                     ? "mastered"
                     : isNeedsReview
                       ? "needs-review"
-                      : !isUnlocked
-                        ? "locked"
-                        : ""
+                      : isUnlocked
+                        ? ""
+                        : "locked"
                 }`}
                 onClick={() => {
                   if (isUnlocked) onLearnKnowledge(kp.id);
+                }}
+                onKeyDown={(event) => {
+                  if (
+                    isUnlocked &&
+                    (event.key === "Enter" || event.key === " ")
+                  ) {
+                    event.preventDefault();
+                    onLearnKnowledge(kp.id);
+                  }
                 }}
                 role="button"
                 tabIndex={isUnlocked ? 0 : -1}
@@ -148,9 +173,9 @@ export default function LessonWorkspace({
                       }`}
                     >
                       {isMastered && <CheckCircle2 size={13} />}
-                      {pItem.mastery != null
-                        ? `${pItem.mastery}% 掌握`
-                        : pItem.label || "已评测"}
+                      {pItem.mastery == null
+                        ? pItem.label || "已评测"
+                        : `${pItem.mastery}% 掌握`}
                     </span>
                   ) : (
                     <span className="kp-mastery-pill locked">
@@ -180,7 +205,8 @@ export default function LessonWorkspace({
           <div className="action-dock-info">
             {currentLessonProgress ? (
               <strong>
-                已完成 {completedCount}/{selectedSection.knowledgePoints.length} 个考点评测
+                已完成 {completedCount}/{selectedSection.knowledgePoints.length}{" "}
+                个考点评测
               </strong>
             ) : null}
           </div>
@@ -219,4 +245,3 @@ export default function LessonWorkspace({
     </div>
   );
 }
-

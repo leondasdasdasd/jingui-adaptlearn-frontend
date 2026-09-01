@@ -13,7 +13,12 @@ const issueValue = (issue, ...keys) => {
   return key ? String(issue[key]) : "";
 };
 
-/** 显示单条服务端质检问题，字段兼容仅保留在此展示边界。 */
+/**
+ * 显示单条服务端质检问题，字段兼容仅保留在此展示边界。
+ * @param root0
+ * @param root0.issue
+ * @param root0.index
+ */
 export default function QualityIssue({ issue, index }) {
   const field =
     issueValue(issue, "field", "location") ||

@@ -44,10 +44,7 @@ export function usePlatformTeachingDirectory(open) {
         setSelectedSubjectId(preferredSubject(items)?.subjectId || "");
         if (items.length === 0) {
           setError(
-            trans(
-              "adaptiveLearning.startClass.noSubjects",
-              "没有可用学科",
-            ),
+            trans("adaptiveLearning.startClass.noSubjects", "没有可用学科"),
           );
         }
         return { items, currentSemester };

@@ -25,6 +25,11 @@ const WHOLE_LESSON_I18N_KEY = "adaptiveLearning.content.wholeLesson";
 const LEARNING_CONTENT_I18N_KEY = "adaptiveLearning.content.learningContent";
 const TEST_QUESTIONS_I18N_KEY = "adaptiveLearning.content.testQuestions";
 
+/**
+ *
+ * @param version
+ * @param latestPublishedVersion
+ */
 function versionOptionLabel(version, latestPublishedVersion) {
   const currentReleaseLabel =
     version.id === latestPublishedVersion.id

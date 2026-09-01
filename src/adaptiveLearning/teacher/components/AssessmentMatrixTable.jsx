@@ -9,7 +9,13 @@ import {
   assessmentRoleMeta,
 } from "../presentation/assessmentPresentation";
 
-/** 渲染规范化后的单个知识点评估矩阵。 */
+/**
+ * 渲染规范化后的单个知识点评估矩阵。
+ * @param root0
+ * @param root0.cells
+ * @param root0.selectedCellId
+ * @param root0.onSelectCell
+ */
 export default function AssessmentMatrixTable({
   cells,
   selectedCellId,

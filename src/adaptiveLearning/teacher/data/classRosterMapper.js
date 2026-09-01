@@ -37,7 +37,8 @@ function finiteCount(value) {
  * @returns {object} 稳定凭证模型
  */
 function credentialFromApi(payload) {
-  const source = payload?.credential || payload?.accessCredential || payload || {};
+  const source =
+    payload?.credential || payload?.accessCredential || payload || {};
   return {
     status: String(source.status || ""),
     accessToken:
@@ -63,10 +64,7 @@ function activityFromApi(payload) {
     answerCount: finiteCount(
       firstPresent([source.answerCount, payload?.answerCount], null),
     ),
-    lastActiveAt: firstPresent([
-      source.lastActiveAt,
-      payload?.lastActiveAt,
-    ]),
+    lastActiveAt: firstPresent([source.lastActiveAt, payload?.lastActiveAt]),
   };
 }
 
@@ -135,7 +133,9 @@ export function classRosterFromApi(classPayload, rosterPayload) {
 
   return {
     classInfo: {
-      classId: String(firstPresent([classSource.classId, classSource.id])).trim(),
+      classId: String(
+        firstPresent([classSource.classId, classSource.id]),
+      ).trim(),
       className: String(
         firstPresent([classSource.className, classSource.name]),
       ).trim(),

@@ -1,6 +1,11 @@
 /** @jest-environment node */
 
-import { answerText, getLessonAttribution, percent } from "./model";
+import {
+  answerText,
+  getLessonAttribution,
+  percent,
+  studentProfileHeader,
+} from "./model";
 
 describe("student learning home model", () => {
   test("formats mastery values without exposing invalid numeric state", () => {
@@ -32,5 +37,13 @@ describe("student learning home model", () => {
     };
 
     expect(getLessonAttribution("正数与负数", profile)).toBe("第一章 · 第1课");
+  });
+
+  test("uses the authoritative account display name without inventing a class", () => {
+    expect(
+      studentProfileHeader({
+        student: { displayName: "四学生20240405" },
+      }),
+    ).toEqual({ name: "四学生20240405", className: "" });
   });
 });

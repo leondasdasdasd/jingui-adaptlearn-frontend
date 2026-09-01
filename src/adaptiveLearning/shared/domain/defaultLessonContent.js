@@ -1,4 +1,4 @@
-import { findLessonById, course } from "./courseCatalog.js";
+import { course, findLessonById } from "./courseCatalog.js";
 
 const now = () => new Date().toISOString();
 
@@ -38,6 +38,18 @@ const shortAnswerRubrics = {
 
 /**
  * 构造题目基础对象
+ * @param root0
+ * @param root0.id
+ * @param root0.purpose
+ * @param root0.kpId
+ * @param root0.type
+ * @param root0.difficulty
+ * @param root0.stem
+ * @param root0.answer
+ * @param root0.options
+ * @param root0.analysis
+ * @param root0.rubric
+ * @param root0.diagnosticRole
  */
 function createQuestion({
   id,
@@ -53,10 +65,20 @@ function createQuestion({
   diagnosticRole = "STANDARD_PROBE",
 }) {
   const normPurpose = purpose.toLowerCase();
-  const phase = normPurpose === "post" ? "knowledge" : normPurpose === "review" ? "review" : "diagnostic";
+  const phase =
+    normPurpose === "post"
+      ? "knowledge"
+      : normPurpose === "review"
+        ? "review"
+        : "diagnostic";
   return {
     id,
-    purpose: normPurpose === "pre" ? "PRE" : normPurpose === "review" ? "POST" : "PRACTICE",
+    purpose:
+      normPurpose === "pre"
+        ? "PRE"
+        : normPurpose === "review"
+          ? "POST"
+          : "PRACTICE",
     phase,
     type,
     difficulty,
@@ -71,7 +93,13 @@ function createQuestion({
     acceptableAnswers: Array.isArray(answer) ? answer : [String(answer)],
     analysis,
     maxScore: type === "short_answer" ? 4 : 2,
-    rubric: rubric.length > 0 ? rubric : (shortAnswerRubrics[id] || (type === "short_answer" ? shortAnswerRubrics["rubric-generic-explanation"] : [])),
+    rubric:
+      rubric.length > 0
+        ? rubric
+        : shortAnswerRubrics[id] ||
+          (type === "short_answer"
+            ? shortAnswerRubrics["rubric-generic-explanation"]
+            : []),
     knowledgePointIds: [kpId],
     primaryKnowledgePointId: kpId,
     knowledgeObjectiveIds: [kpId],
@@ -103,7 +131,8 @@ function seedSection1_1Questions() {
         { key: "C", text: "2 米" },
         { key: "D", text: "-3 米" },
       ],
-      analysis: "向东和向西是具有相反意义的量，向东为正，向西则记为负，因此向西走 2 米记作 -2 米。",
+      analysis:
+        "向东和向西是具有相反意义的量，向东为正，向西则记为负，因此向西走 2 米记作 -2 米。",
     }),
     createQuestion({
       id: "sec11-pre-2",
@@ -114,7 +143,8 @@ function seedSection1_1Questions() {
       diagnosticRole: "STANDARD_CONFIRMATION",
       stem: "如果收入 20 元记作 +20 元，那么支出 8 元记作____元。",
       answer: "-8",
-      analysis: "收入与支出是相反意义的量，收入记作正数，支出记作负数，故支出 8 元记作 -8 元。",
+      analysis:
+        "收入与支出是相反意义的量，收入记作正数，支出记作负数，故支出 8 元记作 -8 元。",
     }),
     createQuestion({
       id: "sec11-pre-3",
@@ -131,7 +161,8 @@ function seedSection1_1Questions() {
         { key: "C", text: "0 既不是正数也不是负数" },
         { key: "D", text: "0 既是正数也是负数" },
       ],
-      analysis: "0 是正数和负数的分界点，它既不是正数也不是负数，是自然数也是有理数。",
+      analysis:
+        "0 是正数和负数的分界点，它既不是正数也不是负数，是自然数也是有理数。",
     }),
     createQuestion({
       id: "sec11-pre-4",
@@ -141,9 +172,11 @@ function seedSection1_1Questions() {
       difficulty: 2,
       diagnosticRole: "STANDARD_CONFIRMATION",
       stem: "气温为 0℃ 是否表示“没有温度”？请结合生活实际简要说明理由。",
-      answer: "不是，0℃ 是摄氏温标中的一个特定基准点（冰水混合物的温度），并不代表没有温度。",
+      answer:
+        "不是，0℃ 是摄氏温标中的一个特定基准点（冰水混合物的温度），并不代表没有温度。",
       rubric: shortAnswerRubrics["approved-pre-4"],
-      analysis: "在摄氏温标中，0℃ 规定为冰水混合物的温度，它是一个具体的物理量和基准点，并不是“没有”。",
+      analysis:
+        "在摄氏温标中，0℃ 规定为冰水混合物的温度，它是一个具体的物理量和基准点，并不是“没有”。",
     }),
     createQuestion({
       id: "sec11-pre-5",
@@ -171,7 +204,8 @@ function seedSection1_1Questions() {
         { key: "C", text: "+48.5 kg" },
         { key: "D", text: "-48.5 kg" },
       ],
-      analysis: "实际质量 48.5 kg 比标准质量 50 kg 少 1.5 kg，少记为负，所以应记作 -1.5 kg。",
+      analysis:
+        "实际质量 48.5 kg 比标准质量 50 kg 少 1.5 kg，少记为负，所以应记作 -1.5 kg。",
     }),
   ];
 
@@ -217,7 +251,8 @@ function seedSection1_1Questions() {
           { key: "C", text: "向东走 10 米与向南走 10 米" },
           { key: "D", text: "身高增加 2 厘米与体重减少 2 千克" },
         ],
-        analysis: "相反意义的量必须是在同一种属性下意义相反的量，运进粮食与运出粮食符合要求。",
+        analysis:
+          "相反意义的量必须是在同一种属性下意义相反的量，运进粮食与运出粮食符合要求。",
       }),
       createQuestion({
         id: "sec11-prac-k1-4",
@@ -226,9 +261,11 @@ function seedSection1_1Questions() {
         type: "short_answer",
         difficulty: 3,
         stem: "请举出一组生活中具有相反意义的量的例子，并分别用正数和负数表示出来。",
-        answer: "例如：规定盈利为正，亏损为负，则盈利 500 元记作 +500 元，亏损 200 元记作 -200 元。",
+        answer:
+          "例如：规定盈利为正，亏损为负，则盈利 500 元记作 +500 元，亏损 200 元记作 -200 元。",
         rubric: shortAnswerRubrics["approved-post-3"],
-        analysis: "只要写出一对同类属性且意义相反的量，并正确赋予正负号即可得分。",
+        analysis:
+          "只要写出一对同类属性且意义相反的量，并正确赋予正负号即可得分。",
       }),
     ],
     [k2]: [
@@ -265,7 +302,8 @@ function seedSection1_1Questions() {
         type: "short_answer",
         difficulty: 2,
         stem: "在日常生活中，‘0’除了表示‘没有’之外，还可以表示什么？请举例说明。",
-        answer: "‘0’还可以表示基准点或分界线，例如温度计上的 0℃、海平面的海拔高度 0 米、时间起点的 0 时等。",
+        answer:
+          "‘0’还可以表示基准点或分界线，例如温度计上的 0℃、海平面的海拔高度 0 米、时间起点的 0 时等。",
         rubric: shortAnswerRubrics["rubric-generic-explanation"],
         analysis: "阐明 0 作为基准和分界点的意义并给出具体实例。",
       }),
@@ -304,9 +342,11 @@ function seedSection1_1Questions() {
         type: "short_answer",
         difficulty: 4,
         stem: "一辆出租车在一条东西走向的公路上行驶，向东记为正，向西记为负。行驶记录为（单位：千米）：+8, -3, +4, -5。请问该出租车最后停在出发点的哪个方向，距离出发点多少千米？",
-        answer: "计算位置变化：(+8) + (-3) + (+4) + (-5) = +4 千米。因此，出租车停在出发点东面，距离出发点 4 千米处。",
+        answer:
+          "计算位置变化：(+8) + (-3) + (+4) + (-5) = +4 千米。因此，出租车停在出发点东面，距离出发点 4 千米处。",
         rubric: shortAnswerRubrics["approved-post-11"],
-        analysis: "将多步有向位移进行代数和计算，符号决定方向，绝对值决定距离。",
+        analysis:
+          "将多步有向位移进行代数和计算，符号决定方向，绝对值决定距离。",
       }),
     ],
   };
@@ -335,7 +375,8 @@ function seedSection1_1Questions() {
       type: "short_answer",
       difficulty: 3,
       stem: "某食品包装袋上标有“净含量 500g ± 5g”字样。请说明“+5g”和“-5g”的含义，并写出该食品合格的净含量范围。",
-      answer: "“+5g”表示比标准净含量 500g 最多超出 5g（即 505g），“-5g”表示最多低于标准 5g（即 495g）。合格的净含量范围是 495g ~ 505g。",
+      answer:
+        "“+5g”表示比标准净含量 500g 最多超出 5g（即 505g），“-5g”表示最多低于标准 5g（即 495g）。合格的净含量范围是 495g ~ 505g。",
       rubric: shortAnswerRubrics["rubric-generic-explanation"],
       analysis: "正负号表示围绕标准值的允许误差范围。",
     }),
@@ -398,7 +439,8 @@ function seedSection1_2Questions() {
         { key: "C", text: "原点位置" },
         { key: "D", text: "上方 3 个单位长度处" },
       ],
-      analysis: "通常规定向右为正方向，负数在原点左侧，因此 -3 在原点左侧 3 个单位长度处。",
+      analysis:
+        "通常规定向右为正方向，负数在原点左侧，因此 -3 在原点左侧 3 个单位长度处。",
     }),
     createQuestion({
       id: "sec12-pre-4",
@@ -436,7 +478,8 @@ function seedSection1_2Questions() {
       difficulty: 3,
       diagnosticRole: "STANDARD_CONFIRMATION",
       stem: "数轴上到原点的距离等于 4 的点表示的数是多少？请说明理由。",
-      answer: "+4 和 -4。因为在数轴上，原点右侧距离为 4 的点表示 +4，原点左侧距离为 4 的点表示 -4。",
+      answer:
+        "+4 和 -4。因为在数轴上，原点右侧距离为 4 的点表示 +4，原点左侧距离为 4 的点表示 -4。",
       rubric: shortAnswerRubrics["rubric-generic-explanation"],
       analysis: "距离原点 4 个单位的点有两个，分别在原点的左右两侧。",
     }),
@@ -518,7 +561,8 @@ function seedSection1_2Questions() {
           { key: "C", text: "3" },
           { key: "D", text: "2 或 -4" },
         ],
-        analysis: "点 B 可以在点 A 的右边 (-1 + 3 = 2)，也可以在点 A 的左边 (-1 - 3 = -4)。",
+        analysis:
+          "点 B 可以在点 A 的右边 (-1 + 3 = 2)，也可以在点 A 的左边 (-1 - 3 = -4)。",
       }),
     ],
   };
@@ -637,7 +681,8 @@ function seedSection1_3Questions() {
       difficulty: 3,
       diagnosticRole: "STANDARD_CONFIRMATION",
       stem: "如果 |a| = 6，那么 a 的值是多少？请写出理由。",
-      answer: "a = 6 或 a = -6。因为绝对值为 6 的数表示在数轴上与原点距离为 6 的点，有正 6 和负 6 两个值。",
+      answer:
+        "a = 6 或 a = -6。因为绝对值为 6 的数表示在数轴上与原点距离为 6 的点，有正 6 和负 6 两个值。",
       rubric: shortAnswerRubrics["rubric-generic-explanation"],
       analysis: "互为相反数的两个数的绝对值相等，绝对值为正数的数有两个解。",
     }),
@@ -689,7 +734,8 @@ function seedSection1_3Questions() {
           { key: "C", text: "非负数" },
           { key: "D", text: "非正数" },
         ],
-        analysis: "绝对值表示距离，距离不可能为负，故绝对值总是大于或等于 0（非负数）。",
+        analysis:
+          "绝对值表示距离，距离不可能为负，故绝对值总是大于或等于 0（非负数）。",
       }),
     ],
     [k4]: [
@@ -748,17 +794,19 @@ function seedSection1_3Questions() {
 
 /**
  * 通用课时 Mock 生成器（支持课程目录中任何课时）
+ * @param lesson
  */
 function createMockLessonData(lesson) {
-  const kps = lesson.knowledgePoints && lesson.knowledgePoints.length > 0
-    ? lesson.knowledgePoints
-    : [{ id: `${lesson.id}-kp-1`, name: `${lesson.title}基础` }];
+  const kps =
+    lesson.knowledgePoints && lesson.knowledgePoints.length > 0
+      ? lesson.knowledgePoints
+      : [{ id: `${lesson.id}-kp-1`, name: `${lesson.title}基础` }];
 
   const pre = [];
   const practicePools = {};
   const review = [];
 
-  kps.forEach((kp, kpIndex) => {
+  for (const [kpIndex, kp] of kps.entries()) {
     const q1 = createQuestion({
       id: `${lesson.id}-pre-${kpIndex + 1}a`,
       purpose: "pre",
@@ -819,7 +867,7 @@ function createMockLessonData(lesson) {
         analysis: `考查「${kp.name}」在特殊值与平衡状态下的数值。`,
       }),
     ];
-  });
+  }
 
   review.push(
     createQuestion({
@@ -845,10 +893,12 @@ function createMockLessonData(lesson) {
 
 /**
  * 认知诊断矩阵构造
+ * @param lessonId
+ * @param knowledgePoints
  */
 function createAssessmentMatrices(lessonId, knowledgePoints) {
   const matrices = {};
-  knowledgePoints.forEach((kp) => {
+  for (const kp of knowledgePoints) {
     matrices[kp.id] = {
       knowledgePointId: kp.id,
       targetStatement: `掌握 ${kp.name} 的基本概念、运算规则与应用。`,
@@ -873,12 +923,16 @@ function createAssessmentMatrices(lessonId, knowledgePoints) {
           observableBehavior: `运用 ${kp.name} 建立数学模型并解决问题。`,
           evidenceCriteria: ["步骤规范", "结果准确"],
           commonMisconceptions: ["模型建立不当"],
-          recommendedQuestionTypes: ["single_choice", "fill_blank", "short_answer"],
+          recommendedQuestionTypes: [
+            "single_choice",
+            "fill_blank",
+            "short_answer",
+          ],
           minimumIndependentEvidence: 1,
         },
       ],
     };
-  });
+  }
   matrices.composite = {
     knowledgePointId: "composite",
     targetStatement: `综合掌握全课知识体系并能灵活迁移。`,
@@ -902,10 +956,12 @@ function createAssessmentMatrices(lessonId, knowledgePoints) {
 
 /**
  * 考点插槽构造
+ * @param lessonId
+ * @param knowledgePoints
  */
 function createAssessmentQuestionSlots(lessonId, knowledgePoints) {
   const slots = {};
-  knowledgePoints.forEach((kp) => {
+  for (const kp of knowledgePoints) {
     slots[kp.id] = [
       {
         id: `${kp.id}:slot:1`,
@@ -930,7 +986,7 @@ function createAssessmentQuestionSlots(lessonId, knowledgePoints) {
         contextTheme: "实际应用情境",
       },
     ];
-  });
+  }
   slots.composite = [
     {
       id: `composite:slot:1`,
@@ -949,18 +1005,30 @@ function createAssessmentQuestionSlots(lessonId, knowledgePoints) {
 
 /**
  * 获取指定课时的完整 mock 内容包
+ * @param lessonId
  */
 export function getMockLessonContent(lessonId) {
   const lesson = findLessonById(lessonId);
   let questionsData;
-  if (lessonId === "section-1-1") {
-    questionsData = seedSection1_1Questions();
-  } else if (lessonId === "section-1-2") {
-    questionsData = seedSection1_2Questions();
-  } else if (lessonId === "section-1-3") {
-    questionsData = seedSection1_3Questions();
-  } else {
-    questionsData = createMockLessonData(lesson);
+  switch (lessonId) {
+    case "section-1-1": {
+      questionsData = seedSection1_1Questions();
+
+      break;
+    }
+    case "section-1-2": {
+      questionsData = seedSection1_2Questions();
+
+      break;
+    }
+    case "section-1-3": {
+      questionsData = seedSection1_3Questions();
+
+      break;
+    }
+    default: {
+      questionsData = createMockLessonData(lesson);
+    }
   }
 
   const kps = lesson.knowledgePoints || [];
@@ -999,91 +1067,35 @@ export function getMockLessonContent(lessonId) {
 }
 
 /**
- * 转换成符合发布版本的 contentVersion 对象
- */
-export function getMockContentVersion(lessonId) {
-  const lesson = findLessonById(lessonId);
-  const content = getMockLessonContent(lessonId);
-  const kps = lesson.knowledgePoints || [];
-
-  return {
-    id: `mock-version-${lessonId}`,
-    textbookLessonId: lessonId,
-    versionNumber: 1,
-    publishedAt: now(),
-    contentPackage: {
-      planType: "SINGLE_LESSON",
-      title: lesson.title,
-      sourceLessons: [lesson.id],
-      lesson: {
-        id: lesson.id,
-        title: lesson.title,
-        knowledgePoints: kps,
-      },
-      knowledgeObjectives: kps.map((kp) => ({
-        id: kp.id,
-        name: kp.name,
-        objective: `理解并掌握${kp.name}`,
-        summary: `${kp.name}是${lesson.title}的核心考点之一。`,
-        example: `例如在实际生活与几何数轴中，${kp.name}有广泛的应用。`,
-      })),
-      generationPolicy: {
-        aiGenerationEnabled: true,
-        diagnosticAdaptiveEnabled: true,
-        masteryThreshold: 85,
-      },
-      questionDistribution: null,
-      diagnosticQuestionPool: content.preQuestions,
-      knowledgePracticePools: content.knowledgePracticePools,
-      compositeReviewPool: content.compositeReviewPool,
-      learningContent: {
-        composite: {
-          status: "READY",
-          classroomId: `mock-room-composite-${lessonId}`,
-          classroomUrl: "about:blank",
-          coveredKnowledgeObjectiveIds: kps.map((k) => k.id),
-        },
-        knowledgePoints: kps.map((kp) => ({
-          knowledgeObjectiveId: kp.id,
-          openMaic: {
-            status: "READY",
-            classroomId: `mock-room-${kp.id}`,
-            classroomUrl: "about:blank",
-            coveredKnowledgeObjectiveIds: [kp.id],
-          },
-        })),
-      },
-      assessmentMatrices: content.assessmentMatrices,
-      assessmentQuestionSlots: content.assessmentQuestionSlots,
-      unconfirmedItems: [],
-    },
-  };
-}
-
-/**
  * 兼容旧导出
  */
 export function seedQuestions() {
   const s11 = seedSection1_1Questions();
   return {
     pre: s11.pre,
-    post: [
-      ...Object.values(s11.practicePools).flat(),
-      ...s11.review,
-    ],
+    post: [...Object.values(s11.practicePools).flat(), ...s11.review],
   };
 }
 
+/**
+ *
+ */
 export function seedAssessmentMatrices() {
   const lesson = findLessonById("section-1-1");
   return createAssessmentMatrices("section-1-1", lesson.knowledgePoints);
 }
 
+/**
+ *
+ */
 export function seedAssessmentQuestionSlots() {
   const lesson = findLessonById("section-1-1");
   return createAssessmentQuestionSlots("section-1-1", lesson.knowledgePoints);
 }
 
+/**
+ *
+ */
 export function createDefaultContent() {
   return {
     "section-1-1": getMockLessonContent("section-1-1"),
@@ -1092,6 +1104,10 @@ export function createDefaultContent() {
   };
 }
 
+/**
+ *
+ * @param content
+ */
 export function normalizeLessonContent(content) {
   return Object.fromEntries(
     Object.entries(content).map(([id, item]) => [

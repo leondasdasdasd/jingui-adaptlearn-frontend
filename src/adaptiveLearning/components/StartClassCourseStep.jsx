@@ -107,10 +107,7 @@ export default function StartClassCourseStep({
 
         <fieldset className="start-class-lesson-scope full-width">
           <legend>
-            {trans(
-              "adaptiveLearning.startClass.linkedLessons",
-              "关联内容课时",
-            )}
+            {trans("adaptiveLearning.startClass.linkedLessons", "关联内容课时")}
             <strong className="required-star">*</strong>
           </legend>
           <p>

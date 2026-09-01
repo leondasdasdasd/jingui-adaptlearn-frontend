@@ -42,7 +42,10 @@ const diagnosticStatusKeys = Object.freeze({
     "adaptiveLearning.preResult.status.provisional",
     "success",
   ],
-  needs_learning: ["adaptiveLearning.preResult.status.needsLearning", "warning"],
+  needs_learning: [
+    "adaptiveLearning.preResult.status.needsLearning",
+    "warning",
+  ],
   uncertain: ["adaptiveLearning.preResult.status.uncertain", "neutral"],
 });
 
@@ -119,6 +122,10 @@ export function preAssessmentAnswerStateMeta(state) {
   };
 }
 
+/**
+ *
+ * @param statusTuple
+ */
 function statusMeta(statusTuple) {
   return statusTuple
     ? { label: trans(statusTuple[0]), tone: statusTuple[1] }
@@ -184,7 +191,14 @@ export function preAssessmentNextStep(kind) {
  * @returns {{heading: string, description: string}} 摘要文案
  */
 export function preAssessmentSummary(input) {
-  const { hasQuestions, questionCount, knowledgeCount, confirmedCount, correctCount, focusCount } = input;
+  const {
+    hasQuestions,
+    questionCount,
+    knowledgeCount,
+    confirmedCount,
+    correctCount,
+    focusCount,
+  } = input;
   if (!hasQuestions)
     return {
       heading: preAssessmentResultText("organizedKnowledge", {

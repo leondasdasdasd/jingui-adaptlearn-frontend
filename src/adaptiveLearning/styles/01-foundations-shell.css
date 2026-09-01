@@ -1,4 +1,7 @@
 :root {
+  height: 100%;
+  overflow: hidden auto;
+  overscroll-behavior-y: contain;
   font-family:
     "PingFang SC",
     -apple-system,

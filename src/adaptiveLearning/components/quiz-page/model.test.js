@@ -1,10 +1,21 @@
 /** @jest-environment node */
 
 import {
+  createFormulaInputModes,
   displayCorrectAnswer,
   emptyAnswerForQuestion,
   practiceGateOutcome,
 } from "./model";
+
+describe("createFormulaInputModes", () => {
+  it("只把用户明确选择的空格切换为公式模式", () => {
+    expect(createFormulaInputModes(undefined, 1)).toEqual(["text", "formula"]);
+    expect(createFormulaInputModes(["formula", "text"], 1)).toEqual([
+      "formula",
+      "formula",
+    ]);
+  });
+});
 
 describe("quiz page model", () => {
   test("creates an answer value matching the question shape", () => {

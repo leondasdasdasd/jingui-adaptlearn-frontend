@@ -7,55 +7,52 @@
   --sah-primary-hover: #1d4ed8;
   --sah-primary-light: #eff6ff;
   --sah-primary-border: #bfdbfe;
-
   --sah-text-main: #0f172a;
   --sah-text-secondary: #334155;
   --sah-text-muted: #64748b;
   --sah-text-light: #94a3b8;
-
   --sah-bg-page: #f8fafc;
   --sah-bg-card: #ffffff;
   --sah-bg-hover: #f1f5f9;
   --sah-bg-input: #f8fafc;
-
   --sah-border: #e2e8f0;
   --sah-border-subtle: #f1f5f9;
-
   --sah-success: #059669;
   --sah-success-bg: #ecfdf5;
   --sah-success-border: #a7f3d0;
   --sah-success-text: #065f46;
-
   --sah-warning: #d97706;
   --sah-warning-bg: #fffbeb;
   --sah-warning-border: #fde68a;
   --sah-warning-text: #92400e;
-
   --sah-danger: #e11d48;
   --sah-danger-bg: #fff1f2;
   --sah-danger-border: #fecdd3;
   --sah-danger-text: #9f1239;
-
   --sah-muted: #64748b;
   --sah-muted-bg: #f1f5f9;
   --sah-muted-border: #e2e8f0;
   --sah-muted-text: #475569;
-
   --sah-radius-sm: 6px;
   --sah-radius-md: 10px;
   --sah-radius-lg: 14px;
   --sah-radius-pill: 999px;
-
   --sah-shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
-  --sah-shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
-  --sah-shadow-lg: 0 12px 24px -4px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
+  --sah-shadow-md:
+    0 4px 12px -2px rgba(15, 23, 42, 0.06),
+    0 2px 4px -2px rgba(15, 23, 42, 0.03);
+  --sah-shadow-lg:
+    0 12px 24px -4px rgba(15, 23, 42, 0.1),
+    0 4px 6px -2px rgba(15, 23, 42, 0.04);
 
   width: 100%;
   max-width: 1120px;
   margin: 0 auto;
   padding: 8px 0 32px;
   color: var(--sah-text-main);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
 }
 
 /* --------------------------------------------------------------------------
@@ -188,10 +185,12 @@
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
   }
+
   70% {
     transform: scale(1);
     box-shadow: 0 0 0 6px rgba(37, 99, 235, 0);
   }
+
   100% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
@@ -213,7 +212,7 @@
 .student-progress-sync button {
   height: 26px;
   padding: 0 10px;
-  border: 1px solid currentColor;
+  border: 1px solid currentcolor;
   border-radius: var(--sah-radius-sm);
   background: #ffffff;
   color: inherit;
@@ -243,7 +242,10 @@
   flex-direction: column;
   justify-content: center;
   gap: 6px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .sah-bento-card:hover {
@@ -625,6 +627,7 @@
     opacity: 0;
     transform: translateY(-4px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -725,9 +728,10 @@
   border-radius: var(--sah-radius-lg);
   box-shadow: var(--sah-shadow-sm);
   cursor: pointer;
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.18s ease;
+  transition:
+    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.18s ease;
   position: relative;
   overflow: hidden;
 }
@@ -1100,8 +1104,13 @@
 }
 
 @keyframes sah-backdrop-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .student-attempt-drawer > aside {
@@ -1120,8 +1129,13 @@
 }
 
 @keyframes sah-slide-in {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 .student-attempt-drawer-header {
@@ -1365,9 +1379,17 @@
   font-weight: 700;
 }
 
-.answer-outcome-tag.success { color: var(--sah-success); }
-.answer-outcome-tag.warning { color: var(--sah-warning); }
-.answer-outcome-tag.danger { color: var(--sah-danger); }
+.answer-outcome-tag.success {
+  color: var(--sah-success);
+}
+
+.answer-outcome-tag.warning {
+  color: var(--sah-warning);
+}
+
+.answer-outcome-tag.danger {
+  color: var(--sah-danger);
+}
 
 .answer-reference-tag {
   font-size: 11px;

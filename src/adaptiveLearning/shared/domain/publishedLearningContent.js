@@ -28,8 +28,7 @@ const withFallback = (value, fallback) => value || fallback;
 const readyRuntime = (runtime = {}) => {
   const source = runtime || {};
   return {
-    status:
-      source.status || (source.classroomUrl ? "READY" : "UNAVAILABLE"),
+    status: source.status || (source.classroomUrl ? "READY" : "UNAVAILABLE"),
     classroomId: source.classroomId || "",
     classroomUrl: source.classroomUrl || "",
     coveredKnowledgeObjectiveIds: source.coveredKnowledgeObjectiveIds || [],

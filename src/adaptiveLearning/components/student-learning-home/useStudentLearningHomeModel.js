@@ -4,7 +4,6 @@ import { useCallback, useMemo, useState } from "react";
 
 import {
   dateTime,
-  DEFAULT_KPS,
   getKpLatestTime,
   getLessonAttribution,
   scoreState,
@@ -137,27 +136,24 @@ export default function useStudentLearningHomeModel({ profile, viewer }) {
           kpSet.add(s.knowledgePointName || s.kpName);
       }
 
-      let kps = [...kpSet].filter(Boolean);
-      if (kps.length === 0) {
-        kps = [...DEFAULT_KPS];
-      }
+      const kps = [...kpSet].filter(Boolean);
 
-      const enrichedAttempts = filteredRawAttempts.map((a, idx) => {
+      const enrichedAttempts = filteredRawAttempts.map((a) => {
         const name =
           a.knowledgePointName ||
           a.kpName ||
           a.question?.knowledgePointName ||
-          kps[idx % kps.length];
+          "";
         return { ...a, kpName: name };
       });
 
-      const enrichedTimeline = filteredRawTimeline.map((t, idx) => {
-        const name = t.knowledgePointName || t.kpName || kps[idx % kps.length];
+      const enrichedTimeline = filteredRawTimeline.map((t) => {
+        const name = t.knowledgePointName || t.kpName || "";
         return { ...t, kpName: name };
       });
 
-      const enrichedSupport = filteredRawSupport.map((s, idx) => {
-        const name = s.knowledgePointName || s.kpName || kps[idx % kps.length];
+      const enrichedSupport = filteredRawSupport.map((s) => {
+        const name = s.knowledgePointName || s.kpName || "";
         return { ...s, kpName: name };
       });
 
@@ -310,7 +306,7 @@ export default function useStudentLearningHomeModel({ profile, viewer }) {
   // 下钻/选中定位的目标 KP
   const activeDrillKp = useMemo(() => {
     if (selectedKp !== "ALL") return selectedKp;
-    return knowledgePointsDetailed[0]?.name || DEFAULT_KPS[0];
+    return knowledgePointsDetailed[0]?.name || "";
   }, [selectedKp, knowledgePointsDetailed]);
 
   const selectedKpDetail = kpMasteryMap.get(activeDrillKp);

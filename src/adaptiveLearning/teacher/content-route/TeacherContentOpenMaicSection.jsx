@@ -70,7 +70,7 @@ export default function TeacherContentOpenMaicSection({
                 target="_blank"
                 rel="noreferrer"
               >
-                {trans("adaptiveLearning.openMaic.studentView", "学生模式")} {" "}
+                {trans("adaptiveLearning.openMaic.studentView", "学生模式")}{" "}
                 <ExternalLink size={14} />
               </a>
               <a
@@ -79,7 +79,7 @@ export default function TeacherContentOpenMaicSection({
                 target="_blank"
                 rel="noreferrer"
               >
-                <Settings2 size={14} /> {" "}
+                <Settings2 size={14} />{" "}
                 {trans("adaptiveLearning.openMaic.proMode", "专业模式")}
               </a>
               <button

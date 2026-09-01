@@ -2,10 +2,7 @@ import {
   getClassroomPlans,
   publishClassroomPlan,
 } from "../../shared/infrastructure/classroomApi";
-import {
-  START_CLASS_ISSUES,
-  startClassIssue,
-} from "../domain/startClassIssue";
+import { START_CLASS_ISSUES, startClassIssue } from "../domain/startClassIssue";
 
 export const MAX_LINKED_LESSON_COUNT = 3;
 

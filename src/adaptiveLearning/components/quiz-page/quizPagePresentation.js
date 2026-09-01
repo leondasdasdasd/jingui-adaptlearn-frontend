@@ -14,7 +14,10 @@ const QUESTION_TYPE_KEYS = new Map([
   ["word_builder", "wordBuilder"],
 ]);
 
-/** 返回练习页本地化题型名称。 */
+/**
+ * 返回练习页本地化题型名称。
+ * @param questionType
+ */
 export function quizQuestionTypeLabel(questionType) {
   const key = QUESTION_TYPE_KEYS.get(questionType);
   return key
@@ -44,14 +47,21 @@ export function correctionReadingGuideCopy() {
   };
 }
 
-/** 返回自适应难度调整说明。 */
+/**
+ * 返回自适应难度调整说明。
+ * @param direction
+ */
 export function difficultyAdjustmentLabel(direction) {
   return direction === "up"
     ? trans("adaptiveLearning.quiz.difficultyUp", "下一题增加一点挑战")
     : trans("adaptiveLearning.quiz.difficultyDown", "下一题先巩固关键步骤");
 }
 
-/** 返回历史作答浏览的下一步动作。 */
+/**
+ * 返回历史作答浏览的下一步动作。
+ * @param index
+ * @param resumeIndex
+ */
 export function historyNavigationLabel(index, resumeIndex) {
   return index + 1 < Number(resumeIndex || 0)
     ? trans("adaptiveLearning.quiz.nextQuestion", "下一题")
@@ -70,7 +80,11 @@ const PROGRESS_ACTION_COPY = new Map([
   ["next-question", ["adaptiveLearning.quiz.nextQuestion", "下一题"]],
 ]);
 
-/** 将 application 提供的主命令语义转换为本地化文案。 */
+/**
+ * 将 application 提供的主命令语义转换为本地化文案。
+ * @param kind
+ * @param correctionConfirmLabel
+ */
 export function quizProgressActionLabel(kind, correctionConfirmLabel) {
   if (kind === "confirm-correction") return correctionConfirmLabel;
   const copy =

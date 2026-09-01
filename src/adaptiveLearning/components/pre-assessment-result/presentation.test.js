@@ -31,7 +31,8 @@ describe("pre-assessment result presentation", () => {
     window.globalLange = "en";
     expect(preAssessmentNextStep("verification_new")).toEqual({
       title: "Your foundation looks stable",
-      description: "Skip repeated instruction and verify with an unseen question.",
+      description:
+        "Skip repeated instruction and verify with an unseen question.",
       actionLabel: "Continue learning",
     });
     expect(

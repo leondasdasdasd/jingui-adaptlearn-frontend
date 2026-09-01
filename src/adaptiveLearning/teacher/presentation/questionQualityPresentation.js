@@ -15,7 +15,10 @@ const ISSUE_TYPE_COPY = new Map([
   ["option_error", ["issue.optionError", "选项错误"]],
   ["answer_error", ["issue.answerError", "答案错误"]],
   ["analysis_error", ["issue.analysisError", "解析错误"]],
-  ["answer_analysis_mismatch", ["issue.answerAnalysisMismatch", "答案与解析不符"]],
+  [
+    "answer_analysis_mismatch",
+    ["issue.answerAnalysisMismatch", "答案与解析不符"],
+  ],
   ["ambiguity", ["issue.ambiguity", "题意歧义"]],
   ["missing_condition", ["issue.missingCondition", "条件缺失"]],
   ["non_unique_answer", ["issue.nonUniqueAnswer", "答案不唯一"]],
@@ -54,17 +57,23 @@ const STATUS_COPY = new Map([
 
 const JOB_COPY = new Map([
   ["queued", ["job.queued", "任务已提交，正在分配质检资源"]],
-  [
-    "running",
-    ["job.running", "正在逐题精校，已完成 {$completed}/{$total}"],
-  ],
+  ["running", ["job.running", "正在逐题精校，已完成 {$completed}/{$total}"]],
   ["failed", ["job.failed", "质检任务失败，请重新发起"]],
   ["cancelled", ["job.cancelled", "质检已取消，已完成结果仍保留"]],
 ]);
 
-/** 统一读取题目质检当前语言文案。 */
+/**
+ * 统一读取题目质检当前语言文案。
+ * @param key
+ * @param fallback
+ * @param replacements
+ */
 export function qualityText(key, fallback, replacements = {}) {
-  return trans(`adaptiveLearning.questionQuality.${key}`, fallback, replacements);
+  return trans(
+    `adaptiveLearning.questionQuality.${key}`,
+    fallback,
+    replacements,
+  );
 }
 
 const localizedDefinition = (definition, defaultKey, defaultFallback) => {
@@ -98,9 +107,12 @@ export const questionQualityCertaintyLabel = (certainty) =>
 export const questionQualityTypeLabel = (type) =>
   localizedDefinition(QUESTION_TYPE_COPY.get(type), "question", "题目");
 
+/**
+ *
+ * @param question
+ */
 export function questionQualityModuleLabel(question) {
-  if (question?.module === "pre")
-    return qualityText("module.pre", "课前测验");
+  if (question?.module === "pre") return qualityText("module.pre", "课前测验");
   if (question?.module === "post" && question?.phase === "review")
     return qualityText("module.review", "综合练习");
   if (question?.module === "post")
@@ -108,6 +120,11 @@ export function questionQualityModuleLabel(question) {
   return qualityText("question", "题目");
 }
 
+/**
+ *
+ * @param result
+ * @param jobActive
+ */
 export function questionQualityStatus(result, jobActive) {
   const status = normalizedResultStatus(result);
   const definition = STATUS_COPY.get(status);
@@ -122,17 +139,30 @@ export function questionQualityStatus(result, jobActive) {
   };
 }
 
+/**
+ *
+ * @param status
+ * @param counts
+ */
 export function questionQualityJobStatus(status, counts) {
   if (status === "completed")
     return counts.issues
-      ? qualityText("job.completedWithIssues", "质检完成，{$count} 题需要修改", {
-          count: counts.issues,
-        })
+      ? qualityText(
+          "job.completedWithIssues",
+          "质检完成，{$count} 题需要修改",
+          {
+            count: counts.issues,
+          },
+        )
       : qualityText("job.completed", "质检完成，全部题目通过");
   if (status === "partial")
-    return qualityText("job.partial", "质检已完成，{$count} 题失败，可单独重试", {
-      count: counts.failed,
-    });
+    return qualityText(
+      "job.partial",
+      "质检已完成，{$count} 题失败，可单独重试",
+      {
+        count: counts.failed,
+      },
+    );
   const normalizedStatus = status === "canceled" ? "cancelled" : status;
   const definition = JOB_COPY.get(normalizedStatus);
   if (definition) {

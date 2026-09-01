@@ -5,7 +5,15 @@ import { trans } from "../../../utils/i18n";
 import AssessmentSlotActions from "./AssessmentSlotActions";
 import AssessmentSlotCounts from "./AssessmentSlotCounts";
 
-/** 题目插槽的计数与顺序生成操作。 */
+/**
+ * 题目插槽的计数与顺序生成操作。
+ * @param root0
+ * @param root0.slotView
+ * @param root0.generationDisabled
+ * @param root0.onGenerateSlots
+ * @param root0.onGenerateQuestions
+ * @param root0.onStopQuestions
+ */
 export default function AssessmentSlotToolbar({
   slotView,
   generationDisabled,

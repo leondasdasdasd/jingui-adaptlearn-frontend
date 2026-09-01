@@ -4,7 +4,12 @@ import PropTypes from "prop-types";
 
 import { trans } from "../../../utils/i18n";
 
-/** 未生成矩阵时的插槽操作提示。 */
+/**
+ * 未生成矩阵时的插槽操作提示。
+ * @param root0
+ * @param root0.visible
+ * @param root0.onClose
+ */
 export default function AssessmentSlotErrorBanner({ visible, onClose }) {
   if (!visible) return null;
   return (

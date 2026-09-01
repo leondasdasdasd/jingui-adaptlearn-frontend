@@ -67,7 +67,9 @@ export default function AppShell({
   const navigate = useNavigate();
   const { session, setSession } = useLearningSession();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [progressIncreasing, setProgressIncreasing] = useState(false);
   const userMenuRef = useRef(null);
+  const previousProgressRef = useRef(progress);
   const identity = readClassStudentIdentity();
   const displayName =
     identity?.studentName || session.selection?.studentName || "学生用户";
@@ -90,6 +92,20 @@ export default function AppShell({
       document.removeEventListener("keydown", closeOnEscape);
     };
   }, [userMenuOpen]);
+
+  useEffect(() => {
+    const previousProgress = previousProgressRef.current;
+    previousProgressRef.current = progress;
+    if (
+      typeof progress !== "number" ||
+      typeof previousProgress !== "number" ||
+      progress <= previousProgress
+    )
+      return;
+    setProgressIncreasing(true);
+    const timer = window.setTimeout(() => setProgressIncreasing(false), 720);
+    return () => window.clearTimeout(timer);
+  }, [progress]);
 
   const logout = () => {
     forgetClassStudentIdentity();
@@ -160,7 +176,10 @@ export default function AppShell({
         </div>
       </header>
       {typeof progress === "number" && (
-        <div className="top-progress" aria-label={`学习进度 ${progress}%`}>
+        <div
+          className={`top-progress${progressIncreasing ? " is-increasing" : ""}`}
+          aria-label={`学习进度 ${progress}%`}
+        >
           <span style={{ width: `${progress}%` }} />
         </div>
       )}

@@ -1,4 +1,4 @@
-/* eslint-disable complexity, sonarjs/cognitive-complexity -- 生命周期工厂保持生成、校验、自动修复和取消的单一状态机入口。 */
+/* eslint-disable complexity -- 生命周期工厂保持生成、校验、自动修复和取消的单一状态机入口。 */
 import {
   cancelGenerationRun,
   createLessonGenerationRun,
@@ -115,9 +115,10 @@ export function createTeacherContentLifecycleActions({
       },
       inspectionStatus: {
         passed: issues.length === 0,
-        message: issues.length > 0
-          ? teacherContentNoticeText("issuesFound", { count: issues.length })
-          : teacherContentNoticeText("checkComplete"),
+        message:
+          issues.length > 0
+            ? teacherContentNoticeText("issuesFound", { count: issues.length })
+            : teacherContentNoticeText("checkComplete"),
         issues,
         inspectedAt: checkedAt,
       },
@@ -133,10 +134,14 @@ export function createTeacherContentLifecycleActions({
       issues,
       completedAt: checkedAt,
     }));
-    setNotice(issues.length > 0 ? {
-      title: teacherContentNoticeText("issuesTeacherCanPublish"),
-      items: issues.map((issue) => issue.message),
-    } : teacherContentNoticeText("checkCompleteReadyToPublish"));
+    setNotice(
+      issues.length > 0
+        ? {
+            title: teacherContentNoticeText("issuesTeacherCanPublish"),
+            items: issues.map((issue) => issue.message),
+          }
+        : teacherContentNoticeText("checkCompleteReadyToPublish"),
+    );
     return workingContent;
   };
 
@@ -191,10 +196,7 @@ export function createTeacherContentLifecycleActions({
     }
   };
 
-  const runRequestedGeneration = async (
-    operation,
-    teacherInstruction = "",
-  ) => {
+  const runRequestedGeneration = async (operation, teacherInstruction = "") => {
     return generateWholeLesson({
       operation,
       teacherInstruction,

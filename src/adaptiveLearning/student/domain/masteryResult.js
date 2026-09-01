@@ -1,3 +1,7 @@
+/**
+ *
+ * @param trace
+ */
 function mapAuthoritativeTrace(trace = {}) {
   return {
     questionId: trace.questionId,
@@ -12,16 +16,28 @@ function mapAuthoritativeTrace(trace = {}) {
   };
 }
 
+/**
+ *
+ * @param item
+ */
 function normalizedMastery(item) {
   return item.mastery == null ? null : Number(item.mastery);
 }
 
+/**
+ *
+ * @param item
+ */
 function normalizedPreMastery(item) {
   return item.sourceScores?.PRE == null
     ? null
     : Math.round(Number(item.sourceScores.PRE) * 100);
 }
 
+/**
+ *
+ * @param item
+ */
 function masteryImprovement(item) {
   const mastery = normalizedMastery(item);
   const preMastery = normalizedPreMastery(item);
@@ -30,22 +46,44 @@ function masteryImprovement(item) {
     : Math.round(mastery - preMastery);
 }
 
+/**
+ *
+ * @param value
+ */
 function numberOrZero(value) {
   return Number(value || 0);
 }
 
+/**
+ *
+ * @param value
+ */
 function objectOrEmpty(value) {
   return value || {};
 }
 
+/**
+ *
+ * @param value
+ */
 function arrayOrEmpty(value) {
   return Array.isArray(value) ? value : [];
 }
 
+/**
+ *
+ * @param itemVersion
+ * @param fallbackVersion
+ */
 function algorithmVersion(itemVersion, fallbackVersion) {
   return itemVersion || fallbackVersion || "";
 }
 
+/**
+ *
+ * @param item
+ * @param fallbackAlgorithmVersion
+ */
 function mapAuthoritativeMasteryResult(item, fallbackAlgorithmVersion) {
   return {
     mastery: normalizedMastery(item),
@@ -54,9 +92,7 @@ function mapAuthoritativeMasteryResult(item, fallbackAlgorithmVersion) {
     evidenceCount: numberOrZero(item.evidenceCount),
     confidence: Math.round(numberOrZero(item.confidence) * 100),
     independence: Math.round(numberOrZero(item.independenceAverage) * 100),
-    itemConfidence: Math.round(
-      numberOrZero(item.itemConfidenceAverage) * 100,
-    ),
+    itemConfidence: Math.round(numberOrZero(item.itemConfidenceAverage) * 100),
     sourceScores: objectOrEmpty(item.sourceScores),
     status: item.status,
     algorithmVersion: algorithmVersion(

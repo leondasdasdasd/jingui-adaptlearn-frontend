@@ -10,6 +10,11 @@ const ACTION_ICONS = new Map([
   ["questions", Sparkles],
 ]);
 
+/**
+ *
+ * @param slotView
+ * @param hasSlots
+ */
 function slotActionLabel(slotView, hasSlots) {
   if (slotView.isPlanningSlots) {
     return trans(
@@ -22,6 +27,12 @@ function slotActionLabel(slotView, hasSlots) {
     : trans("adaptiveLearning.assessment.generateSlots", "生成题目插槽");
 }
 
+/**
+ *
+ * @param slotView
+ * @param onGenerateQuestions
+ * @param hasSlots
+ */
 function canShowQuestionAction(slotView, onGenerateQuestions, hasSlots) {
   return (
     !slotView.isGeneratingQuestions &&
@@ -31,6 +42,15 @@ function canShowQuestionAction(slotView, onGenerateQuestions, hasSlots) {
   );
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.slotView
+ * @param root0.generationDisabled
+ * @param root0.onGenerateSlots
+ * @param root0.onGenerateQuestions
+ * @param root0.onStopQuestions
+ */
 function buildActions({
   slotView,
   generationDisabled,
@@ -73,7 +93,10 @@ function buildActions({
   return actions.filter((action) => action.visible);
 }
 
-/** 根据插槽与任务状态渲染唯一可用的顺序操作。 */
+/**
+ * 根据插槽与任务状态渲染唯一可用的顺序操作。
+ * @param props
+ */
 export default function AssessmentSlotActions(props) {
   return buildActions(props).map((action) => {
     const Icon = ACTION_ICONS.get(action.id);

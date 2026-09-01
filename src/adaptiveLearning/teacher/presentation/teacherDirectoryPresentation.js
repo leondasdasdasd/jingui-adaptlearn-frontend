@@ -10,7 +10,10 @@ const PERIOD_STATUS = {
   CANCELLED: { key: "cancelled", fallback: "已取消", tone: "muted" },
 };
 
-/** 将班级状态转换为本地化展示合同。 */
+/**
+ * 将班级状态转换为本地化展示合同。
+ * @param classInfo
+ */
 export function classStatus(classInfo) {
   const status = String(classInfo?.status || "ACTIVE").toUpperCase();
   if (status === "ACTIVE") {
@@ -34,7 +37,10 @@ export function classStatus(classInfo) {
   };
 }
 
-/** 将课堂状态码转换为本地化展示合同。 */
+/**
+ * 将课堂状态码转换为本地化展示合同。
+ * @param status
+ */
 export function periodStatusMeta(status) {
   const statusCode = String(status || "").toUpperCase();
   const definition = PERIOD_STATUS[statusCode] || {
@@ -52,7 +58,10 @@ export function periodStatusMeta(status) {
   };
 }
 
-/** 按当前界面语言格式化课堂时间。 */
+/**
+ * 按当前界面语言格式化课堂时间。
+ * @param value
+ */
 export function formatPeriodTime(value) {
   const timeNotSet = trans(
     "adaptiveLearning.directory.timeNotSet",

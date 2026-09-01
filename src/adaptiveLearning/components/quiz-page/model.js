@@ -7,6 +7,20 @@ export const QUIZ_DRAFT_CONTRACT_VERSION = 10;
 export const QUESTION_IDLE_SUPPORT_SECONDS = 120;
 
 /**
+ * 公式模式只作用于用户明确选中的空格，其余空格始终回落为普通文本输入。
+ * @param {string[] | undefined} inputModes 当前题目的输入模式
+ * @param {number} selectedIndex 用户当前选中的空格索引
+ * @returns {string[]} 下一份输入模式
+ */
+export function createFormulaInputModes(inputModes = [], selectedIndex) {
+  return Array.from(
+    { length: Math.max(inputModes.length, selectedIndex + 1) },
+    (_, index) =>
+      index === selectedIndex ? "formula" : inputModes[index] || "text",
+  );
+}
+
+/**
  *
  * @param question
  */

@@ -34,6 +34,7 @@ import {
 export default function QuizPageView({ viewModel }) {
   const {
     adaptiveOutcome,
+    activateSelectedBlankFormula,
     answer,
     canSubmit,
     correction,
@@ -43,12 +44,11 @@ export default function QuizPageView({ viewModel }) {
     dismissIdleSupport,
     feedbackOutcome,
     fillInputModesByQuestion,
-    formulaTargeting,
+    formulaFocusRequest,
     goNext,
     grading,
     gradingError,
     handleAnswerChange,
-    handleFillInputModesChange,
     handleImageChange,
     hasCompleteIntervention,
     helpContext,
@@ -76,7 +76,8 @@ export default function QuizPageView({ viewModel }) {
     scratchPaperResetKey,
     scratchPaperScope,
     sequenceComplete,
-    setFormulaTargeting,
+    selectedFillBlankIndex,
+    setSelectedFillBlankIndex,
     skipPreAssessmentQuestion,
     submit,
     submitting,
@@ -146,20 +147,21 @@ export default function QuizPageView({ viewModel }) {
                   <button
                     className="question-work-tool"
                     type="button"
-                    aria-pressed={formulaTargeting}
-                    disabled={Boolean(grading) || submitting || viewingHistory}
-                    onClick={() => setFormulaTargeting((current) => !current)}
-                    title={
-                      formulaTargeting
-                        ? trans(
-                            "adaptiveLearning.quiz.cancelFormulaTarget",
-                            "取消选择公式空格",
-                          )
-                        : trans(
-                            "adaptiveLearning.quiz.selectFormulaTarget",
-                            "选择空格输入公式",
-                          )
+                    disabled={
+                      selectedFillBlankIndex === null ||
+                      Boolean(grading) ||
+                      submitting ||
+                      viewingHistory
                     }
+                    onClick={activateSelectedBlankFormula}
+                    title={trans(
+                      selectedFillBlankIndex === null
+                        ? "adaptiveLearning.quiz.selectBlankBeforeFormula"
+                        : "adaptiveLearning.quiz.formulaForSelectedBlank",
+                      selectedFillBlankIndex === null
+                        ? "请先选择一个填空"
+                        : "为所选填空输入公式",
+                    )}
                   >
                     <Sigma size={17} aria-hidden="true" />
                     <span>
@@ -170,14 +172,6 @@ export default function QuizPageView({ viewModel }) {
               </div>
             </div>
           </div>
-          {formulaTargeting && (
-            <p className="formula-targeting-hint" role="status">
-              {trans(
-                "adaptiveLearning.quiz.formulaTargetHint",
-                "请选择要输入公式的空格",
-              )}
-            </p>
-          )}
           {question.type === "short_answer" &&
             !canUseQuestionPlatformPlayer(question) && (
               <MathContent as="h1" renderKey={question.stem}>
@@ -189,9 +183,9 @@ export default function QuizPageView({ viewModel }) {
             value={answer}
             onChange={handleAnswerChange}
             fillInputModes={fillInputModesByQuestion[question.id] || []}
-            onFillInputModesChange={handleFillInputModesChange}
-            formulaTargeting={formulaTargeting}
-            onFormulaTargeted={() => setFormulaTargeting(false)}
+            selectedFillBlankIndex={selectedFillBlankIndex}
+            onFillBlankSelect={setSelectedFillBlankIndex}
+            formulaFocusRequest={formulaFocusRequest}
             image={image}
             onImageChange={handleImageChange}
             disabled={Boolean(grading) || submitting}
@@ -473,6 +467,7 @@ export default function QuizPageView({ viewModel }) {
 QuizPageView.propTypes = {
   viewModel: PropTypes.shape({
     adaptiveOutcome: PropTypes.object,
+    activateSelectedBlankFormula: PropTypes.func.isRequired,
     answer: PropTypes.any,
     canSubmit: PropTypes.bool.isRequired,
     correction: PropTypes.object,
@@ -482,12 +477,11 @@ QuizPageView.propTypes = {
     dismissIdleSupport: PropTypes.func.isRequired,
     feedbackOutcome: PropTypes.object,
     fillInputModesByQuestion: PropTypes.object.isRequired,
-    formulaTargeting: PropTypes.bool.isRequired,
+    formulaFocusRequest: PropTypes.number.isRequired,
     goNext: PropTypes.func.isRequired,
     grading: PropTypes.object,
     gradingError: PropTypes.string,
     handleAnswerChange: PropTypes.func.isRequired,
-    handleFillInputModesChange: PropTypes.func.isRequired,
     handleImageChange: PropTypes.func.isRequired,
     hasCompleteIntervention: PropTypes.bool.isRequired,
     helpContext: PropTypes.object,
@@ -518,7 +512,8 @@ QuizPageView.propTypes = {
     scratchPaperResetKey: PropTypes.number.isRequired,
     scratchPaperScope: PropTypes.string.isRequired,
     sequenceComplete: PropTypes.bool.isRequired,
-    setFormulaTargeting: PropTypes.func.isRequired,
+    selectedFillBlankIndex: PropTypes.number,
+    setSelectedFillBlankIndex: PropTypes.func.isRequired,
     skipPreAssessmentQuestion: PropTypes.func.isRequired,
     submit: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired,

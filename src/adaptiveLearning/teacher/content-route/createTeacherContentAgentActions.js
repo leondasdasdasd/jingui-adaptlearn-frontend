@@ -542,9 +542,7 @@ export function createTeacherContentAgentActions({
           setNotice(
             issues.length > 0
               ? {
-                  title: teacherContentNoticeText(
-                    "qualityIssuesPublishing",
-                  ),
+                  title: teacherContentNoticeText("qualityIssuesPublishing"),
                   items: issues.map((issue) => issue.message),
                 }
               : noticeMessage(

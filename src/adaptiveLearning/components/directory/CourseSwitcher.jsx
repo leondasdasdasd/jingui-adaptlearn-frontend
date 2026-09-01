@@ -1,11 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  BookOpen,
-  ChevronDown,
-  Check,
-  X,
-  GraduationCap,
-} from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { BookOpen, Check, ChevronDown, GraduationCap, X } from "lucide-react";
+
 import {
   AVAILABLE_SUBJECTS,
   findCourse,
@@ -15,6 +10,9 @@ import {
  * 顶部导航右上角课程/学科/年级/学期切换器
  * 允许切换：年级（七/八/九年级）、学科（数学等）、上下册
  * 不可切换：教材版本（锁定为浙教版）
+ * @param root0
+ * @param root0.currentCourse
+ * @param root0.onSelectCourse
  */
 export default function CourseSwitcher({ currentCourse, onSelectCourse }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,11 +30,8 @@ export default function CourseSwitcher({ currentCourse, onSelectCourse }) {
       grade = "七年级";
     }
 
-    if (gradeStr.includes("下") || gradeStr.includes("volume2")) {
-      term = "下册";
-    } else {
-      term = "上册";
-    }
+    term =
+      gradeStr.includes("下") || gradeStr.includes("volume2") ? "下册" : "上册";
     return { grade, term };
   };
 
@@ -137,7 +132,11 @@ export default function CourseSwitcher({ currentCourse, onSelectCourse }) {
 
       {/* 模态弹窗 / 下拉面板 */}
       {isOpen && (
-        <div className="course-switcher-overlay" role="dialog" aria-modal="true">
+        <div
+          className="course-switcher-overlay"
+          role="dialog"
+          aria-modal="true"
+        >
           <div className="course-switcher-modal" ref={modalRef}>
             {/* 弹窗头部 */}
             <div className="course-switcher-header">
@@ -204,7 +203,7 @@ export default function CourseSwitcher({ currentCourse, onSelectCourse }) {
                         key={sub.id}
                         disabled={!isAvailable}
                         className={`switcher-chip-btn ${isSelected ? "selected" : ""} ${
-                          !isAvailable ? "disabled" : ""
+                          isAvailable ? "" : "disabled"
                         }`}
                         onClick={() => {
                           if (isAvailable) {

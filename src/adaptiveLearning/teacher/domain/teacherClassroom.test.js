@@ -2,9 +2,9 @@ import { buildClassroomStudents } from "./teacherClassroom";
 
 describe("teacher classroom student view", () => {
   test("exposes stable stage, content, and warning evidence for presentation", () => {
-    jest.spyOn(Date, "now").mockReturnValue(
-      new Date("2026-08-31T09:10:00.000Z").getTime(),
-    );
+    jest
+      .spyOn(Date, "now")
+      .mockReturnValue(new Date("2026-08-31T09:10:00.000Z").getTime());
 
     const [student] = buildClassroomStudents({
       sessions: [
@@ -39,9 +39,7 @@ describe("teacher classroom student view", () => {
           kind: "knowledgeExplanation",
           name: "kp-1",
         },
-        warnings: [
-          expect.objectContaining({ type: "inactive", minutes: 7 }),
-        ],
+        warnings: [expect.objectContaining({ type: "inactive", minutes: 7 })],
       }),
     );
     jest.restoreAllMocks();

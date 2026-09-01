@@ -19,6 +19,9 @@ describe("course catalog", () => {
         publisher: "pep",
       }).id,
     ).toBe("pep-grade7-math-volume1");
+    expect(getCourseById("zhejiang-grade7-math-volume2").grade).toBe(
+      "七年级下册",
+    );
     expect(getCourseById("missing-course")).toBe(course);
   });
 

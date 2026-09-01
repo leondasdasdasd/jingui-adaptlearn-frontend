@@ -1,27 +1,50 @@
+/**
+ *
+ * @param value
+ */
 function displayText(value) {
   if (value == null) return "";
   if (Array.isArray(value))
-    return value.map((item) => displayText(item)).filter(Boolean).join(" ");
-  if (["string", "number"].includes(typeof value))
-    return String(value).trim();
+    return value
+      .map((item) => displayText(item))
+      .filter(Boolean)
+      .join(" ");
+  if (["string", "number"].includes(typeof value)) return String(value).trim();
   if (typeof value !== "object") return "";
   return displayText(value.text ?? value.value ?? value.answer ?? "");
 }
 
+/**
+ *
+ * @param value
+ */
 function textList(value) {
   return (Array.isArray(value) ? value : [])
     .map((item) => displayText(item))
     .filter(Boolean);
 }
 
+/**
+ *
+ * @param value
+ * @param fallback
+ */
 function textValue(value, fallback = "") {
   return String(value || fallback);
 }
 
+/**
+ *
+ * @param value
+ */
 function nullableValue(value) {
   return value ?? null;
 }
 
+/**
+ *
+ * @param lesson
+ */
 function lessonView(lesson = {}) {
   return {
     id: textValue(lesson.id),
@@ -30,16 +53,30 @@ function lessonView(lesson = {}) {
   };
 }
 
+/**
+ *
+ * @param attempt
+ */
 function attemptAnswerSource(attempt) {
   return attempt.answer ?? attempt.answerText ?? attempt.recognizedAnswer;
 }
 
+/**
+ *
+ * @param values
+ * @param fallback
+ */
 function stableAnswerValues(values, fallback) {
   return Array.isArray(values)
     ? textList(values)
     : historyAnswerValues(fallback);
 }
 
+/**
+ *
+ * @param attempt
+ * @param snapshot
+ */
 function stableQuestionStem(attempt, snapshot) {
   const explicitStem = displayText(attempt.questionStem);
   return explicitStem || historyQuestionStem(snapshot);

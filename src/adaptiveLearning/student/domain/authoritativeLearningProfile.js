@@ -49,8 +49,7 @@ function attemptOutcome(attempt = {}) {
   const gradingStatus = String(
     attempt.gradingResult?.gradingStatus || "",
   ).toLowerCase();
-  if (["SKIPPED", "SKIPPED_DONT_KNOW"].includes(disposition))
-    return "skipped";
+  if (["SKIPPED", "SKIPPED_DONT_KNOW"].includes(disposition)) return "skipped";
   if (gradingStatus && gradingStatus !== "final") return "pending";
   const score = Number(attempt.score);
   const maxScore = Number(attempt.maxScore);

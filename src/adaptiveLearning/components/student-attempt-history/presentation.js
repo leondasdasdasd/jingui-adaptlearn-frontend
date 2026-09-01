@@ -8,8 +8,7 @@ const attemptTypeKeys = Object.freeze({
   enhancement: "adaptiveLearning.history.type.enhancement",
 });
 
-const QUESTION_UNAVAILABLE_KEY =
-  "adaptiveLearning.history.questionUnavailable";
+const QUESTION_UNAVAILABLE_KEY = "adaptiveLearning.history.questionUnavailable";
 
 const copyKeys = Object.freeze({
   title: "adaptiveLearning.history.title",
@@ -75,7 +74,10 @@ const copyKeys = Object.freeze({
  */
 export function studentAttemptHistoryCopy(params = {}) {
   return Object.fromEntries(
-    Object.entries(copyKeys).map(([name, key]) => [name, trans(key, key, params)]),
+    Object.entries(copyKeys).map(([name, key]) => [
+      name,
+      trans(key, key, params),
+    ]),
   );
 }
 

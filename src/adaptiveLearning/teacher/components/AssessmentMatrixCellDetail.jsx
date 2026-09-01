@@ -10,7 +10,11 @@ import {
   assessmentRoleMeta,
 } from "../presentation/assessmentPresentation";
 
-/** 展示单个矩阵格的证据合同与关联题目。 */
+/**
+ * 展示单个矩阵格的证据合同与关联题目。
+ * @param root0
+ * @param root0.cell
+ */
 export default function AssessmentMatrixCellDetail({ cell }) {
   const domain = assessmentDomains(trans).find(
     (item) => item.id === cell.domain,

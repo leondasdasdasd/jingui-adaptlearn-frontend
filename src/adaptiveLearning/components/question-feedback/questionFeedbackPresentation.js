@@ -14,14 +14,8 @@ const feedbackTitleCopies = Object.freeze({
     "adaptiveLearning.feedback.offTaskRecognized",
     "已识别作答，但还不能用于判断",
   ],
-  offTask: [
-    "adaptiveLearning.feedback.offTask",
-    "这次答案还不能用于判断",
-  ],
-  noAttempt: [
-    "adaptiveLearning.feedback.noAttempt",
-    "不会也可以从第一步开始",
-  ],
+  offTask: ["adaptiveLearning.feedback.offTask", "这次答案还不能用于判断"],
+  noAttempt: ["adaptiveLearning.feedback.noAttempt", "不会也可以从第一步开始"],
   pendingReview: [
     "adaptiveLearning.feedback.pendingReview",
     "这次答案暂未完成判定",
@@ -50,10 +44,7 @@ const feedbackTitleCopies = Object.freeze({
 });
 
 const adaptiveCueCopies = Object.freeze({
-  continuePractice: [
-    "adaptiveLearning.feedback.continuePractice",
-    "继续练习",
-  ],
+  continuePractice: ["adaptiveLearning.feedback.continuePractice", "继续练习"],
   interventionTitle: [
     "adaptiveLearning.feedback.interventionTitle",
     "先停一下，找出共同卡点",
@@ -64,20 +55,37 @@ const adaptiveCueCopies = Object.freeze({
   ],
 });
 
+/**
+ *
+ * @param copy
+ * @param params
+ */
 function translateCopy(copy, params) {
   return copy ? trans(copy[0], copy[1], params) : "";
 }
 
+/**
+ *
+ * @param scoreRatio
+ */
 function scorePercent(scoreRatio) {
   return Math.round(Math.max(0, Math.min(1, Number(scoreRatio) || 0)) * 100);
 }
 
+/**
+ *
+ * @param feedback
+ */
 export function questionFeedbackTitle(feedback) {
   return translateCopy(feedbackTitleCopies[feedback?.titleId], {
     percent: scorePercent(feedback?.scoreRatio),
   });
 }
 
+/**
+ *
+ * @param feedback
+ */
 export function questionFeedbackScore(feedback) {
   if (!feedback?.showScore) return "";
   const titleId = `score.${feedback.state}`;
@@ -86,24 +94,35 @@ export function questionFeedbackScore(feedback) {
   });
 }
 
+/**
+ *
+ * @param items
+ */
 export function localizedFeedbackItems(items = []) {
   return items.filter(Boolean).join(questionFeedbackCopy().listSeparator);
 }
 
+/**
+ *
+ * @param cue
+ */
 export function adaptiveCueTitle(cue) {
   return cue?.titleText || translateCopy(adaptiveCueCopies[cue?.titleId]);
 }
 
+/**
+ *
+ * @param cue
+ */
 export function adaptiveCueDetail(cue) {
   return cue?.detailText || translateCopy(adaptiveCueCopies[cue?.detailId]);
 }
 
+/**
+ *
+ */
 export function questionFeedbackCopy() {
   return {
-    unsyncedPreview: trans(
-      "adaptiveLearning.feedback.unsyncedPreview",
-      "未同步预览",
-    ),
     aiRecognized: trans("adaptiveLearning.feedback.aiRecognized", "AI 已识别"),
     achieved: trans("adaptiveLearning.feedback.achieved", "你已做到"),
     errorReason: trans("adaptiveLearning.feedback.errorReason", "错误原因"),
@@ -112,13 +131,14 @@ export function questionFeedbackCopy() {
   };
 }
 
+/**
+ *
+ * @param summary
+ */
 export function masteryFeedbackCopy(summary) {
   return {
     ariaLabel: summary
-      ? trans(
-          "adaptiveLearning.feedback.roundMasteryAria",
-          "本轮知识点掌握度",
-        )
+      ? trans("adaptiveLearning.feedback.roundMasteryAria", "本轮知识点掌握度")
       : trans(
           "adaptiveLearning.feedback.masteryChangeAria",
           "知识点掌握度变化",
@@ -147,6 +167,13 @@ export function masteryFeedbackCopy(summary) {
   };
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.breakthrough
+ * @param root0.direction
+ * @param root0.deltaLabel
+ */
 export function masteryChangeLabel({ breakthrough, direction, deltaLabel }) {
   if (breakthrough)
     return trans(
@@ -167,6 +194,11 @@ export function masteryChangeLabel({ breakthrough, direction, deltaLabel }) {
   );
 }
 
+/**
+ *
+ * @param before
+ * @param after
+ */
 export function masteryProgressAria(before, after) {
   return trans(
     "adaptiveLearning.feedback.masteryProgressAria",

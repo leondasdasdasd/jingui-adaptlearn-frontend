@@ -6,8 +6,11 @@
 .modern-directory-root {
   width: 100%;
   max-width: 1440px;
+  height: 100%;
+  min-height: 0;
   margin: 0 auto;
   padding: 8px 16px 32px;
+  box-sizing: border-box;
 }
 
 /* 主工作台双栏布局：左右等高对齐 */
@@ -15,6 +18,8 @@
   display: grid;
   grid-template-columns: 340px minmax(0, 1fr);
   gap: 20px;
+  height: 100%;
+  min-height: 0;
   align-items: stretch;
 }
 
@@ -28,7 +33,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: calc(100vh - 120px);
+  min-height: 0;
 }
 
 .sidebar-top-bar {
@@ -60,7 +65,9 @@
   font-size: 13px;
   color: #1e293b;
   outline: none;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .sidebar-search-input:focus {
@@ -80,6 +87,7 @@
 
 /* 章节分组卡片 */
 .modern-chapter-card {
+  flex: 0 0 auto;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   background: #ffffff;
@@ -301,7 +309,10 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  min-height: calc(100vh - 120px);
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 /* ================= 第一段：课时概览卡片 ================= */
@@ -438,7 +449,9 @@
   padding: 2px 8px;
   border-radius: 999px;
   font-variant-numeric: tabular-nums;
-  transition: background 150ms, color 150ms;
+  transition:
+    background 150ms,
+    color 150ms;
 }
 
 .minimal-portrait-btn:hover .portrait-count {
@@ -757,6 +770,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -779,6 +793,7 @@
     opacity: 0;
     transform: scale(0.96) translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -966,13 +981,31 @@
 
 /* 响应式断点适配 */
 @media (max-width: 960px) {
+  .directory-app-shell {
+    height: 100svh;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .modern-directory-root {
+    height: auto;
+    min-height: 100%;
+  }
+
   .modern-directory-layout {
     grid-template-columns: 1fr;
+    height: auto;
   }
 
   .modern-sidebar-panel {
     position: static;
-    max-height: none;
+    height: min(32rem, 50svh);
+    max-height: min(32rem, 50svh);
+  }
+
+  .modern-workspace-container {
+    height: auto;
+    overflow-y: visible;
   }
 }
 
@@ -997,4 +1030,3 @@
     width: 100%;
   }
 }
-

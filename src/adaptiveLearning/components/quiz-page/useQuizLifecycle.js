@@ -31,7 +31,6 @@ export default function useQuizLifecycle(context) {
     correction,
     difficultyToast,
     draftId,
-    formulaTargeting,
     grading,
     hasCompleteIntervention,
     idleSupportSeconds,
@@ -60,7 +59,6 @@ export default function useQuizLifecycle(context) {
     setDifficultyToast,
     setElapsedSeconds,
     setFillInputModesByQuestion,
-    setFormulaTargeting,
     setGrading,
     setIdleSupportQuestionId,
     setIdleSupportSeconds,
@@ -120,21 +118,7 @@ export default function useQuizLifecycle(context) {
 
   useEffect(() => {
     setElapsedSeconds(0);
-    setFormulaTargeting(false);
   }, [question?.id]);
-
-  useEffect(() => {
-    if (!formulaTargeting) return;
-    const cancelFormulaTargeting = (event) => {
-      if (event.key === "Escape") setFormulaTargeting(false);
-    };
-    window.addEventListener("keydown", cancelFormulaTargeting);
-    return () => window.removeEventListener("keydown", cancelFormulaTargeting);
-  }, [formulaTargeting]);
-
-  useEffect(() => {
-    if (grading || submitting || viewingHistory) setFormulaTargeting(false);
-  }, [grading, submitting, viewingHistory]);
 
   const resetIdleSupport = useCallback(() => {
     setIdleSupportSeconds(0);

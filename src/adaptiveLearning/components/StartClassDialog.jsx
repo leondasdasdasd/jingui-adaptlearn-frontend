@@ -146,10 +146,7 @@ export default function StartClassDialog({
       }
       if (current.length >= MAX_LINKED_LESSON_COUNT) {
         setLocalError(
-          trans(
-            "adaptiveLearning.startClass.lessonLimit",
-            "最多关联 3 个课时",
-          ),
+          trans("adaptiveLearning.startClass.lessonLimit", "最多关联 3 个课时"),
         );
         return current;
       }
@@ -192,10 +189,7 @@ export default function StartClassDialog({
     setLocalError("");
     if (!directory.selectedSubjectId || !directory.selectedCourseId) {
       setLocalError(
-        trans(
-          "adaptiveLearning.startClass.selectCourse",
-          "请选择系统课程",
-        ),
+        trans("adaptiveLearning.startClass.selectCourse", "请选择系统课程"),
       );
       return;
     }
@@ -291,10 +285,7 @@ export default function StartClassDialog({
           </div>
           <div
             className="start-class-step-pills"
-            aria-label={trans(
-              "adaptiveLearning.startClass.steps",
-              "开课步骤",
-            )}
+            aria-label={trans("adaptiveLearning.startClass.steps", "开课步骤")}
           >
             <button
               type="button"
@@ -303,10 +294,7 @@ export default function StartClassDialog({
             >
               <span className="step-number">1</span>
               <span>
-                {trans(
-                  "adaptiveLearning.startClass.contentStep",
-                  "课程课时",
-                )}
+                {trans("adaptiveLearning.startClass.contentStep", "课程课时")}
               </span>
             </button>
             <ChevronRight size={14} className="step-arrow" />
@@ -317,10 +305,7 @@ export default function StartClassDialog({
             >
               <span className="step-number">2</span>
               <span>
-                {trans(
-                  "adaptiveLearning.startClass.rosterStep",
-                  "班级学生",
-                )}
+                {trans("adaptiveLearning.startClass.rosterStep", "班级学生")}
               </span>
             </button>
           </div>
@@ -441,7 +426,7 @@ export default function StartClassDialog({
                 onClick={continueToRoster}
                 disabled={busy}
               >
-                {trans("adaptiveLearning.startClass.next", "下一步")} {" "}
+                {trans("adaptiveLearning.startClass.next", "下一步")}{" "}
                 <ChevronRight size={14} />
               </button>
             ) : (
@@ -458,14 +443,8 @@ export default function StartClassDialog({
                   <Play size={14} fill="currentColor" />
                 )}
                 {starting
-                  ? trans(
-                      "adaptiveLearning.startClass.starting",
-                      "正在开课",
-                    )
-                  : trans(
-                      "adaptiveLearning.startClass.start",
-                      "开始上课",
-                    )}
+                  ? trans("adaptiveLearning.startClass.starting", "正在开课")
+                  : trans("adaptiveLearning.startClass.start", "开始上课")}
               </button>
             )}
           </div>

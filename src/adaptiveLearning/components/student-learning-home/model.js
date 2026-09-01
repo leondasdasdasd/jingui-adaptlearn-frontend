@@ -34,13 +34,25 @@ const difficultyLabels = {
   5: "D5 迁移应用",
 };
 
-// 预设高频教学知识点清单，用于防空降级填充与归类
-export const DEFAULT_KPS = [
-  "1.1.1 正数与负数的概念与分类",
-  "1.1.2 具有相反意义的量与基准选择",
-  "1.2.1 数轴表示与相反数规律",
-  "1.2.2 绝对值的几何意义与化简",
-];
+/**
+ * 将账号主页与课堂主页的学生字段统一为展示模型；账号自学允许没有班级。
+ * @param {object} profile 学习画像接口返回值。
+ * @returns {{name: string, className: string}} 学生首页头部字段。
+ */
+export function studentProfileHeader(profile = {}) {
+  return {
+    name: String(
+      profile.student?.displayName ||
+        profile.student?.name ||
+        profile.studentName ||
+        profile.name ||
+        "—",
+    ).trim(),
+    className: String(
+      profile.className || profile.gradeClass || profile.class || "",
+    ).trim(),
+  };
+}
 
 // 计算知识点归属哪一课 (Lesson Attribution)
 /**

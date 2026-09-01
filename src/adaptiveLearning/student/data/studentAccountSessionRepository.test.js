@@ -32,19 +32,25 @@ describe("student account session repository", () => {
     });
   });
 
-  test("reports a valid student without an active class as no classroom", () => {
-    expect(() =>
+  test("accepts a valid student without a classroom assignment", () => {
+    expect(
       studentIdentityFromAccountSession({
         accessToken: "classroom-token",
         identity: { studentId: "1001", studentName: "林同学" },
       }),
-    ).toThrow(expect.objectContaining({ code: "NO_CLASSROOM" }));
+    ).toEqual({
+      accessToken: "classroom-token",
+      classId: "",
+      className: "",
+      studentId: "1001",
+      studentName: "林同学",
+    });
   });
 
   test.each([
     [401, studentAccountSessionIssues.loginRequired],
     [403, studentAccountSessionIssues.accessDenied],
-    [404, studentAccountSessionIssues.noClassroom],
+    [404, studentAccountSessionIssues.unavailable],
     [503, studentAccountSessionIssues.unavailable],
   ])("maps HTTP %s to %s", async (status, code) => {
     requestStudentAccountSession.mockRejectedValue(

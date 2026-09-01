@@ -42,16 +42,14 @@ export default function PreAssessmentResultRoute() {
     .map((id) => questionsById[id])
     .filter(Boolean);
   const administeredQuestionSignature = administeredQuestionIds.join(",");
-  const {
-    items: answerReviews,
-    status: answerReviewStatus,
-  } = useScopedAnswerReviews({
-    contentVersionId: session.selection.contentVersionId,
-    questionIds: administeredQuestionIds,
-    questionIdsSignature: administeredQuestionSignature,
-    studentSessionId: session.selection.studentSessionId,
-    accessToken: session.selection.classroomAccessToken,
-  });
+  const { items: answerReviews, status: answerReviewStatus } =
+    useScopedAnswerReviews({
+      contentVersionId: session.selection.contentVersionId,
+      questionIds: administeredQuestionIds,
+      questionIdsSignature: administeredQuestionSignature,
+      studentSessionId: session.selection.studentSessionId,
+      accessToken: session.selection.classroomAccessToken,
+    });
   const reviewedQuestions = useMemo(
     () =>
       administeredQuestions.map((question) => {

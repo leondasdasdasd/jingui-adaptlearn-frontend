@@ -43,6 +43,10 @@ export const SLOT_QUESTION_APPEND_ISSUES = Object.freeze({
   DUPLICATE_ID: "SLOT_QUESTION_DUPLICATE_ID",
 });
 
+/**
+ *
+ * @param code
+ */
 function slotQuestionAppendIssue(code) {
   const error = new Error(code);
   error.code = code;

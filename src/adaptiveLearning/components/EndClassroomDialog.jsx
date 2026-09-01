@@ -63,10 +63,7 @@ export default function EndClassroomDialog({
       <button
         className="end-classroom-mask"
         type="button"
-        aria-label={trans(
-          "adaptiveLearning.endClass.cancelEnding",
-          "取消下课",
-        )}
+        aria-label={trans("adaptiveLearning.endClass.cancelEnding", "取消下课")}
         onClick={() => {
           if (!pending) onCancel();
         }}
@@ -82,7 +79,10 @@ export default function EndClassroomDialog({
             </h2>
             <p>
               {className ||
-                trans("adaptiveLearning.endClass.currentClass", "当前班级")} {" "}
+                trans(
+                  "adaptiveLearning.endClass.currentClass",
+                  "当前班级",
+                )}{" "}
               ·{" "}
               {lessonTitle ||
                 trans("adaptiveLearning.endClass.currentLesson", "当前课堂")}

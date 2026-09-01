@@ -78,8 +78,10 @@ export function knowledgeCheckpointAnswerText(
   values = [],
   emptyKey = "answerUnavailable",
 ) {
-  return values.join(trans("adaptiveLearning.result.answerSeparator")) ||
-    knowledgeCheckpointText(emptyKey);
+  return (
+    values.join(trans("adaptiveLearning.result.answerSeparator")) ||
+    knowledgeCheckpointText(emptyKey)
+  );
 }
 
 /**
@@ -145,9 +147,7 @@ export function knowledgeCheckpointEncouragement({
     correctStreak,
   });
   if (evidenceGuidance) return evidenceGuidance;
-  if (correctRate >= 80)
-    return knowledgeCheckpointText("encouragement.strong");
-  if (correctRate >= 60)
-    return knowledgeCheckpointText("encouragement.steady");
+  if (correctRate >= 80) return knowledgeCheckpointText("encouragement.strong");
+  if (correctRate >= 60) return knowledgeCheckpointText("encouragement.steady");
   return knowledgeCheckpointText("encouragement.keepGoing");
 }

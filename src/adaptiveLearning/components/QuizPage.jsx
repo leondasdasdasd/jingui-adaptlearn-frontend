@@ -1,6 +1,12 @@
 /* eslint-disable complexity, sonarjs/cognitive-complexity, sonarjs/no-all-duplicated-branches, unicorn/no-array-callback-reference, unicorn/better-regex, regexp/strict -- 编排层保留既有自适应导航条件，提交与生命周期已收敛到单一路径。 */
 
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import PropTypes from "prop-types";
 
 import { trans } from "../../utils/i18n";
@@ -26,6 +32,7 @@ import { Clock3 } from "./Icons";
 import createQuizProgressAction from "./quiz-page/createQuizProgressAction";
 import createQuizSubmit from "./quiz-page/createQuizSubmit";
 import {
+  createFormulaInputModes,
   EMPTY_MASTERY,
   emptyAnswerForQuestion,
   masteryBaselineSignature,
@@ -35,6 +42,7 @@ import {
   quizKnowledgePointPropType,
   quizQuestionPropType,
 } from "./quiz-page/propTypes";
+import { quizQuestionTypeLabel } from "./quiz-page/quizPagePresentation";
 import QuizPageView from "./quiz-page/QuizPageView";
 import useQuizActions from "./quiz-page/useQuizActions";
 import useQuizLifecycle from "./quiz-page/useQuizLifecycle";
@@ -127,7 +135,8 @@ export default function QuizPage({
   const [targetByKp, setTargetByKp] = useState(initialAdaptive.targetByKp);
   const [answer, setAnswer] = useState("");
   const [fillInputModesByQuestion, setFillInputModesByQuestion] = useState({});
-  const [formulaTargeting, setFormulaTargeting] = useState(false);
+  const [selectedFillBlankIndex, setSelectedFillBlankIndex] = useState(null);
+  const [formulaFocusRequest, setFormulaFocusRequest] = useState(0);
   const [image, setImage] = useState(null);
   const [attempts, setAttempts] = useState({});
   const [grading, setGrading] = useState(null);
@@ -214,7 +223,6 @@ export default function QuizPage({
     correction,
     difficultyToast,
     draftId,
-    formulaTargeting,
     grading,
     hasCompleteIntervention,
     idleSupportSeconds,
@@ -243,7 +251,6 @@ export default function QuizPage({
     setDifficultyToast,
     setElapsedSeconds,
     setFillInputModesByQuestion,
-    setFormulaTargeting,
     setGrading,
     setIdleSupportQuestionId,
     setIdleSupportSeconds,
@@ -262,6 +269,10 @@ export default function QuizPage({
     targetByKp,
     viewingHistory,
   });
+
+  useEffect(() => {
+    setSelectedFillBlankIndex(null);
+  }, [question?.id]);
 
   const canSubmit =
     question.type === "fill_blank" && Array.isArray(question.answer)
@@ -340,6 +351,16 @@ export default function QuizPage({
     startingMasterySignature,
     targetByKp,
   });
+  const activateSelectedBlankFormula = () => {
+    if (selectedFillBlankIndex === null) return;
+    handleFillInputModesChange(
+      createFormulaInputModes(
+        fillInputModesByQuestion[question.id],
+        selectedFillBlankIndex,
+      ),
+    );
+    setFormulaFocusRequest((current) => current + 1);
+  };
   const submit = createQuizSubmit({
     answer,
     attempts,
@@ -700,6 +721,8 @@ export default function QuizPage({
         image,
         lessonTitle,
         knowledgePointName,
+        questionNumber: index + 1,
+        questionTypeLabel: quizQuestionTypeLabel(question.type),
         presentedAt:
           presentedAtByQuestion.current[question.id] ||
           new Date().toISOString(),
@@ -719,12 +742,12 @@ export default function QuizPage({
         dismissIdleSupport,
         feedbackOutcome,
         fillInputModesByQuestion,
-        formulaTargeting,
+        activateSelectedBlankFormula,
+        formulaFocusRequest,
         goNext,
         grading,
         gradingError,
         handleAnswerChange,
-        handleFillInputModesChange,
         handleImageChange,
         helpContext,
         historyResume,
@@ -751,7 +774,8 @@ export default function QuizPage({
         scratchPaperResetKey,
         scratchPaperScope,
         sequenceComplete,
-        setFormulaTargeting,
+        selectedFillBlankIndex,
+        setSelectedFillBlankIndex,
         skipPreAssessmentQuestion,
         submit,
         submitting,

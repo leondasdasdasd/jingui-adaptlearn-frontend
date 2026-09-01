@@ -195,7 +195,7 @@ export default function StartClassRosterStep({
             </label>
             <div className="right-header-counter">
               <span>
-                {trans("adaptiveLearning.startClass.selected", "已选")} {" "}
+                {trans("adaptiveLearning.startClass.selected", "已选")}{" "}
               </span>
               <strong>{selectedCount}</strong>
               <span className="total-denom"> / {students.length}</span>
@@ -231,11 +231,13 @@ export default function StartClassRosterStep({
                         {student.avatarUrl ? (
                           <img src={student.avatarUrl} alt="" />
                         ) : (
-                          (student.studentName ||
+                          (
+                            student.studentName ||
                             trans(
                               "adaptiveLearning.startClass.untitledStudent",
                               "未命名学生",
-                            )).slice(0, 1)
+                            )
+                          ).slice(0, 1)
                         )}
                       </span>
                       <span className="student-card-details">

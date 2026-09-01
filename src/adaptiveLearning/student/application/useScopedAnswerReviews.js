@@ -73,5 +73,7 @@ export function useScopedAnswerReviews({
     studentSessionId,
   ]);
 
-  return snapshot.requestIdentity === requestIdentity ? snapshot : emptySnapshot;
+  return snapshot.requestIdentity === requestIdentity
+    ? snapshot
+    : emptySnapshot;
 }

@@ -7,10 +7,9 @@ import {
 
 describe("learning attempt history contract", () => {
   test("maps supported answer values without exposing unknown objects", () => {
-    expect(historyAnswerValues(["A", { text: "B" }, { internal: true }])).toEqual([
-      "A",
-      "B",
-    ]);
+    expect(
+      historyAnswerValues(["A", { text: "B" }, { internal: true }]),
+    ).toEqual(["A", "B"]);
   });
 
   test("maps known question snapshot fields to one stable stem", () => {

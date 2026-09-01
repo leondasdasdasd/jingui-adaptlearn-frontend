@@ -3,7 +3,11 @@ import PropTypes from "prop-types";
 
 import { trans } from "../../../utils/i18n";
 
-/** 矩阵的评估目标与 AI 取舍说明。 */
+/**
+ * 矩阵的评估目标与 AI 取舍说明。
+ * @param root0
+ * @param root0.matrix
+ */
 export default function AssessmentMatrixContext({ matrix }) {
   if (!matrix.targetStatement && !matrix.rationale) return null;
   return (

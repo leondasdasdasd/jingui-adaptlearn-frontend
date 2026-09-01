@@ -20,12 +20,26 @@ describe("student learning home repository", () => {
     });
   });
 
-  test("maps a missing live view to the no-classroom state", async () => {
+  test("maps a missing live view to the unavailable state", async () => {
     getStudentLearningHome.mockRejectedValue(
       Object.assign(new Error("not found"), { status: 404 }),
     );
     await expect(fetchStudentLearningHome("token-1")).rejects.toMatchObject({
-      code: "NO_CLASSROOM",
+      code: "UNAVAILABLE",
+      status: 404,
+    });
+  });
+
+  test("preserves an authentication failure so the account session can refresh", async () => {
+    getStudentLearningHome.mockRejectedValue(
+      Object.assign(new Error("expired"), { status: 401 }),
+    );
+
+    await expect(
+      fetchStudentLearningHome("expired-token"),
+    ).rejects.toMatchObject({
+      code: "UNAVAILABLE",
+      status: 401,
     });
   });
 });

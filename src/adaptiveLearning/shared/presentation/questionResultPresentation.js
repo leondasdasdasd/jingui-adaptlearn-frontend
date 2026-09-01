@@ -17,10 +17,7 @@ const questionTypeCopies = Object.freeze({
   short_answer: ["adaptiveLearning.assessment.type.shortAnswer", "问答题"],
   judgement: ["adaptiveLearning.assessment.type.judgement", "判断题"],
   ordering: ["adaptiveLearning.assessment.type.ordering", "排序题"],
-  classification: [
-    "adaptiveLearning.assessment.type.classification",
-    "分类题",
-  ],
+  classification: ["adaptiveLearning.assessment.type.classification", "分类题"],
   matching: ["adaptiveLearning.assessment.type.matching", "匹配题"],
   line_connect: ["adaptiveLearning.assessment.type.lineConnect", "连线题"],
   text_marker: ["adaptiveLearning.assessment.type.textMarker", "文本标记题"],
@@ -34,6 +31,10 @@ const questionStateCopies = Object.freeze({
   pending: ["adaptiveLearning.result.pending", "待补充"],
 });
 
+/**
+ *
+ * @param pendingKind
+ */
 function localizedPendingCopy(pendingKind) {
   const copy = pendingCopies[pendingKind] || pendingCopies.pending;
   return trans(copy[0], copy[1]);

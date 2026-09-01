@@ -2,10 +2,9 @@ import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 
 import {
-  forgetClassStudentIdentity,
-  readClassStudentIdentity,
-  rememberClassStudentIdentity,
-} from "../student/data/classStudentIdentityRepository";
+  forgetStudentLearningIdentity,
+  rememberStudentLearningIdentity,
+} from "../student/data/studentLearningIdentityRepository";
 import { fetchStudentAccountSession } from "../student/data/studentAccountSessionRepository";
 import { fetchStudentLearningHome } from "../student/data/studentLearningHomeRepository";
 import StudentAuthoritativeHomeRoute from "./StudentAuthoritativeHomeRoute";
@@ -28,10 +27,9 @@ jest.mock(
 jest.mock("../components/StudentLearningHome", () => ({ profile }) => (
   <div>profile:{profile.student.name}</div>
 ));
-jest.mock("../student/data/classStudentIdentityRepository", () => ({
-  forgetClassStudentIdentity: jest.fn(),
-  readClassStudentIdentity: jest.fn(),
-  rememberClassStudentIdentity: jest.fn(),
+jest.mock("../student/data/studentLearningIdentityRepository", () => ({
+  forgetStudentLearningIdentity: jest.fn(),
+  rememberStudentLearningIdentity: jest.fn(),
 }));
 jest.mock("../student/data/studentAccountSessionRepository", () => ({
   fetchStudentAccountSession: jest.fn(),
@@ -50,7 +48,7 @@ describe("StudentAuthoritativeHomeRoute", () => {
   beforeEach(() => {
     window.globalLange = "zh-CN";
     jest.clearAllMocks();
-    rememberClassStudentIdentity.mockReturnValue(true);
+    rememberStudentLearningIdentity.mockReturnValue(true);
   });
 
   test("exchanges the quiz login session, remembers identity, then loads the home", async () => {
@@ -61,7 +59,6 @@ describe("StudentAuthoritativeHomeRoute", () => {
       studentId: "student-1",
       studentName: "林同学",
     };
-    readClassStudentIdentity.mockReturnValue(null);
     fetchStudentAccountSession.mockResolvedValue(identity);
     fetchStudentLearningHome.mockResolvedValue({
       student: { name: "林同学" },
@@ -72,7 +69,7 @@ describe("StudentAuthoritativeHomeRoute", () => {
     await waitFor(() =>
       expect(screen.getByText("profile:林同学")).toBeInTheDocument(),
     );
-    expect(rememberClassStudentIdentity).toHaveBeenCalledWith(identity);
+    expect(rememberStudentLearningIdentity).toHaveBeenCalledWith(identity);
     expect(fetchStudentLearningHome).toHaveBeenCalledWith(
       "token-1",
       expect.objectContaining({ signal: expect.any(AbortSignal) }),
@@ -81,11 +78,6 @@ describe("StudentAuthoritativeHomeRoute", () => {
   });
 
   test("replaces a legacy fixed-link identity with the current quiz student", async () => {
-    readClassStudentIdentity.mockReturnValue({
-      accessToken: "legacy-token",
-      classId: "class-1",
-      studentId: "student-1",
-    });
     const currentIdentity = {
       accessToken: "current-token",
       classId: "class-2",
@@ -102,11 +94,12 @@ describe("StudentAuthoritativeHomeRoute", () => {
     await waitFor(() =>
       expect(screen.getByText("profile:周同学")).toBeInTheDocument(),
     );
-    expect(readClassStudentIdentity).not.toHaveBeenCalled();
     expect(fetchStudentAccountSession).toHaveBeenCalledWith(
       expect.objectContaining({ signal: expect.any(AbortSignal) }),
     );
-    expect(rememberClassStudentIdentity).toHaveBeenCalledWith(currentIdentity);
+    expect(rememberStudentLearningIdentity).toHaveBeenCalledWith(
+      currentIdentity,
+    );
     expect(fetchStudentLearningHome).toHaveBeenCalledWith(
       "current-token",
       expect.any(Object),
@@ -117,38 +110,64 @@ describe("StudentAuthoritativeHomeRoute", () => {
   test.each(["LOGIN_REQUIRED", "ACCESS_DENIED"])(
     "clears a legacy classroom identity when the quiz session returns %s",
     async (code) => {
-      readClassStudentIdentity.mockReturnValue({
-        accessToken: "legacy-token",
-        classId: "class-1",
-        studentId: "student-1",
-      });
       fetchStudentAccountSession.mockRejectedValue(
         Object.assign(new Error("identity rejected"), { code }),
       );
 
       render(<StudentAuthoritativeHomeRoute />);
 
-      await waitFor(() => expect(forgetClassStudentIdentity).toHaveBeenCalled());
-      expect(readClassStudentIdentity).not.toHaveBeenCalled();
+      await waitFor(() =>
+        expect(forgetStudentLearningIdentity).toHaveBeenCalled(),
+      );
       expect(fetchStudentLearningHome).not.toHaveBeenCalled();
     },
   );
 
-  test("shows the localized no-classroom state", async () => {
-    readClassStudentIdentity.mockReturnValue(null);
-    fetchStudentAccountSession.mockRejectedValue(
-      Object.assign(new Error("none"), { code: "NO_CLASSROOM" }),
-    );
+  test("loads an empty personal home without classroom context", async () => {
+    fetchStudentAccountSession.mockResolvedValue({
+      accessToken: "account-token",
+      classId: "",
+      className: "",
+      studentId: "student-new",
+      studentName: "新同学",
+    });
+    fetchStudentLearningHome.mockResolvedValue({ student: { name: "新同学" } });
 
     render(<StudentAuthoritativeHomeRoute />);
 
-    expect(
-      await screen.findByText("暂时没有可学习的课堂"),
-    ).toBeInTheDocument();
+    expect(await screen.findByText("profile:新同学")).toBeInTheDocument();
+  });
+
+  test("refreshes an expired learning credential from the current quiz login", async () => {
+    fetchStudentAccountSession
+      .mockResolvedValueOnce({
+        accessToken: "expired-token",
+        studentId: "student-1",
+        studentName: "林同学",
+      })
+      .mockResolvedValueOnce({
+        accessToken: "refreshed-token",
+        studentId: "student-1",
+        studentName: "林同学",
+      });
+    fetchStudentLearningHome
+      .mockRejectedValueOnce(
+        Object.assign(new Error("expired"), { status: 401 }),
+      )
+      .mockResolvedValueOnce({ student: { name: "林同学" } });
+
+    render(<StudentAuthoritativeHomeRoute />);
+
+    expect(await screen.findByText("profile:林同学")).toBeInTheDocument();
+    expect(forgetStudentLearningIdentity).toHaveBeenCalledTimes(1);
+    expect(fetchStudentAccountSession).toHaveBeenCalledTimes(2);
+    expect(fetchStudentLearningHome).toHaveBeenLastCalledWith(
+      "refreshed-token",
+      expect.objectContaining({ signal: expect.any(AbortSignal) }),
+    );
   });
 
   test("offers the BFF login destination without adding a student token", async () => {
-    readClassStudentIdentity.mockReturnValue(null);
     fetchStudentAccountSession.mockRejectedValue(
       Object.assign(new Error("login"), {
         code: "LOGIN_REQUIRED",

@@ -8,7 +8,13 @@ import AssessmentMatrixContext from "./AssessmentMatrixContext";
 import AssessmentMatrixHeader from "./AssessmentMatrixHeader";
 import AssessmentMatrixTable from "./AssessmentMatrixTable";
 
-/** 已生成矩阵的表格、证据详情与重新生成操作。 */
+/**
+ * 已生成矩阵的表格、证据详情与重新生成操作。
+ * @param root0
+ * @param root0.assessment
+ * @param root0.onGenerateMatrix
+ * @param root0.generationDisabled
+ */
 export default function KnowledgeAssessmentMatrixReady({
   assessment,
   onGenerateMatrix,

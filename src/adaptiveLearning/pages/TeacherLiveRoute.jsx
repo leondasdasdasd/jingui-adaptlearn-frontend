@@ -19,14 +19,11 @@ import StartClassDialog from "../components/StartClassDialog";
 import StatePanel from "../components/StatePanel";
 import {
   classroomActionError,
-  helpReasonLabel,
   liveCurrentContent,
   liveStageLabel,
   liveText,
   liveWarningLabel,
-  shortTime,
   snapshotText,
-  supportSourceLabel,
 } from "../components/teacher-live/presentation";
 import TeacherLiveDirectory from "../components/teacher-live/TeacherLiveDirectory";
 import TeacherShell from "../components/TeacherShell";
@@ -50,6 +47,7 @@ import {
   subscribeClassroom,
 } from "../teacher/data/classroomApiRepository";
 import { buildClassroomStudents } from "../teacher/domain/teacherClassroom";
+import { toTeacherHelpRequestViewModel } from "../teacher/presentation/helpRequestViewModel";
 
 /**
  *
@@ -226,15 +224,17 @@ export default function TeacherLiveRoute() {
   const studentBySession = Object.fromEntries(
     students.map((student) => [student.sessionId, student]),
   );
-  const visibleHelpRequests = [...supportHelpRequests, ...helpRequests].sort(
-    (a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0),
-  );
+  const visibleHelpRequests = [...supportHelpRequests, ...helpRequests]
+    .map((request) =>
+      toTeacherHelpRequestViewModel(request, studentBySession),
+    )
+    .sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
 
   const activeAttentionStudentIds = new Set([
     ...alerts.map((item) => item.student.id),
     ...visibleHelpRequests
       .map(
-        (item) => item.studentId || studentBySession[item.studentSessionId]?.id,
+        (item) => item.studentId,
       )
       .filter(Boolean),
     ...attentionAlerts
@@ -329,55 +329,58 @@ export default function TeacherLiveRoute() {
         </span>
       </header>
       {visibleHelpRequests.map((request) => {
-        const student = studentBySession[request.studentSessionId];
         const requestKey = `help:${request.id}`;
-        const persistentSupport = Boolean(request.supportSessionId);
+        const view = request;
+        const persistentSupport = view.persistentSupport;
         return (
           <article
-            className={request.status === "ACKNOWLEDGED" ? "acknowledged" : ""}
-            key={`${persistentSupport ? "support" : "classroom"}:${request.id}`}
+            className={view.status === "ACKNOWLEDGED" ? "acknowledged" : ""}
+            key={view.key}
           >
             <button
               className="attention-card-main"
               type="button"
-              onClick={() => student && openStudent(student.id)}
+              onClick={() => view.studentId && openStudent(view.studentId)}
             >
               <HandHelping size={17} />
               <span>
-                <strong>
-                  {request.studentName ||
-                    student?.name ||
-                    liveText("student", "学生")}
-                </strong>
-                <b>
-                  {helpReasonLabel(request.reasonCode)}
-                </b>
+                <strong>{view.studentName}</strong>
+                <b>{view.reason}</b>
                 <small>
-                  {supportSourceLabel(request)} ·{" "}
-                  {shortTime(request.requestedAt || request.createdAt)} ·{" "}
-                  {snapshotText(request.questionSnapshot).slice(0, 34) ||
-                    request.questionSnapshot?.pageTitle ||
-                    liveText("currentLearningPage", "当前学习页面")}
+                  {view.source} · {view.time} · {view.questionSummary}
                 </small>
               </span>
             </button>
-            {request.note && (
+            {view.note && (
               <p className="attention-card-note">
                 <strong>{liveText("additionalNote", "补充说明：")}</strong>
-                {request.note}
+                {view.note}
+              </p>
+            )}
+            {view.questionStem && (
+              <p className="attention-card-note">
+                <strong>{liveText("questionContent", "题目：")}</strong>
+                {view.questionStem}
+                {view.answerText && (
+                  <>
+                    <br />
+                    <strong>{liveText("studentAnswer", "学生作答：")}</strong>
+                    {view.answerText}
+                  </>
+                )}
               </p>
             )}
             <div className="attention-card-actions">
-              {request.status !== "ACKNOWLEDGED" && (
+              {view.status !== "ACKNOWLEDGED" && (
                 <button
                   type="button"
                   aria-busy={attentionBusy === requestKey}
                   disabled={attentionBusy === requestKey}
                   onClick={() => {
                     void updateAttention(requestKey, () =>
-                      persistentSupport
-                        ? acknowledgeSupportHelpRequest(request.id)
-                        : acknowledgeHelpRequest(periodId, request.id),
+                      view.persistentSupport
+                        ? acknowledgeSupportHelpRequest(view.id)
+                        : acknowledgeHelpRequest(periodId, view.id),
                     );
                   }}
                 >
@@ -387,16 +390,16 @@ export default function TeacherLiveRoute() {
                   {liveText("handleRequest", "我来处理")}
                 </button>
               )}
-              {request.status === "ACKNOWLEDGED" && (
+              {view.status === "ACKNOWLEDGED" && (
                 <button
                   type="button"
                   aria-busy={attentionBusy === requestKey}
                   disabled={attentionBusy === requestKey}
                   onClick={() => {
                     void updateAttention(requestKey, () =>
-                      persistentSupport
-                        ? resolveSupportHelpRequest(request.id)
-                        : resolveHelpRequest(periodId, request.id),
+                      view.persistentSupport
+                        ? resolveSupportHelpRequest(view.id)
+                        : resolveHelpRequest(periodId, view.id),
                     );
                   }}
                 >
@@ -422,9 +425,7 @@ export default function TeacherLiveRoute() {
     <TeacherShell
       hideGlobalHeader={hasPeriod}
       title={
-        hasPeriod
-          ? period?.title || liveText("title", "实时课堂")
-          : undefined
+        hasPeriod ? period?.title || liveText("title", "实时课堂") : undefined
       }
       leadingAction={
         hasPeriod ? (
@@ -703,10 +704,7 @@ export default function TeacherLiveRoute() {
                               evidencePayload.answerSnapshot ||
                                 evidencePayload.answer,
                             ).slice(0, 30) ||
-                              liveText(
-                                "viewStudentRecord",
-                                "点击查看学生记录",
-                              )}
+                              liveText("viewStudentRecord", "点击查看学生记录")}
                           </small>
                         </span>
                       </button>

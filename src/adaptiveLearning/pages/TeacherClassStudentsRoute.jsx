@@ -235,10 +235,7 @@ export default function TeacherClassStudentsRoute() {
     try {
       await copyText(
         [
-          classRosterText(
-            "exportHeader",
-            "序号\t姓名\t固定 ID\t学习链接",
-          ),
+          classRosterText("exportHeader", "序号\t姓名\t固定 ID\t学习链接"),
           ...lines,
         ].join("\n"),
       );
@@ -300,9 +297,7 @@ export default function TeacherClassStudentsRoute() {
       }));
       showNotice(
         classRosterText(
-          hadActiveCredential
-            ? "notice.linkRotated"
-            : "notice.linkGenerated",
+          hadActiveCredential ? "notice.linkRotated" : "notice.linkGenerated",
           hadActiveCredential
             ? "已为 {$name} 生成新链接，旧链接已失效，可随时复制发送。"
             : "已为 {$name} 生成新链接，可随时复制发送。",
@@ -352,8 +347,7 @@ export default function TeacherClassStudentsRoute() {
             classId,
             studentId,
           );
-          if (!credential.accessToken)
-            throw new Error("MISSING_ACCESS_TOKEN");
+          if (!credential.accessToken) throw new Error("MISSING_ACCESS_TOKEN");
           return {
             studentId,
             credential,
@@ -390,9 +384,7 @@ export default function TeacherClassStudentsRoute() {
     if (!failedCount) {
       showNotice(
         classRosterText(
-          issuedCount
-            ? "notice.allLinksRotated"
-            : "notice.allLinksGenerated",
+          issuedCount ? "notice.allLinksRotated" : "notice.allLinksGenerated",
           issuedCount
             ? "已生成全班 {$count} 位学生的新链接，旧链接已失效，可随时复制并分别发送。"
             : "已生成全班 {$count} 位学生的新链接，可随时复制并分别发送。",
@@ -419,11 +411,9 @@ export default function TeacherClassStudentsRoute() {
     const studentId = student.studentId;
     if (
       !window.confirm(
-        classRosterText(
-          "confirm.revoke",
-          "确认停用 {$name} 的固定链接？",
-          { name: student.studentName },
-        ),
+        classRosterText("confirm.revoke", "确认停用 {$name} 的固定链接？", {
+          name: student.studentName,
+        }),
       )
     )
       return;
@@ -447,11 +437,9 @@ export default function TeacherClassStudentsRoute() {
         ),
       }));
       showNotice(
-        classRosterText(
-          "notice.linkRevoked",
-          "已停用 {$name} 的学习链接",
-          { name: student.studentName },
-        ),
+        classRosterText("notice.linkRevoked", "已停用 {$name} 的学习链接", {
+          name: student.studentName,
+        }),
         "success",
       );
     } catch {
@@ -646,7 +634,9 @@ export default function TeacherClassStudentsRoute() {
                     <th>{classRosterText("column.answers", "累计作答")}</th>
                     <th>{classRosterText("column.recent", "最近学习")}</th>
                     <th>{classRosterText("column.linkStatus", "链接状态")}</th>
-                    <th aria-label={classRosterText("column.actions", "操作")} />
+                    <th
+                      aria-label={classRosterText("column.actions", "操作")}
+                    />
                   </tr>
                 </thead>
                 <tbody>
@@ -677,10 +667,7 @@ export default function TeacherClassStudentsRoute() {
                             }
                           >
                             {student.studentName ||
-                              classRosterText(
-                                "untitledStudent",
-                                "未命名学生",
-                              )}
+                              classRosterText("untitledStudent", "未命名学生")}
                             <ExternalLink size={13} />
                           </button>
                         </td>

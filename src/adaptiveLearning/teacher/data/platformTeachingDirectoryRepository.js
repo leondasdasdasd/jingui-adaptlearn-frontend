@@ -57,10 +57,7 @@ export async function fetchPlatformSubjects() {
 export async function fetchPlatformCurrentSemester() {
   const response = requireSuccessfulResponse(
     await queryExamOptions(),
-    trans(
-      "adaptiveLearning.startClass.semesterLoadFailed",
-      "当前学期加载失败",
-    ),
+    trans("adaptiveLearning.startClass.semesterLoadFailed", "当前学期加载失败"),
   );
   const current = (
     Array.isArray(response.content) ? response.content : []
@@ -95,10 +92,7 @@ export async function fetchPlatformCourses(subjectId, semesterId) {
       semesterId,
       ifQueryHistory: false,
     }),
-    trans(
-      "adaptiveLearning.startClass.coursesLoadFailed",
-      "教师课程加载失败",
-    ),
+    trans("adaptiveLearning.startClass.coursesLoadFailed", "教师课程加载失败"),
   );
   return mapPlatformCourses(response);
 }
@@ -112,10 +106,7 @@ export async function fetchPlatformCourses(subjectId, semesterId) {
 export async function fetchPlatformCourseRoster(courseId, semesterId) {
   const response = requireSuccessfulResponse(
     await queryCourseStudents({ courseId, semesterId }),
-    trans(
-      "adaptiveLearning.startClass.rosterLoadFailed",
-      "班级与学生加载失败",
-    ),
+    trans("adaptiveLearning.startClass.rosterLoadFailed", "班级与学生加载失败"),
   );
   return mapPlatformCourseRoster(response);
 }

@@ -27,7 +27,11 @@ const STATUS_ICONS = new Map([
   ["ready", <Grid3X3 key="ready" size={15} aria-hidden="true" />],
 ]);
 
-/** 已规划题目插槽的合同与运行状态列表。 */
+/**
+ * 已规划题目插槽的合同与运行状态列表。
+ * @param root0
+ * @param root0.slots
+ */
 export default function AssessmentSlotList({ slots }) {
   if (slots.length === 0) return null;
   return (

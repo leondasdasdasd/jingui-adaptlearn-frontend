@@ -9,7 +9,6 @@ import {
   historyQuestionStem,
   toHistoryAttemptView,
 } from "../domain/learningAttemptHistory";
-import { INITIAL_MOCK_ATTEMPTS } from "./mockLearningAttempts.js";
 
 const HISTORY_SCHEMA_VERSION = 1;
 
@@ -534,18 +533,14 @@ export function readLearningAttempts(filters = {}) {
 }
 
 /**
- * 读取学习记录专用视图，避免通用学习 attempt 的内部字段进入页面。
- * 当尚未产生真实作答时，自动载入示范/初始学习记录以展示学习效果与诊断分析。
+ * 读取做题记录专用视图，避免通用学习 attempt 的内部字段进入页面。
  * @param {object} filters 查询条件
- * @returns {object[]} 学习记录视图
+ * @returns {object[]} 做题记录视图
  */
 export function readStudentAttemptHistory(filters = {}) {
-  const localAttempts = readLearningAttempts(filters);
-  if (localAttempts.length > 0) {
-    return localAttempts.map((attempt) => toHistoryAttemptView(attempt));
-  }
-  // 注入丰富 mock 数据以直观呈现学习效果、知识掌握与薄弱项分析
-  return INITIAL_MOCK_ATTEMPTS.map((attempt) => toHistoryAttemptView(attempt));
+  return readLearningAttempts(filters).map((attempt) =>
+    toHistoryAttemptView(attempt),
+  );
 }
 
 /**
@@ -553,10 +548,7 @@ export function readStudentAttemptHistory(filters = {}) {
  * @param filters
  */
 export function readLearningAttemptFacets(filters = {}) {
-  let attempts = readLearningAttempts(filters);
-  if (attempts.length === 0) {
-    attempts = INITIAL_MOCK_ATTEMPTS;
-  }
+  const attempts = readLearningAttempts(filters);
   const unique = (values) => [...new Set(values.filter(Boolean))];
   const lessons = unique(attempts.map((attempt) => attempt.lesson?.id)).map(
     (id) => {
@@ -569,13 +561,13 @@ export function readLearningAttemptFacets(filters = {}) {
     },
   );
   const knowledgePoints = unique(
-    attempts.flatMap((attempt) => attempt.knowledgePointIds || []),
+    attempts.flatMap((attempt) => attempt.knowledgePointIds),
   ).map((id) => {
     const index = attempts.findIndex((attempt) =>
-      attempt.knowledgePointIds?.includes(id),
+      attempt.knowledgePointIds.includes(id),
     );
-    const nameIndex = attempts[index]?.knowledgePointIds?.indexOf(id);
-    return { id, name: attempts[index]?.knowledgePoints?.[nameIndex] || id };
+    const nameIndex = attempts[index]?.knowledgePointIds.indexOf(id);
+    return { id, name: attempts[index]?.knowledgePoints[nameIndex] || id };
   });
   const questionTypes = unique(attempts.map((attempt) => attempt.questionType));
   return { lessons, knowledgePoints, questionTypes };

@@ -127,6 +127,7 @@ export function getPublishedLessonVersion(lessonId) {
 /**
  *
  * @param lessonIds
+ * @param options
  */
 export function getPublishedLessonVersions(lessonIds, options = {}) {
   const params = new URLSearchParams();

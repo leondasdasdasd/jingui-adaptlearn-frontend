@@ -101,11 +101,7 @@ function generationTaskSettlement({ task, result, error, lesson, content }) {
  * @param root0.taskId
  * @param root0.issues
  */
-export function settleLessonQualityCheck({
-  graph,
-  taskId,
-  issues = [],
-}) {
+export function settleLessonQualityCheck({ graph, taskId, issues = [] }) {
   const task = graph.tasks.find((item) => item.id === taskId);
   if (!task || task.taskType !== "quality_check" || isTerminalTask(task))
     return graph;

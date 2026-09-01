@@ -1,8 +1,13 @@
 import React from "react";
-import { Trophy, Sparkles, ChevronRight, Network } from "lucide-react";
+import { ChevronRight, Network, Sparkles, Trophy } from "lucide-react";
 
 /**
  * 学习首页顶部简洁欢迎横幅
+ * @param root0
+ * @param root0.courseName
+ * @param root0.masteredCount
+ * @param root0.totalCount
+ * @param root0.onOpenKnowledgeMap
  */
 export default function DirectoryHeaderBanner({
   courseName = "七年级数学 · 上册",
@@ -39,15 +44,23 @@ export default function DirectoryHeaderBanner({
         >
           <div className="hero-stat-card-top">
             <span className="stat-val flex items-center justify-center gap-1.5">
-              <Trophy size={18} className="text-amber-300 inline flex-shrink-0" />
-              <span>{masteredCount}/{totalCount}</span>
+              <Trophy
+                size={18}
+                className="text-amber-300 inline flex-shrink-0"
+              />
+              <span>
+                {masteredCount}/{totalCount}
+              </span>
             </span>
           </div>
           <div className="hero-stat-card-bottom">
             <span className="stat-lbl flex items-center gap-1">
               <Network size={12} className="text-indigo-200" />
               <span>已掌握考点 · 认知画像</span>
-              <ChevronRight size={13} className="text-indigo-200 group-hover:translate-x-0.5 transition-transform" />
+              <ChevronRight
+                size={13}
+                className="text-indigo-200 group-hover:translate-x-0.5 transition-transform"
+              />
             </span>
           </div>
         </button>
@@ -55,4 +68,3 @@ export default function DirectoryHeaderBanner({
     </header>
   );
 }
-

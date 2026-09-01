@@ -11,8 +11,8 @@ import {
 import AppShell from "./AppShell";
 import { Check, ChevronLeft } from "./Icons";
 import MathContent from "./MathContent";
-import QuestionReviewDisplay from "./QuestionReviewDisplay";
 import { localizedFeedbackItems } from "./question-feedback/questionFeedbackPresentation";
+import QuestionReviewDisplay from "./QuestionReviewDisplay";
 import {
   resultAnswerCopy,
   resultAuthorityPresentation,
@@ -135,7 +135,10 @@ function ReviewQuestionIndex({ items, selectedIndex, onSelect }) {
                 "{$count} 题需要再看",
                 { count: reviewCount },
               )
-            : trans("adaptiveLearning.result.noIncorrectQuestions", "本轮没有错题")}
+            : trans(
+                "adaptiveLearning.result.noIncorrectQuestions",
+                "本轮没有错题",
+              )}
         </strong>
       </header>
       <div
@@ -535,9 +538,9 @@ export default function ResultPage({
           className={`method-note result-authority-note ${isAuthoritative ? "authoritative" : "preview"}`}
           role="status"
         >
-          <strong>
-            {authorityPresentation.label}
-          </strong>
+          {authorityPresentation.label && (
+            <strong>{authorityPresentation.label}</strong>
+          )}
           <p>{authorityPresentation.description}</p>
         </section>
 
@@ -552,7 +555,9 @@ export default function ResultPage({
             <span>{trans("adaptiveLearning.result.answers", "本次作答")}</span>
             <strong>
               {orderedQuestions.length}
-              <small>{trans("adaptiveLearning.result.questionUnit", "题")}</small>
+              <small>
+                {trans("adaptiveLearning.result.questionUnit", "题")}
+              </small>
             </strong>
           </div>
           <div>
@@ -562,7 +567,9 @@ export default function ResultPage({
             </strong>
           </div>
           <div>
-            <span>{trans("adaptiveLearning.result.masteryRate", "掌握率")}</span>
+            <span>
+              {trans("adaptiveLearning.result.masteryRate", "掌握率")}
+            </span>
             <strong>{showResultValues ? percent(overall) : "—"}</strong>
           </div>
           <div>

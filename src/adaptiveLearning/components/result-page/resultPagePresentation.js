@@ -49,10 +49,19 @@ const scoreStateCopies = Object.freeze({
   },
 });
 
+/**
+ *
+ * @param copy
+ * @param params
+ */
 function translateCopy(copy, params) {
   return copy ? trans(copy[0], copy[1], params) : "";
 }
 
+/**
+ *
+ * @param state
+ */
 export function resultScorePresentation(state) {
   const copy = scoreStateCopies[state.kind];
   return {
@@ -62,6 +71,10 @@ export function resultScorePresentation(state) {
   };
 }
 
+/**
+ *
+ * @param question
+ */
 export function resultPhaseLabel(question) {
   if (
     question?.purpose?.toUpperCase() === "PRE" ||
@@ -73,10 +86,17 @@ export function resultPhaseLabel(question) {
   return trans("adaptiveLearning.result.knowledgePractice", "单点练习");
 }
 
+/**
+ *
+ * @param state
+ */
 export function resultQuestionStateLabel(state) {
   return localizedQuestionState(state, "unanswered");
 }
 
+/**
+ *
+ */
 export function resultAnswerCopy() {
   return {
     imageAnswer: trans("adaptiveLearning.result.imageAnswer", "图片作答"),
@@ -97,6 +117,10 @@ export function resultAnswerCopy() {
   };
 }
 
+/**
+ *
+ * @param scoreState
+ */
 function authoritativeResultPresentation(scoreState) {
   const scorePresentation = resultScorePresentation(scoreState);
   if (!scoreState.ready)
@@ -106,10 +130,7 @@ function authoritativeResultPresentation(scoreState) {
     };
   return {
     label: scoreState.published
-      ? trans(
-          "adaptiveLearning.result.settledPublished",
-          "已正式结算 · 已发布",
-        )
+      ? trans("adaptiveLearning.result.settledPublished", "已正式结算 · 已发布")
       : trans("adaptiveLearning.result.settled", "已正式结算"),
     description:
       scorePresentation.title ||
@@ -120,22 +141,25 @@ function authoritativeResultPresentation(scoreState) {
   };
 }
 
+/**
+ *
+ * @param pendingSyncCount
+ */
 function previewResultPresentation(pendingSyncCount) {
   const syncing = pendingSyncCount > 0;
   return {
-    label: trans("adaptiveLearning.result.unsyncedPreview", "未同步预览"),
-    description: trans(
-      syncing
-        ? "adaptiveLearning.result.previewSyncing"
-        : "adaptiveLearning.result.previewWaiting",
-      syncing
-        ? "当前结果只是本机未同步预览，不会写入长期掌握记录。还有 {$count} 道记录正在同步。"
-        : "当前结果只是本机未同步预览，不会写入长期掌握记录。正在等待服务端结算。",
-      { count: pendingSyncCount },
-    ),
+    label: "",
+    description: "",
   };
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.isAuthoritative
+ * @param root0.scoreState
+ * @param root0.pendingSyncCount
+ */
 export function resultAuthorityPresentation({
   isAuthoritative,
   scoreState,
@@ -146,6 +170,12 @@ export function resultAuthorityPresentation({
     : previewResultPresentation(pendingSyncCount);
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.isAuthoritative
+ * @param root0.scoreState
+ */
 export function shouldShowResultValues({ isAuthoritative, scoreState }) {
   return !isAuthoritative || scoreState.ready;
 }

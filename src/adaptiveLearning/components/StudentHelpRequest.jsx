@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { CheckCircle2, HandHelping, LoaderCircle, X } from "lucide-react";
 import { createPortal } from "react-dom";
+import { trans } from "../../utils/i18n";
 
 import { useOptionalLearningSession } from "../session/LearningSessionContext";
 import { getAdaptivePortalHost } from "../shared/application/adaptivePortalHost";
@@ -16,6 +17,7 @@ import {
   getSupportHelpRequests,
 } from "../shared/infrastructure/classroomApi";
 import { createClientId } from "../shared/infrastructure/clientId";
+import { toStudentHelpRequestPayload } from "../student/application/helpRequestMapper";
 import { recordLearningEvent } from "../student/data/learningEventRepository";
 import {
   clearCollapsedStudentHelpRequestId,
@@ -26,18 +28,6 @@ import {
 } from "../student/data/studentSupportSessionRepository";
 import { buildHelpRequestResultEvent } from "../student/domain/helpRequestTelemetry";
 
-const QUESTION_REASONS = [
-  { code: "CANNOT_UNDERSTAND", label: "看不懂题目" },
-  { code: "CANNOT_START", label: "不知道从哪里开始" },
-  { code: "STUCK", label: "做到一半卡住了" },
-  { code: "CONTENT_OR_DEVICE_ISSUE", label: "题目或设备有问题" },
-];
-const PAGE_REASONS = [
-  { code: "CANNOT_UNDERSTAND", label: "看不懂当前内容" },
-  { code: "CANNOT_START", label: "不知道下一步做什么" },
-  { code: "STUCK", label: "学到一半卡住了" },
-  { code: "CONTENT_OR_DEVICE_ISSUE", label: "内容或设备有问题" },
-];
 const OPEN_STATUSES = new Set(["OPEN", "WAITING", "PENDING", "ACKNOWLEDGED"]);
 const HELP_REQUEST_TIMEOUT_MS = 12_000;
 
@@ -61,9 +51,9 @@ function normalizeRequests(payload) {
 function requestStatus(request) {
   if (!request) return "";
   if (request.status === "ACKNOWLEDGED")
-    return "老师已看到，求助不影响学习结论，继续完成当前步骤";
+    return trans("adaptiveLearning.help.teacherAccepted", "老师已看到");
   if (["RESOLVED", "CANCELLED", "EXPIRED"].includes(request.status)) return "";
-  return "已通知老师，求助不影响学习结论，你可以继续学习";
+  return trans("adaptiveLearning.help.teacherNotified", "已通知老师");
 }
 
 /**
@@ -72,8 +62,8 @@ function requestStatus(request) {
  */
 function helpErrorMessage(error) {
   if (error?.message === "Failed to fetch" || error instanceof TypeError)
-    return "暂时没联系上老师，请稍后再试";
-  return error?.message || "暂时没联系上老师，请稍后再试";
+    return trans("adaptiveLearning.help.teacherUnavailable", "暂时没联系上老师，请稍后再试");
+  return error?.message || trans("adaptiveLearning.help.teacherUnavailable", "暂时没联系上老师，请稍后再试");
 }
 
 /**
@@ -81,17 +71,6 @@ function helpErrorMessage(error) {
  * @param pathname
  * @param hasQuestion
  */
-function inferContextType(pathname, hasQuestion) {
-  if (hasQuestion)
-    return pathname.includes("post-assessment") ? "PRACTICE" : "ASSESSMENT";
-  if (pathname.includes("/learn")) return "LEARNING";
-  if (pathname.includes("knowledge-map")) return "KNOWLEDGE_MAP";
-  if (pathname.includes("result") || pathname.includes("complete"))
-    return "RESULT";
-  if (pathname.includes("today")) return "DIRECTORY";
-  return "OTHER";
-}
-
 /**
  *
  * @param root0
@@ -105,7 +84,7 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
   const pagePath =
     typeof window === "undefined"
       ? "/adaptive-learning/today"
-      : window.location.pathname;
+      : window.location.hash.replace(/^#/, "") || window.location.pathname;
   const pageSearch =
     typeof window === "undefined" ? "" : window.location.search;
   const selection = session.selection || {};
@@ -113,7 +92,6 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
   const knowledgePointName =
     context.knowledgePointName || selection.knowledgePoints?.[0]?.name || "";
   const lessonTitle = context.lessonTitle || selection.section?.title || "";
-  const reasons = question ? QUESTION_REASONS : PAGE_REASONS;
   const identityKey = `${selection.studentId || ""}:${selection.studentName || ""}`;
   const supportSessionBoundaryKey = [
     identityKey,
@@ -123,7 +101,6 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
   ].join(":");
   const [supportSession, setSupportSession] = useState(null);
   const [open, setOpen] = useState(false);
-  const [reasonCode, setReasonCode] = useState("");
   const [reasonError, setReasonError] = useState("");
   const [note, setNote] = useState("");
   const [activeRequest, setActiveRequest] = useState(null);
@@ -136,56 +113,16 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
   const clientRequestId = useRef("");
   const helpButtonRef = useRef(null);
   const helpDialogRef = useRef(null);
-  const firstReasonRef = useRef(null);
   const selectionRef = useRef(selection);
   selectionRef.current = selection;
 
   const requestContext = useMemo(
-    () => ({
-      contextType: inferContextType(pagePath, Boolean(question)),
-      pageRoute: `${pagePath}${pageSearch}`.slice(0, 255),
-      learningPeriodId: selection.learningPeriodId || null,
-      studentSessionId: selection.classroomAccessToken
-        ? selection.studentSessionId
-        : null,
-      knowledgeObjectiveId:
-        question?.knowledgePointIds?.[0] ||
-        selection.knowledgePoints?.[0]?.id ||
-        null,
-      questionId: question?.id || null,
-      questionSnapshot: {
-        id: question?.id || "",
-        stem: question?.stem || "",
-        type: question?.type || "",
-        difficulty: question?.difficulty || "",
-        lessonTitle,
-        knowledgePointName,
-        pageTitle: question
-          ? "当前练习题"
-          : lessonTitle || knowledgePointName || "智能学习",
-        presentedAt: context.presentedAt || new Date().toISOString(),
-      },
-      answerSnapshot: {
-        text: Array.isArray(context.answer)
-          ? context.answer.join("、")
-          : String(context.answer || ""),
-        imageName: context.image?.name || "",
-      },
-    }),
-    [
-      context.answer,
-      context.image?.name,
-      context.presentedAt,
-      knowledgePointName,
-      lessonTitle,
-      pagePath,
-      pageSearch,
-      question,
-      selection.classroomAccessToken,
-      selection.knowledgePoints,
-      selection.learningPeriodId,
-      selection.studentSessionId,
-    ],
+    () => ({ pagePath, pageSearch, selection, question, answer: context.answer,
+      questionId: question?.id || null, contextType: question ? "QUESTION" : "LEARNING_PAGE",
+      imageName: context.image?.name, lessonTitle, knowledgePointName,
+      questionNumber: context.questionNumber, questionTypeLabel: context.questionTypeLabel,
+      presentedAt: context.presentedAt }),
+    [context, knowledgePointName, lessonTitle, pagePath, pageSearch, question, selection],
   );
 
   useEffect(() => {
@@ -263,7 +200,7 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
     window.setTimeout(
       () =>
         helpDialogRef.current
-          ?.querySelector('[role="radio"], textarea, button')
+          ?.querySelector("textarea, header > button, footer button")
           ?.focus(),
       0,
     );
@@ -289,9 +226,8 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
 
   const submit = async () => {
     if (status === "sending") return;
-    if (!reasonCode) {
-      setReasonError("请选择一个求助原因");
-      window.setTimeout(() => firstReasonRef.current?.focus(), 0);
+    if (!note.trim()) {
+      setReasonError(trans("adaptiveLearning.help.required", "请填写你需要老师帮助的内容"));
       return;
     }
     setStatus("sending");
@@ -312,10 +248,11 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
         currentSupport.id,
         currentSupport.accessToken,
         {
-          clientRequestId: clientRequestId.current,
-          reasonCode,
-          note: note.trim(),
-          ...requestContext,
+          ...toStudentHelpRequestPayload({
+              clientRequestId: clientRequestId.current,
+              note,
+              context: requestContext,
+            }),
         },
         { signal: controller.signal },
       );
@@ -323,7 +260,6 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
       setActiveRequest(created);
       setStatus("idle");
       setOpen(false);
-      setReasonCode("");
       setReasonError("");
       setNote("");
       clientRequestId.current = "";
@@ -332,7 +268,7 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
           buildHelpRequestResultEvent({
             questionId: requestContext.questionId,
             contextType: requestContext.contextType,
-            reasonCode,
+            reasonCode: "CUSTOM",
             result: "success",
             durationMs: performance.now() - startedAt,
           }),
@@ -348,7 +284,7 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
           buildHelpRequestResultEvent({
             questionId: requestContext.questionId,
             contextType: requestContext.contextType,
-            reasonCode,
+            reasonCode: "CUSTOM",
             result,
             durationMs: performance.now() - startedAt,
           }),
@@ -359,7 +295,7 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
       }
       setError(
         requestError?.name === "AbortError"
-          ? "通知老师超时，请检查网络后重试"
+          ? trans("adaptiveLearning.help.timeout", "提交求助超时，请检查网络后重试")
           : helpErrorMessage(requestError),
       );
       setStatus("error");
@@ -398,14 +334,14 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
         <button
           className="teacher-help-pending-button"
           type="button"
-          aria-label="展开求助状态"
+          aria-label={trans("adaptiveLearning.help.expand", "展开求助状态")}
           onClick={expandStatus}
         >
           <HandHelping size={17} />
           <span>
             {activeRequest.status === "ACKNOWLEDGED"
-              ? "老师已接单"
-              : "等待老师"}
+              ? trans("adaptiveLearning.help.teacherAccepted", "老师已接单")
+              : trans("adaptiveLearning.help.waitingTeacher", "等待老师")}
           </span>
           <i aria-hidden="true" />
         </button>
@@ -428,13 +364,15 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
                 void cancel();
               }}
             >
-              {status === "cancelling" ? "正在取消…" : "取消求助"}
+              {status === "cancelling"
+                ? trans("adaptiveLearning.help.cancelling", "正在取消…")
+                : trans("adaptiveLearning.help.cancel", "取消求助")}
             </button>
             <button
               className="teacher-help-collapse"
               type="button"
-              aria-label="收起求助状态"
-              title="收起求助状态"
+              aria-label={trans("adaptiveLearning.help.collapse", "收起求助状态")}
+              title={trans("adaptiveLearning.help.collapse", "收起求助状态")}
               onClick={collapseStatus}
             >
               <X size={16} />
@@ -450,7 +388,7 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
           onClick={() => setOpen(true)}
         >
           <HandHelping size={17} />
-          <span>求助老师</span>
+          <span>{trans("adaptiveLearning.help.askTeacher", "求助老师")}</span>
           <i aria-hidden="true" />
         </button>
       )}
@@ -459,7 +397,7 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
           <span>{error}</span>
           <button
             type="button"
-            aria-label="关闭连接提示"
+            aria-label={trans("adaptiveLearning.help.dismissNotice", "关闭连接提示")}
             onClick={() => setErrorDismissed(true)}
           >
             <X size={15} />
@@ -479,7 +417,7 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
             <button
               className="teacher-help-mask"
               type="button"
-              aria-label="关闭求助弹窗"
+              aria-label={trans("adaptiveLearning.help.closeDialog", "关闭求助弹窗")}
               onClick={closeHelp}
             />
             <form
@@ -491,43 +429,24 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
             >
               <header>
                 <div>
-                  <h2 id="teacher-help-title">你需要老师怎么帮？</h2>
+                  <h2 id="teacher-help-title">{trans("adaptiveLearning.help.title", "你需要老师怎么帮？")}</h2>
                   <p>
                     {question
-                      ? "老师会看到当前题目和你已经填写的内容。"
-                      : "老师会看到你当前所在的学习页面和知识点。"}
+                      ? trans("adaptiveLearning.help.questionPrompt", "请描述你需要老师帮助的地方。")
+                      : trans("adaptiveLearning.help.pagePrompt", "请描述你在当前学习页面遇到的问题。")}
                   </p>
                 </div>
-                <button type="button" aria-label="关闭" onClick={closeHelp}>
+                <button type="button" aria-label={trans("adaptiveLearning.help.close", "关闭")} onClick={closeHelp}>
                   <X size={19} />
                 </button>
               </header>
-              <div
-                className={`teacher-help-reasons${reasonError ? " invalid" : ""}`}
-                role="radiogroup"
-                aria-label="求助原因"
-                aria-describedby={
-                  reasonError ? "teacher-help-reason-error" : undefined
-                }
-              >
-                {reasons.map((reason, index) => (
-                  <button
-                    ref={index === 0 ? firstReasonRef : undefined}
-                    key={reason.code}
-                    className={reasonCode === reason.code ? "selected" : ""}
-                    type="button"
-                    role="radio"
-                    aria-checked={reasonCode === reason.code}
-                    onClick={() => {
-                      setReasonCode(reason.code);
-                      setReasonError("");
-                    }}
-                  >
-                    <span />
-                    {reason.label}
-                  </button>
-                ))}
-              </div>
+              {question && (
+                <div className="teacher-help-question-meta">
+                  <span>{trans("adaptiveLearning.help.questionNumber", "第 {$number} 题", { number: context.questionNumber || "-" })}</span>
+                  <span>{context.questionTypeLabel || question.type}</span>
+                  <span>{trans("adaptiveLearning.help.difficulty", "难度 {$difficulty}", { difficulty: question.difficulty || "-" })}</span>
+                </div>
+              )}
               {reasonError && (
                 <p
                   className="teacher-help-reason-error"
@@ -539,15 +458,18 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
               )}
               <label>
                 <span>
-                  补充说明 <small>选填</small>
+                  {trans("adaptiveLearning.help.content", "求助内容")} <small>{trans("adaptiveLearning.help.requiredLabel", "必填")}</small>
                   <b>{note.length}/50</b>
                 </span>
                 <textarea
                   value={note}
                   maxLength={50}
                   rows={3}
-                  placeholder="可以简单告诉老师你卡在了哪一步"
-                  onChange={(event) => setNote(event.target.value)}
+                  placeholder={trans("adaptiveLearning.help.placeholder", "可以简单告诉老师你卡在了哪一步")}
+                  onChange={(event) => {
+                    setNote(event.target.value);
+                    if (event.target.value.trim()) setReasonError("");
+                  }}
                 />
               </label>
               {error && (
@@ -561,7 +483,7 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
                   type="button"
                   onClick={closeHelp}
                 >
-                  取消
+                  {trans("adaptiveLearning.help.cancel", "取消")}
                 </button>
                 <button
                   className="primary-button"
@@ -573,10 +495,10 @@ export default function StudentHelpRequest({ context = {}, disabled = false }) {
                     <LoaderCircle className="spin" size={16} />
                   )}
                   {status === "sending"
-                    ? "正在通知…"
+                    ? trans("adaptiveLearning.help.submitting", "正在提交…")
                     : status === "error"
-                      ? "重新通知老师"
-                      : "通知老师"}
+                      ? trans("adaptiveLearning.help.retry", "重新提交求助")
+                      : trans("adaptiveLearning.help.submit", "提交求助")}
                 </button>
               </footer>
             </form>

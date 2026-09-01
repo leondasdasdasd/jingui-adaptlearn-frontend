@@ -3,7 +3,9 @@
 import React from "react";
 import { QuestionPlayer, QuestionPreview } from "@yungu-fed/question-editor";
 
+import { locale } from "../../../utils/i18n";
 import { choiceLayoutClassName } from "../../shared/question-platform/choiceLayout";
+import { questionPlayerLocale } from "../../shared/question-platform/questionPlayerLocale";
 import MathContent from "../MathContent";
 import QuestionReferenceAnswer from "../QuestionReferenceAnswer";
 import { answerText, contentText, optionLabel } from "./model";
@@ -54,7 +56,7 @@ export default function AttemptQuestionRenderer({
             <QuestionPlayer
               className="student-home-question-player"
               disabled
-              locale="zh-CN"
+              locale={questionPlayerLocale(locale())}
               onResponseChange={() => {}}
               questionTypeTemplates={renderer.templates}
               response={renderer.response}
@@ -69,7 +71,7 @@ export default function AttemptQuestionRenderer({
           ) : (
             <QuestionPreview
               className="student-home-question-preview"
-              locale="zh-CN"
+              locale={questionPlayerLocale(locale())}
               questionTypeTemplates={renderer.templates}
               showAnswer={false}
               showExtraAttributes={

@@ -8,7 +8,6 @@ import {
   ChevronRight,
   Sparkles,
 } from "../components/Icons";
-import MathContent from "../components/MathContent";
 import {
   knowledgeCheckpointAnswerText,
   knowledgeCheckpointCopy,
@@ -17,6 +16,7 @@ import {
   knowledgeCheckpointQuestionAria,
   knowledgeCheckpointText,
 } from "../components/knowledge-checkpoint/presentation";
+import MathContent from "../components/MathContent";
 import { localizedFeedbackItems } from "../components/question-feedback/questionFeedbackPresentation";
 import QuestionReviewDisplay from "../components/QuestionReviewDisplay";
 import { calculatePostMastery } from "../lib/mastery";
@@ -532,9 +532,7 @@ export default function KnowledgeCheckpointRoute() {
   });
   const copy = knowledgeCheckpointCopy();
   const actionLabel =
-    flow.mode === "direct"
-      ? copy.returnToLearningList
-      : copy.continueLearning;
+    flow.mode === "direct" ? copy.returnToLearningList : copy.continueLearning;
   const before = mastery?.before ?? 0;
   const after = mastery?.after ?? 0;
 
@@ -560,9 +558,7 @@ export default function KnowledgeCheckpointRoute() {
           </div>
           <div className="knowledge-checkpoint-hero-copy">
             <span>
-              {reachedTarget
-                ? copy.sectionTargetReached
-                : copy.sectionComplete}
+              {reachedTarget ? copy.sectionTargetReached : copy.sectionComplete}
             </span>
             <h1>{knowledgePoint?.name || copy.currentKnowledgePoint}</h1>
             <p>{encouragement}</p>
@@ -580,9 +576,7 @@ export default function KnowledgeCheckpointRoute() {
           <div>
             <span>{copy.roundAnswers}</span>
             <strong>
-              {metrics.answered}
-              {" "}
-              <small>{copy.questionUnit}</small>
+              {metrics.answered} <small>{copy.questionUnit}</small>
             </strong>
           </div>
           <div>

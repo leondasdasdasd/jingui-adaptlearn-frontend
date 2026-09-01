@@ -37,11 +37,7 @@ describe("result page presentation", () => {
         scoreState: { kind: "practiceComplete", ready: false },
         pendingSyncCount: 2,
       }),
-    ).toEqual({
-      label: "未同步预览",
-      description:
-        "当前结果只是本机未同步预览，不会写入长期掌握记录。还有 2 道记录正在同步。",
-    });
+    ).toEqual({ label: "", description: "" });
   });
 
   test("keeps non-ready authoritative results hidden and explains the state", () => {

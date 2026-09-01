@@ -2,12 +2,23 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import AppShell from "./AppShell";
 import ChapterNavigator from "./directory/ChapterNavigator";
-import LessonWorkspace from "./directory/LessonWorkspace";
 import CourseSwitcher from "./directory/CourseSwitcher";
+import LessonWorkspace from "./directory/LessonWorkspace";
+
 import "../styles/directory-modern.css";
 
 /**
  * 现代自适应学习首页
+ * @param root0
+ * @param root0.course
+ * @param root0.progress
+ * @param root0.onContinue
+ * @param root0.onOpenKnowledgeMap
+ * @param root0.onStart
+ * @param root0.onLearnKnowledge
+ * @param root0.onSelectCourse
+ * @param root0.localExperience
+ * @param root0.busy
  */
 export default function DirectoryPage({
   course,
@@ -135,4 +146,3 @@ export default function DirectoryPage({
     </AppShell>
   );
 }
-

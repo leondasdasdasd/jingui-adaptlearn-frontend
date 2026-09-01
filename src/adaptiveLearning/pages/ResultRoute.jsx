@@ -170,16 +170,14 @@ export default function ResultRoute() {
     ),
   ];
   const submittedQuestionIdsSignature = submittedQuestionIds.join(",");
-  const {
-    items: answerReviews,
-    status: answerReviewStatus,
-  } = useScopedAnswerReviews({
-    contentVersionId: session.selection?.contentVersionId,
-    questionIds: submittedQuestionIds,
-    questionIdsSignature: submittedQuestionIdsSignature,
-    studentSessionId: currentSessionId,
-    accessToken: currentAccessToken,
-  });
+  const { items: answerReviews, status: answerReviewStatus } =
+    useScopedAnswerReviews({
+      contentVersionId: session.selection?.contentVersionId,
+      questionIds: submittedQuestionIds,
+      questionIdsSignature: submittedQuestionIdsSignature,
+      studentSessionId: currentSessionId,
+      accessToken: currentAccessToken,
+    });
   const reviewedQuestions = allQuestions.map((question) => {
     const review = answerReviews[question.id];
     return review

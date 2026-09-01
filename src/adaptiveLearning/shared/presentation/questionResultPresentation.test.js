@@ -28,8 +28,6 @@ describe("question result presentation", () => {
     expect(localizedQuestionType("fill_blank")).toBe("Fill in the blank");
     expect(localizedQuestionType("unknown")).toBe("Other question type");
     expect(localizedQuestionState("partial")).toBe("Partially correct");
-    expect(localizedQuestionState("pending", "unanswered")).toBe(
-      "Unanswered",
-    );
+    expect(localizedQuestionState("pending", "unanswered")).toBe("Unanswered");
   });
 });

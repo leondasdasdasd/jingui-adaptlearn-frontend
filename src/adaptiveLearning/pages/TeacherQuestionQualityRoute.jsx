@@ -431,9 +431,7 @@ export default function TeacherQuestionQualityRoute() {
         {questions.length === 0 ? (
           <section className="qq-empty">
             <FileSearch2 size={30} />
-            <h2>
-              {qualityText("empty.title", "这个课时还没有可质检的题目")}
-            </h2>
+            <h2>{qualityText("empty.title", "这个课时还没有可质检的题目")}</h2>
             <p>
               {qualityText(
                 "empty.description",
@@ -533,10 +531,7 @@ export default function TeacherQuestionQualityRoute() {
                           "已显示 {$visible}/{$total} 题",
                           { visible: visibleRows.length, total: rows.length },
                         )
-                      : qualityText(
-                          "resultHint",
-                          "开始质检后在此查看结果",
-                        )}
+                      : qualityText("resultHint", "开始质检后在此查看结果")}
                   </span>
                 </div>
                 <div

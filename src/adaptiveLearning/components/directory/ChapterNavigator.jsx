@@ -1,14 +1,18 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   BookOpen,
-  Search,
   ChevronDown,
   ChevronRight,
   Clock3,
+  Search,
 } from "lucide-react";
 
 /**
  * 章节目录导航侧边栏
+ * @param root0
+ * @param root0.course
+ * @param root0.selectedSection
+ * @param root0.onChooseSection
  */
 export default function ChapterNavigator({
   course,
@@ -98,8 +102,8 @@ export default function ChapterNavigator({
                   <div className="chapter-header-left">
                     <span className="chapter-idx-pill">
                       {chapter.index
-                        ? chapter.index.replace(/[^0-9]/g, "") || (idx + 1)
-                        : (idx + 1)}
+                        ? chapter.index.replaceAll(/\D/g, "") || idx + 1
+                        : idx + 1}
                     </span>
                     <span className="chapter-title-text">{chapter.title}</span>
                   </div>

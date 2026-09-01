@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-import {
-  forgetClassStudentIdentity,
-  rememberClassStudentIdentity,
-} from "../data/classStudentIdentityRepository";
 import { fetchStudentAccountSession } from "../data/studentAccountSessionRepository";
 import { fetchStudentLearningHome } from "../data/studentLearningHomeRepository";
+import {
+  forgetStudentLearningIdentity,
+  rememberStudentLearningIdentity,
+} from "../data/studentLearningIdentityRepository";
 import { studentAccountSessionIssues } from "../domain/studentAccountSession";
 
 const initialState = {
@@ -28,7 +28,7 @@ export function useStudentAccountLearningHome() {
     if (!identity) {
       void fetchStudentAccountSession({ signal: controller.signal })
         .then((studentIdentity) => {
-          if (!rememberClassStudentIdentity(studentIdentity)) {
+          if (!rememberStudentLearningIdentity(studentIdentity)) {
             const storageError = new Error("学生身份无法保存");
             storageError.code = studentAccountSessionIssues.unavailable;
             throw storageError;
@@ -45,7 +45,7 @@ export function useStudentAccountLearningHome() {
               ].includes(error?.code)
             ) {
               // 当前测验会话已否定学生身份，旧课堂凭证不能跨账号继续生效。
-              forgetClassStudentIdentity();
+              forgetStudentLearningIdentity();
             }
             setState({
               loading: false,
@@ -74,6 +74,13 @@ export function useStudentAccountLearningHome() {
         if (!cancelled) setState({ ...initialState, loading: false, profile });
       } catch (error) {
         if (!cancelled && error?.name !== "AbortError") {
+          if (error?.status === 401) {
+            // 账号登录态仍有效时，过期的学习凭证应静默重换，避免学生被迫重新登录。
+            forgetStudentLearningIdentity();
+            setState(initialState);
+            setIdentity(null);
+            return;
+          }
           setState({
             ...initialState,
             loading: false,

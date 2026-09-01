@@ -6,7 +6,13 @@ import KnowledgeAssessmentMatrixReady from "./KnowledgeAssessmentMatrixReady";
 
 import "./KnowledgeAssessmentMatrix.css";
 
-/** 教师端单个知识点或整课综合的评估矩阵。 */
+/**
+ * 教师端单个知识点或整课综合的评估矩阵。
+ * @param root0
+ * @param root0.assessment
+ * @param root0.onGenerateMatrix
+ * @param root0.generationDisabled
+ */
 export default function KnowledgeAssessmentMatrix({
   assessment,
   onGenerateMatrix,

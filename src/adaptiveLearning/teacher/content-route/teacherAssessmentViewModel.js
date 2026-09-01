@@ -17,6 +17,11 @@ const GENERATION_STATUSES = new Set([
   "stopped",
 ]);
 
+/**
+ *
+ * @param source
+ * @param scopeId
+ */
 function matrixFromSource(source, scopeId) {
   if (Array.isArray(source)) {
     return source.find(
@@ -26,6 +31,11 @@ function matrixFromSource(source, scopeId) {
   return source?.[scopeId] || null;
 }
 
+/**
+ *
+ * @param source
+ * @param scopeId
+ */
 function slotsFromSource(source, scopeId) {
   if (Array.isArray(source)) {
     return source.filter(
@@ -35,6 +45,10 @@ function slotsFromSource(source, scopeId) {
   return Array.isArray(source?.[scopeId]) ? source[scopeId] : [];
 }
 
+/**
+ *
+ * @param role
+ */
 function normalizedRole(role) {
   const value = String(role || "")
     .trim()
@@ -45,6 +59,11 @@ function normalizedRole(role) {
   return ROLE_IDS.has(value) ? value : "SUPPORT";
 }
 
+/**
+ *
+ * @param values
+ * @param fallback
+ */
 function firstPresent(values, fallback = "") {
   return (
     values.find(
@@ -53,6 +72,10 @@ function firstPresent(values, fallback = "") {
   );
 }
 
+/**
+ *
+ * @param question
+ */
 function questionCellIds(question) {
   return new Set(
     [
@@ -66,6 +89,10 @@ function questionCellIds(question) {
   );
 }
 
+/**
+ *
+ * @param questions
+ */
 function questionsByCell(questions) {
   const result = new Map();
   for (const [index, question] of questions.entries()) {
@@ -84,6 +111,12 @@ function questionsByCell(questions) {
   return result;
 }
 
+/**
+ *
+ * @param rawMatrix
+ * @param scopeId
+ * @param questions
+ */
 function projectMatrix(rawMatrix, scopeId, questions) {
   if (!rawMatrix?.cells?.length) return null;
   const normalized = normalizeKnowledgeAssessmentMatrix({
@@ -127,6 +160,10 @@ function projectMatrix(rawMatrix, scopeId, questions) {
   };
 }
 
+/**
+ *
+ * @param slot
+ */
 function projectSlotContract(slot) {
   const matrixCode = firstPresent(
     [slot.matrixCellCode],

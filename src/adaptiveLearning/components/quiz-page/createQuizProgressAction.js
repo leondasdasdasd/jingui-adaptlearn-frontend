@@ -5,23 +5,26 @@
  */
 export default function createQuizProgressAction(input) {
   if (input.correctionRequired) {
-    return { kind: "confirm-correction", run: input.onConfirmCorrection };
+    return {
+      kind: "confirm-correction",
+      run: () => input.onConfirmCorrection(),
+    };
   }
   if (input.retryRequired) {
     return {
       kind:
         input.answerQuality === "pending_review" ? "resubmit" : "retry-answer",
-      run: input.onRetry,
+      run: () => input.onRetry(),
     };
   }
   if (input.hasCompleteIntervention) {
-    return { kind: "review-problem", run: input.onContinue };
+    return { kind: "review-problem", run: () => input.onContinue() };
   }
   if (input.sequenceComplete) {
-    return { kind: "continue-learning", run: input.onContinue };
+    return { kind: "continue-learning", run: () => input.onContinue() };
   }
   return {
     kind: input.adaptiveOutcome ? "continue" : "next-question",
-    run: input.onContinue,
+    run: () => input.onContinue(),
   };
 }

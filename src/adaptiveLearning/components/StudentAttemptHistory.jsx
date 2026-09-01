@@ -84,6 +84,10 @@ function rangeStart(range) {
 
 /**
  * 作答详情侧边抽屉 (Redesigned Attempt Detail Drawer)
+ * @param root0
+ * @param root0.attempt
+ * @param root0.onClose
+ * @param root0.reviewCredentials
  */
 function AttemptDetailDrawer({ attempt, onClose, reviewCredentials }) {
   const copy = studentAttemptHistoryCopy();
@@ -210,7 +214,9 @@ function AttemptDetailDrawer({ attempt, onClose, reviewCredentials }) {
               {isCorrect && <CheckCircle2 size={22} />}
               {isPartial && <AlertCircle size={22} />}
               {isIncorrect && <XCircle size={22} />}
-              {!isCorrect && !isPartial && !isIncorrect && <HelpCircle size={22} />}
+              {!isCorrect && !isPartial && !isIncorrect && (
+                <HelpCircle size={22} />
+              )}
             </div>
             <div className="drawer-result-info">
               <div className="drawer-result-status-line">
@@ -219,7 +225,8 @@ function AttemptDetailDrawer({ attempt, onClose, reviewCredentials }) {
                 </span>
                 <span className="drawer-score-ratio">
                   得分率{" "}
-                  {attempt.outcome === "skipped" || attempt.outcome === "pending"
+                  {attempt.outcome === "skipped" ||
+                  attempt.outcome === "pending"
                     ? localizedAttemptOutcome(attempt.outcome)
                     : localizedQuestionResult(attempt.scoreRatio)}
                 </span>
@@ -269,10 +276,14 @@ function AttemptDetailDrawer({ attempt, onClose, reviewCredentials }) {
               <span>作答与参考答案对比</span>
             </div>
             <div className="drawer-answers-grid">
-              <div className={`drawer-answer-box my-answer ${OUTCOME_TONES[outcome]}`}>
+              <div
+                className={`drawer-answer-box my-answer ${OUTCOME_TONES[outcome]}`}
+              >
                 <div className="answer-box-header">
                   <span>{copy.myAnswer}</span>
-                  <span className={`answer-outcome-tag ${OUTCOME_TONES[outcome]}`}>
+                  <span
+                    className={`answer-outcome-tag ${OUTCOME_TONES[outcome]}`}
+                  >
                     {localizedAttemptOutcome(outcome)}
                   </span>
                 </div>
@@ -328,7 +339,9 @@ function AttemptDetailDrawer({ attempt, onClose, reviewCredentials }) {
           <section className="drawer-facts-card">
             <div className="facts-item">
               <span className="facts-label">{copy.answeredAt}</span>
-              <span className="facts-val">{localizedAttemptDate(attempt.submittedAt)}</span>
+              <span className="facts-val">
+                {localizedAttemptDate(attempt.submittedAt)}
+              </span>
             </div>
             <div className="facts-item">
               <span className="facts-label">{copy.scoreRate}</span>
@@ -340,7 +353,9 @@ function AttemptDetailDrawer({ attempt, onClose, reviewCredentials }) {
             </div>
             <div className="facts-item">
               <span className="facts-label">{copy.recordSource}</span>
-              <span className="facts-val">{localizedAttemptSource(attempt.source)}</span>
+              <span className="facts-val">
+                {localizedAttemptSource(attempt.source)}
+              </span>
             </div>
           </section>
         </div>
@@ -383,6 +398,14 @@ function facetsFromAttempts(attempts) {
 
 /**
  * 学生做题记录主组件 (Redesigned Student Attempt History)
+ * @param root0
+ * @param root0.studentId
+ * @param root0.refreshKey
+ * @param root0.authoritativeAttempts
+ * @param root0.loading
+ * @param root0.errorKind
+ * @param root0.onRetry
+ * @param root0.reviewCredentials
  */
 export default function StudentAttemptHistory({
   studentId,
@@ -394,7 +417,7 @@ export default function StudentAttemptHistory({
   reviewCredentials = null,
 }) {
   const copy = studentAttemptHistoryCopy();
-  
+
   // 快速预设模式: all | mistakes | correct | practice | pre | enhancement
   const [quickPreset, setQuickPreset] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -447,7 +470,10 @@ export default function StudentAttemptHistory({
           return attempt.attemptType === "pre";
         }
         if (quickPreset === "enhancement") {
-          return attempt.attemptType === "enhancement" || attempt.attemptType === "composite";
+          return (
+            attempt.attemptType === "enhancement" ||
+            attempt.attemptType === "composite"
+          );
         }
         return true;
       })
@@ -531,7 +557,10 @@ export default function StudentAttemptHistory({
     };
   }, [attempts]);
 
-  useEffect(() => setVisibleCount(50), [filters, quickPreset, searchQuery, studentId]);
+  useEffect(
+    () => setVisibleCount(50),
+    [filters, quickPreset, searchQuery, studentId],
+  );
 
   const setFilter = (key, value) =>
     setFilters((current) => ({ ...current, [key]: value }));
@@ -626,10 +655,10 @@ export default function StudentAttemptHistory({
                 stats.accuracy == null
                   ? ""
                   : stats.accuracy >= 80
-                  ? "success-val"
-                  : stats.accuracy >= 60
-                  ? "warning-val"
-                  : "danger-val"
+                    ? "success-val"
+                    : stats.accuracy >= 60
+                      ? "warning-val"
+                      : "danger-val"
               }`}
             >
               {percent(stats.accuracy)}
@@ -640,7 +669,20 @@ export default function StudentAttemptHistory({
         {/* 卡片 4: 待复习错题 */}
         <div
           className={`sah-bento-card ${stats.needReview > 0 ? "highlight-attention clickable" : ""}`}
-          onClick={stats.needReview > 0 ? () => setQuickPreset("mistakes") : undefined}
+          onClick={
+            stats.needReview > 0 ? () => setQuickPreset("mistakes") : undefined
+          }
+          onKeyDown={(event) => {
+            if (
+              stats.needReview > 0 &&
+              (event.key === "Enter" || event.key === " ")
+            ) {
+              event.preventDefault();
+              setQuickPreset("mistakes");
+            }
+          }}
+          role={stats.needReview > 0 ? "button" : undefined}
+          tabIndex={stats.needReview > 0 ? 0 : undefined}
           style={stats.needReview > 0 ? { cursor: "pointer" } : undefined}
         >
           <div className="bento-card-top">
@@ -681,7 +723,9 @@ export default function StudentAttemptHistory({
           />
           <div
             className="dist-seg incorrect"
-            style={{ width: `${(stats.incorrectCount / stats.attempts) * 100}%` }}
+            style={{
+              width: `${(stats.incorrectCount / stats.attempts) * 100}%`,
+            }}
           />
           <div
             className="dist-seg skipped"
@@ -731,7 +775,9 @@ export default function StudentAttemptHistory({
               type="button"
               className={`sah-quick-pill mistakes ${quickPreset === "mistakes" ? "active" : ""}`}
               onClick={() =>
-                setQuickPreset((prev) => (prev === "mistakes" ? "all" : "mistakes"))
+                setQuickPreset((prev) =>
+                  prev === "mistakes" ? "all" : "mistakes",
+                )
               }
             >
               <span className="pill-dot red" />
@@ -745,7 +791,9 @@ export default function StudentAttemptHistory({
               type="button"
               className={`sah-quick-pill correct ${quickPreset === "correct" ? "active" : ""}`}
               onClick={() =>
-                setQuickPreset((prev) => (prev === "correct" ? "all" : "correct"))
+                setQuickPreset((prev) =>
+                  prev === "correct" ? "all" : "correct",
+                )
               }
             >
               <span className="pill-dot green" />
@@ -757,7 +805,9 @@ export default function StudentAttemptHistory({
               type="button"
               className={`sah-quick-pill ${quickPreset === "practice" ? "active" : ""}`}
               onClick={() =>
-                setQuickPreset((prev) => (prev === "practice" ? "all" : "practice"))
+                setQuickPreset((prev) =>
+                  prev === "practice" ? "all" : "practice",
+                )
               }
             >
               <span>自适应巩固</span>
@@ -821,7 +871,9 @@ export default function StudentAttemptHistory({
                 <span>{copy.lesson}</span>
                 <select
                   value={filters.lessonId}
-                  onChange={(event) => setFilter("lessonId", event.target.value)}
+                  onChange={(event) =>
+                    setFilter("lessonId", event.target.value)
+                  }
                 >
                   <option value="">{copy.allLessons}</option>
                   {facets.lessons.map((lesson) => (
@@ -945,9 +997,19 @@ export default function StudentAttemptHistory({
                   className={`sah-attempt-card ${OUTCOME_TONES[outcome]}`}
                   key={`${attempt.historyId || "h"}:${attempt.attemptId || index}:${index}`}
                   onClick={() => setSelectedAttempt(attempt)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setSelectedAttempt(attempt);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                 >
                   {/* 左侧作答状态指示区 */}
-                  <div className={`sah-card-status-indicator ${OUTCOME_TONES[outcome]}`}>
+                  <div
+                    className={`sah-card-status-indicator ${OUTCOME_TONES[outcome]}`}
+                  >
                     <div className="status-icon-wrap">
                       {isCorrect && <CheckCircle2 size={18} />}
                       {isPartial && <AlertCircle size={18} />}
@@ -1007,7 +1069,9 @@ export default function StudentAttemptHistory({
 
                     {/* 作答对比摘要条 */}
                     <div className="sah-card-answer-preview">
-                      <div className={`preview-answer-pill ${OUTCOME_TONES[outcome]}`}>
+                      <div
+                        className={`preview-answer-pill ${OUTCOME_TONES[outcome]}`}
+                      >
                         <span className="preview-label">我的作答:</span>
                         <strong className="preview-val">
                           {localizedAttemptAnswer(attempt.answerValues)}
@@ -1033,7 +1097,9 @@ export default function StudentAttemptHistory({
                       <div className="sah-lesson-attribution">
                         <BookOpen size={12} />
                         <span>
-                          {attempt.lesson?.index ? `${attempt.lesson.index} ` : ""}
+                          {attempt.lesson?.index
+                            ? `${attempt.lesson.index} `
+                            : ""}
                           {attempt.lesson?.title || copy.untitledLesson}
                         </span>
                         <span className="attr-dot">·</span>
@@ -1042,17 +1108,10 @@ export default function StudentAttemptHistory({
                         </span>
                       </div>
 
-                      <button
-                        className="sah-detail-action-btn"
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedAttempt(attempt);
-                        }}
-                      >
+                      <span className="sah-detail-action-btn">
                         <span>{copy.viewDetail}</span>
                         <ArrowUpRight size={14} />
-                      </button>
+                      </span>
                     </div>
                   </div>
                 </article>

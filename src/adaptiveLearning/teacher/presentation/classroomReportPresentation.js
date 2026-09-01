@@ -74,7 +74,11 @@ const COPY = {
   exportFilename: ["exportFilename", "课堂学习成果统计-{$periodId}.csv"],
 };
 
-/** 集中读取教师报告文案，避免页面同时拼接中英文。 */
+/**
+ * 集中读取教师报告文案，避免页面同时拼接中英文。
+ * @param key
+ * @param replacements
+ */
 export function classroomReportText(key, replacements = {}) {
   const [suffix, fallback] = COPY[key] || [key, key];
   return trans(
@@ -84,7 +88,10 @@ export function classroomReportText(key, replacements = {}) {
   );
 }
 
-/** 将掌握状态码映射为单语言展示文案。 */
+/**
+ * 将掌握状态码映射为单语言展示文案。
+ * @param status
+ */
 export function classroomReportMasteryStatus(status) {
   if (status === "EXCELLENT") return classroomReportText("fullyMastered");
   if (status === "GOOD") return classroomReportText("wellMastered");

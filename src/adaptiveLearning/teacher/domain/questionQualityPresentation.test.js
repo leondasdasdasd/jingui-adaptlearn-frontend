@@ -4,9 +4,7 @@ describe("question quality domain", () => {
   test("keeps locale-specific module labels out of server question snapshots", () => {
     const questions = collectLessonQualityQuestions({
       preQuestions: [{ id: "pre-1", stem: "Question A" }],
-      postQuestions: [
-        { id: "post-1", stem: "Question B", phase: "review" },
-      ],
+      postQuestions: [{ id: "post-1", stem: "Question B", phase: "review" }],
     });
 
     expect(questions).toEqual([

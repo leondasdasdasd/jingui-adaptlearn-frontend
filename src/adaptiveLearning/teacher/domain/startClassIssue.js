@@ -9,7 +9,11 @@ export const START_CLASS_ISSUES = Object.freeze({
   CREATE_FAILED: "CREATE_FAILED",
 });
 
-/** 创建跨 domain/repository 边界传递的稳定开课错误。 */
+/**
+ * 创建跨 domain/repository 边界传递的稳定开课错误。
+ * @param code
+ * @param ErrorType
+ */
 export function startClassIssue(code, ErrorType = Error) {
   const error = new ErrorType(code);
   error.code = code;

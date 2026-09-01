@@ -39,6 +39,10 @@ import {
 import { preferUnseenPublishedContent } from "../student/data/seenQuestionRepository";
 import { loadSessionSnapshot } from "../student/data/sessionSnapshotRepository";
 import {
+  readSelectedCoursePreference,
+  writeSelectedCoursePreference,
+} from "../student/data/studentPreferencesRepository";
+import {
   clearAllQuizDrafts,
   restoreQuizDrafts,
 } from "../student/data/studentSessionRepository";
@@ -323,12 +327,8 @@ export default function DirectoryRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { session, setSession } = useLearningSession();
   const [selectedCourseId, setSelectedCourseId] = useState(() => {
-    try {
-      const stored = localStorage.getItem("adaptive-selected-course-id");
-      if (stored && ALL_COURSES.some((c) => c.id === stored)) {
-        return stored;
-      }
-    } catch {}
+    const stored = readSelectedCoursePreference();
+    if (stored && ALL_COURSES.some((item) => item.id === stored)) return stored;
     return defaultCourse.id;
   });
 
@@ -339,9 +339,7 @@ export default function DirectoryRoute() {
   const handleSelectCourse = (newCourse) => {
     if (!newCourse) return;
     setSelectedCourseId(newCourse.id);
-    try {
-      localStorage.setItem("adaptive-selected-course-id", newCourse.id);
-    } catch {}
+    writeSelectedCoursePreference(newCourse.id);
   };
 
   const [entryState, setEntryState] = useState({ loading: false, error: "" });

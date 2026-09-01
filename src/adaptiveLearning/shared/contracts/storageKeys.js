@@ -10,6 +10,7 @@ export const storageKeys = {
   scratchPaperSession: (scope) =>
     `adaptive-scratch-paper-session-v1-${encodeURIComponent(scope)}`,
   autoSpeech: "adaptive-learning-auto-speech",
+  selectedCourse: "adaptive-selected-course-id-v1",
   knowledgeProfile: "adaptive-learning-knowledge-profile-v2",
   classroomEventOutbox: "adaptive-classroom-event-outbox-v1",
   classroomAnswerOutbox: "adaptive-classroom-answer-outbox-v1",

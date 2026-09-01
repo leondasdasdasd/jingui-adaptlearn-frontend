@@ -16,10 +16,7 @@ const ISSUE_COPY = {
     "selectStudents",
     "请至少选择 1 名学生",
   ],
-  [START_CLASS_ISSUES.INVALID_START_TIME]: [
-    "invalidStartTime",
-    "开课时间无效",
-  ],
+  [START_CLASS_ISSUES.INVALID_START_TIME]: ["invalidStartTime", "开课时间无效"],
   [START_CLASS_ISSUES.PREPARE_CONTENT_FAILED]: [
     "prepareContentFailed",
     "多课时课堂内容创建失败",
@@ -27,9 +24,15 @@ const ISSUE_COPY = {
   [START_CLASS_ISSUES.CREATE_FAILED]: ["launchFailed", "启动课堂失败，请重试"],
 };
 
-/** 将稳定开课错误映射为当前语言，未知底层错误使用安全通用提示。 */
+/**
+ * 将稳定开课错误映射为当前语言，未知底层错误使用安全通用提示。
+ * @param error
+ */
 export function startClassIssueText(error) {
   const definition = ISSUE_COPY[error?.code || error?.message];
-  const [key, fallback] = definition || ["launchFailed", "启动课堂失败，请重试"];
+  const [key, fallback] = definition || [
+    "launchFailed",
+    "启动课堂失败，请重试",
+  ];
   return trans(`adaptiveLearning.startClass.${key}`, fallback);
 }

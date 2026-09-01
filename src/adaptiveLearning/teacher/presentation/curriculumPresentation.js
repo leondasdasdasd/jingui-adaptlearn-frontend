@@ -92,8 +92,5 @@ export function curriculumOperationError(operation) {
       "notice.cancelFailed",
       "取消生成任务失败，请稍后重试。",
     );
-  return curriculumText(
-    "notice.startFailed",
-    "启动生成任务失败，请稍后重试。",
-  );
+  return curriculumText("notice.startFailed", "启动生成任务失败，请稍后重试。");
 }

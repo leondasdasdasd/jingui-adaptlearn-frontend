@@ -3,7 +3,11 @@ import PropTypes from "prop-types";
 
 import { trans } from "../../../utils/i18n";
 
-/** 插槽题目生成的成功、失败与待处理计数。 */
+/**
+ * 插槽题目生成的成功、失败与待处理计数。
+ * @param root0
+ * @param root0.slotView
+ */
 export default function AssessmentSlotCounts({ slotView }) {
   if (!slotView.hasGenerationProgress) return null;
   return (

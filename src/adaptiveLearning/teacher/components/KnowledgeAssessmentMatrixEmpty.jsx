@@ -4,7 +4,13 @@ import PropTypes from "prop-types";
 
 import { trans } from "../../../utils/i18n";
 
-/** 尚未生成矩阵时的独立空态与生成入口。 */
+/**
+ * 尚未生成矩阵时的独立空态与生成入口。
+ * @param root0
+ * @param root0.assessment
+ * @param root0.onGenerateMatrix
+ * @param root0.generationDisabled
+ */
 export default function KnowledgeAssessmentMatrixEmpty({
   assessment,
   onGenerateMatrix,

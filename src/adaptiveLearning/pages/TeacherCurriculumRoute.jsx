@@ -42,8 +42,8 @@ import {
   readTeacherContent,
   writeTeacherContent,
 } from "../teacher/data/teacherContentRepository";
-import { generationStateForLesson } from "../teacher/domain/lessonBatchGeneration";
 import { deriveCurriculumContentStatus } from "../teacher/domain/curriculumContentStatus";
+import { generationStateForLesson } from "../teacher/domain/lessonBatchGeneration";
 import {
   curriculumCatalogLabel,
   curriculumContentStatus,
@@ -464,11 +464,15 @@ export default function TeacherCurriculumRoute() {
                     "publisher",
                     selectedPublisherKey,
                     currentCourse.publisher,
-                  )} · {curriculumCatalogLabel(
+                  )}{" "}
+                  ·{" "}
+                  {curriculumCatalogLabel(
                     "grade",
                     selectedGradeKey,
                     selectedGradeMeta.name,
-                  )} · {curriculumCatalogLabel(
+                  )}{" "}
+                  ·{" "}
+                  {curriculumCatalogLabel(
                     "subject",
                     selectedSubject,
                     selectedSubjectMeta.name,
@@ -567,10 +571,7 @@ export default function TeacherCurriculumRoute() {
                 type="button"
                 className="curriculum-filter-close-btn"
                 onClick={() => setIsFilterOpen(false)}
-                title={curriculumText(
-                  "closeFilterHint",
-                  "完成选择并收起面板",
-                )}
+                title={curriculumText("closeFilterHint", "完成选择并收起面板")}
               >
                 <span>{curriculumText("closeFilter", "收起面板")}</span>
                 <ChevronUp size={14} />
@@ -749,16 +750,16 @@ export default function TeacherCurriculumRoute() {
                     const content = contents[lesson.id] || {};
                     const contentStatus =
                       deriveCurriculumContentStatus(content);
-                    const contentMeta =
-                      curriculumContentStatus(contentStatus);
+                    const contentMeta = curriculumContentStatus(contentStatus);
                     const generation = generationForContent(
                       content,
                       databaseTasksByLesson[lesson.id],
                       generationRunsByLesson[lesson.id],
                       backendGenerationChecked,
                     );
-                    const generationMeta =
-                      curriculumGenerationStatus(generation.status);
+                    const generationMeta = curriculumGenerationStatus(
+                      generation.status,
+                    );
                     const publishedVersionNumber =
                       content.publishedVersionNumber ||
                       generation.publishedVersionNumber;

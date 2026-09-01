@@ -21,9 +21,7 @@ import {
 import StatePanel from "../components/StatePanel";
 import TeacherShell from "../components/TeacherShell";
 import { useNavigate, useParams } from "../routing";
-import {
-  fetchClassroomReportView,
-} from "../teacher/data/classroomApiRepository";
+import { fetchClassroomReportView } from "../teacher/data/classroomApiRepository";
 import { downloadClassroomReportCsv } from "../teacher/domain/classroomReportExport";
 import {
   classroomReportMasteryStatus,

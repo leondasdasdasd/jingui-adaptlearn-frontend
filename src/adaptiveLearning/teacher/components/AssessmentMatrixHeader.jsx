@@ -4,6 +4,10 @@ import PropTypes from "prop-types";
 
 import { trans } from "../../../utils/i18n";
 
+/**
+ *
+ * @param matrix
+ */
 function matrixSummary(matrix) {
   const source =
     matrix.generationSource === "SERVER_FALLBACK"
@@ -25,7 +29,13 @@ function matrixSummary(matrix) {
   );
 }
 
-/** 已生成矩阵的概要、证据覆盖与重新生成操作。 */
+/**
+ * 已生成矩阵的概要、证据覆盖与重新生成操作。
+ * @param root0
+ * @param root0.assessment
+ * @param root0.onGenerateMatrix
+ * @param root0.generationDisabled
+ */
 export default function AssessmentMatrixHeader({
   assessment,
   onGenerateMatrix,

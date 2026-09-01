@@ -1,5 +1,9 @@
 import { START_CLASS_ISSUES, startClassIssue } from "./startClassIssue";
 
+/**
+ *
+ * @param teachingCourse
+ */
 function validatedTeachingCourse(teachingCourse) {
   if (!teachingCourse?.courseId || !teachingCourse?.semesterId) {
     throw startClassIssue(START_CLASS_ISSUES.SELECT_COURSE);
@@ -13,6 +17,11 @@ function validatedTeachingCourse(teachingCourse) {
   };
 }
 
+/**
+ *
+ * @param content
+ * @param teachingCourse
+ */
 function validatedLessonContent(content, teachingCourse) {
   const linkedLessonIds = content?.sourceLessonIds || [];
   if (
@@ -29,6 +38,11 @@ function validatedLessonContent(content, teachingCourse) {
   };
 }
 
+/**
+ *
+ * @param activeClass
+ * @param selectedStudentIds
+ */
 function validatedRoster(activeClass, selectedStudentIds) {
   if (!activeClass?.classId) {
     throw startClassIssue(START_CLASS_ISSUES.SELECT_CLASS);
@@ -49,6 +63,11 @@ function validatedRoster(activeClass, selectedStudentIds) {
   };
 }
 
+/**
+ *
+ * @param classDate
+ * @param classTime
+ */
 function validatedSchedule(classDate, classTime) {
   const scheduledStartAt = new Date(`${classDate}T${classTime}:00`);
   if (Number.isNaN(scheduledStartAt.getTime())) {

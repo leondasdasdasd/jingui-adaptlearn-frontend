@@ -3,6 +3,10 @@ import {
   getStudentSessionReport,
 } from "../../shared/infrastructure/classroomApi";
 
+/**
+ *
+ * @param answer
+ */
 function normalizePurpose(answer) {
   return String(answer?.purpose || answer?.sourceType || "").toUpperCase() ===
     "PRE"
@@ -10,28 +14,52 @@ function normalizePurpose(answer) {
     : "POST";
 }
 
+/**
+ *
+ * @param value
+ */
 function textValue(value) {
   return String(value ?? "");
 }
 
+/**
+ *
+ * @param value
+ */
 function numericValue(value) {
   return Number(value ?? 0);
 }
 
+/**
+ *
+ * @param value
+ */
 function objectValue(value) {
   return value ?? {};
 }
 
+/**
+ *
+ * @param value
+ */
 function arrayValue(value) {
   return Array.isArray(value) ? value : [];
 }
 
+/**
+ *
+ * @param fields
+ */
 function definedFields(fields) {
   return Object.fromEntries(
     Object.entries(fields).filter(([, value]) => value !== undefined),
   );
 }
 
+/**
+ *
+ * @param sourceScores
+ */
 function mapSourceScores(sourceScores) {
   const source = objectValue(sourceScores);
   return definedFields({
@@ -41,6 +69,10 @@ function mapSourceScores(sourceScores) {
   });
 }
 
+/**
+ *
+ * @param item
+ */
 function mapMasteryTrace(item) {
   const source = objectValue(item);
   return definedFields({
@@ -56,6 +88,10 @@ function mapMasteryTrace(item) {
   });
 }
 
+/**
+ *
+ * @param item
+ */
 function mapRubricResult(item) {
   const source = objectValue(item);
   return definedFields({
@@ -64,6 +100,10 @@ function mapRubricResult(item) {
   });
 }
 
+/**
+ *
+ * @param item
+ */
 function mapMasteryResult(item) {
   const source = objectValue(item);
   return {
@@ -80,6 +120,10 @@ function mapMasteryResult(item) {
   };
 }
 
+/**
+ *
+ * @param score
+ */
 function mapClassroomScore(score) {
   if (!score) return null;
   return {
@@ -89,6 +133,10 @@ function mapClassroomScore(score) {
   };
 }
 
+/**
+ *
+ * @param grading
+ */
 function mapClassroomGrading(grading) {
   const source = objectValue(grading);
   const stableFields = {

@@ -4,10 +4,7 @@ const HELP_REASON_COPY = new Map([
   ["CANNOT_UNDERSTAND", ["help.cannotUnderstand", "看不懂题目"]],
   ["CANNOT_START", ["help.cannotStart", "不知道从哪里开始"]],
   ["STUCK", ["help.stuck", "做到一半卡住了"]],
-  [
-    "CONTENT_OR_DEVICE_ISSUE",
-    ["help.contentOrDevice", "题目或设备有问题"],
-  ],
+  ["CONTENT_OR_DEVICE_ISSUE", ["help.contentOrDevice", "题目或设备有问题"]],
 ]);
 const COMPOSITE_PRACTICE_STAGE = ["stage.compositePractice", "综合练习"];
 
@@ -32,7 +29,12 @@ const STAGE_COPY = new Map([
   ["SETTLED", ["stage.ended", "已结束"]],
 ]);
 
-/** 统一读取实时课堂当前语言文案。 */
+/**
+ * 统一读取实时课堂当前语言文案。
+ * @param key
+ * @param fallback
+ * @param replacements
+ */
 export function liveText(key, fallback, replacements = {}) {
   return trans(`adaptiveLearning.live.${key}`, fallback, replacements);
 }
@@ -98,8 +100,7 @@ export function snapshotText(value) {
  * @param request
  */
 export function supportSourceLabel(request) {
-  if (request.learningPeriodId)
-    return liveText("source.classroom", "正式课堂");
+  if (request.learningPeriodId) return liveText("source.classroom", "正式课堂");
   if (request.contextType === "PRACTICE")
     return liveText("source.practice", "自主练习");
   if (request.contextType === "ASSESSMENT")
@@ -111,7 +112,10 @@ export function supportSourceLabel(request) {
   return liveText("source.selfStudy", "自主学习");
 }
 
-/** 将求助原因代码转换为本地化描述。 */
+/**
+ * 将求助原因代码转换为本地化描述。
+ * @param reasonCode
+ */
 export function helpReasonLabel(reasonCode) {
   const [key, fallback] = HELP_REASON_COPY.get(reasonCode) || [
     "help.other",
@@ -120,7 +124,10 @@ export function helpReasonLabel(reasonCode) {
   return liveText(key, fallback);
 }
 
-/** 将学生会话阶段码映射为本地化名称。 */
+/**
+ * 将学生会话阶段码映射为本地化名称。
+ * @param stageCode
+ */
 export function liveStageLabel(stageCode) {
   const [key, fallback] = STAGE_COPY.get(stageCode) || [
     "stage.learning",
@@ -129,7 +136,10 @@ export function liveStageLabel(stageCode) {
   return liveText(key, fallback);
 }
 
-/** 将预警证据映射为当前语言，数值证据保持不变。 */
+/**
+ * 将预警证据映射为当前语言，数值证据保持不变。
+ * @param warning
+ */
 export function liveWarningLabel(warning) {
   if (warning?.type === "inactive")
     return liveText("warning.inactive", "连续 {$count} 分钟无学习变化", {
@@ -158,8 +168,7 @@ const CONTENT_FORMATTERS = new Map([
     "lessonExplanation",
     (descriptor) =>
       liveText("content.lessonExplanation", "{$name} · 综合讲解", {
-        name:
-          descriptor.name || liveText("defaultTitle", "自适应互动课堂"),
+        name: descriptor.name || liveText("defaultTitle", "自适应互动课堂"),
       }),
   ],
   [
@@ -186,7 +195,10 @@ const CONTENT_FORMATTERS = new Map([
   ],
 ]);
 
-/** 将稳定内容描述转换为实时表格副标题。 */
+/**
+ * 将稳定内容描述转换为实时表格副标题。
+ * @param student
+ */
 export function liveCurrentContent(student) {
   const descriptor = student?.currentContentDescriptor || {};
   const formatter = CONTENT_FORMATTERS.get(descriptor.kind);

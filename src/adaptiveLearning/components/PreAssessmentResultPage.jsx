@@ -477,7 +477,9 @@ export default function PreAssessmentResultPage({
   return (
     <AppShell
       title={lesson.title}
-      eyebrow={hasAdministeredQuestions ? copy.resultEyebrow : copy.focusEyebrow}
+      eyebrow={
+        hasAdministeredQuestions ? copy.resultEyebrow : copy.focusEyebrow
+      }
       compact
     >
       <div className="result-wrap pre-result-wrap">

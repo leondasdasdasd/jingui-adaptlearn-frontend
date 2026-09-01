@@ -9,6 +9,12 @@ import AssessmentSlotToolbar from "./AssessmentSlotToolbar";
 
 import "./KnowledgeAssessmentMatrix.css";
 
+/**
+ *
+ * @param hasMatrix
+ * @param onMissingMatrix
+ * @param action
+ */
 function matrixGuardedAction(hasMatrix, onMissingMatrix, action) {
   return () => {
     onMissingMatrix(!hasMatrix);
@@ -16,7 +22,17 @@ function matrixGuardedAction(hasMatrix, onMissingMatrix, action) {
   };
 }
 
-/** 题目插槽独立规划与按插槽新增题目的工作区。 */
+/**
+ * 题目插槽独立规划与按插槽新增题目的工作区。
+ * @param root0
+ * @param root0.hasMatrix
+ * @param root0.questionSlots
+ * @param root0.slotGeneration
+ * @param root0.onGenerateSlots
+ * @param root0.onGenerateQuestions
+ * @param root0.onStopQuestions
+ * @param root0.generationDisabled
+ */
 export default function AssessmentSlotsSection({
   hasMatrix = false,
   questionSlots = [],

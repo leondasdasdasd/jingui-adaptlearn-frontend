@@ -9,6 +9,7 @@ import {
   canUseQuestionPlatformPlayer,
   readLegacyAnswer,
 } from "../shared/question-platform/legacyQuestionAdapter";
+import { questionPlayerLocale } from "../shared/question-platform/questionPlayerLocale";
 import AnswerRichEditor from "./AnswerRichEditor";
 import DrawingBoardInput from "./DrawingBoardInput";
 import { Check } from "./Icons";
@@ -77,7 +78,7 @@ function PlatformQuestionAnswer({
     >
       <QuestionPlayer
         disabled={disabled}
-        locale={locale()}
+        locale={questionPlayerLocale(locale())}
         onResponseChange={(response) =>
           onChange(readLegacyAnswer(response, question.type))
         }
@@ -90,51 +91,32 @@ function PlatformQuestionAnswer({
   );
 }
 
-const FORMULA_ANSWER_KINDS = new Set(["expression", "formula", "latex"]);
-
-/**
- *
- * @param value
- */
-function looksLikeLatex(value) {
-  return /\\[a-z]+|[^_{}]/i.test(String(value || ""));
-}
-
 /**
  *
  * @param root0
  * @param root0.index
- * @param root0.question
  * @param root0.value
  * @param root0.mode
- * @param root0.onModeChange
  * @param root0.onChange
  * @param root0.disabled
- * @param root0.formulaTargeting
- * @param root0.onFormulaTargeted
+ * @param root0.selected
+ * @param root0.onSelect
+ * @param root0.formulaFocusRequest
  */
 function InlineFillBlank({
   index,
-  question,
   value,
   mode,
-  onModeChange,
   onChange,
   disabled,
-  formulaTargeting,
-  onFormulaTargeted,
+  selected,
+  onSelect,
+  formulaFocusRequest,
 }) {
   const answerRef = useRef(null);
   const measureRef = useRef(null);
   const mathFieldRef = useRef(null);
-  const focusFormulaRef = useRef(false);
-  const resolvedMode =
-    mode ||
-    (FORMULA_ANSWER_KINDS.has(
-      String(question.answerKind || "").toLowerCase(),
-    ) || looksLikeLatex(value)
-      ? "formula"
-      : "text");
+  const resolvedMode = mode || "text";
   const [inputWidth, setInputWidth] = useState(64);
   const [mathReady, setMathReady] = useState(false);
 
@@ -144,6 +126,7 @@ function InlineFillBlank({
     import("mathlive")
       .then(() => {
         if (!cancelled) setMathReady(true);
+        return;
       })
       .catch(() => {
         if (!cancelled) setMathReady(false);
@@ -157,15 +140,17 @@ function InlineFillBlank({
     const mathField = mathFieldRef.current;
     if (!mathReady || !mathField) return;
     mathField.mathVirtualKeyboardPolicy = "auto";
-    mathField.readOnly = Boolean(disabled || formulaTargeting);
+    mathField.readOnly = Boolean(disabled);
     if (mathField.getValue("latex") !== value) {
       mathField.setValue(value, { silenceNotifications: true });
     }
-    if (focusFormulaRef.current && !formulaTargeting && !disabled) {
-      focusFormulaRef.current = false;
-      window.requestAnimationFrame(() => mathField.focus());
+    if (selected && formulaFocusRequest > 0 && !disabled) {
+      window.requestAnimationFrame(() => {
+        mathField.focus();
+        window.mathVirtualKeyboard?.show?.();
+      });
     }
-  }, [disabled, formulaTargeting, mathReady, value]);
+  }, [disabled, formulaFocusRequest, mathReady, selected, value]);
 
   useEffect(() => {
     const answerRoot = answerRef.current;
@@ -196,23 +181,11 @@ function InlineFillBlank({
     if (typeof nextValue === "string") onChange(nextValue);
   };
   const label = `空 ${index + 1}`;
-  const activateFormula = () => {
-    if (!formulaTargeting || disabled) return;
-    focusFormulaRef.current = true;
-    onModeChange("formula");
-    onFormulaTargeted(index);
-  };
-  const handleTargetKeyDown = (event) => {
-    if (!formulaTargeting || !["Enter", " "].includes(event.key)) return;
-    event.preventDefault();
-    activateFormula();
-  };
 
   return (
     <span
-      className={`inline-fill-blank${formulaTargeting ? " is-formula-target" : ""}`}
+      className={`inline-fill-blank${selected ? " is-selected" : ""}`}
       ref={answerRef}
-      onClick={activateFormula}
     >
       <span
         className="inline-fill-input-shell"
@@ -221,23 +194,20 @@ function InlineFillBlank({
         {resolvedMode === "formula" ? (
           <math-field
             ref={mathFieldRef}
-            aria-label={
-              formulaTargeting ? `选择${label}输入公式` : `${label}公式`
-            }
+            aria-label={`${label}公式`}
             className="inline-fill-math-field"
             data-loading={mathReady ? undefined : "true"}
             onBlur={updateFormula}
+            onFocus={() => onSelect(index)}
             onInput={updateFormula}
-            onKeyDown={handleTargetKeyDown}
           />
         ) : (
           <input
-            aria-label={formulaTargeting ? `选择${label}输入公式` : label}
+            aria-label={label}
             autoComplete="off"
             disabled={disabled}
-            readOnly={formulaTargeting}
             onChange={(event) => onChange(event.target.value)}
-            onKeyDown={handleTargetKeyDown}
+            onFocus={() => onSelect(index)}
             value={value}
           />
         )}
@@ -267,20 +237,20 @@ function InlineFillBlank({
  * @param root0.value
  * @param root0.onChange
  * @param root0.inputModes
- * @param root0.onInputModesChange
  * @param root0.disabled
- * @param root0.formulaTargeting
- * @param root0.onFormulaTargeted
+ * @param root0.selectedBlankIndex
+ * @param root0.onBlankSelect
+ * @param root0.formulaFocusRequest
  */
 function InlineFillAnswer({
   question,
   value,
   onChange,
   inputModes = [],
-  onInputModesChange,
   disabled,
-  formulaTargeting,
-  onFormulaTargeted,
+  selectedBlankIndex,
+  onBlankSelect,
+  formulaFocusRequest,
 }) {
   const parts = String(question.stem || "").split(/_{2,}/);
   const blankCount = Math.max(1, parts.length - 1);
@@ -317,20 +287,10 @@ function InlineFillAnswer({
               index={index}
               key={`${question.id}-blank-${index}`}
               mode={inputModes[index]}
-              onModeChange={(nextMode) => {
-                const nextModes = Array.from(
-                  { length: blankCount },
-                  (_, modeIndex) =>
-                    modeIndex === index
-                      ? nextMode
-                      : inputModes[modeIndex] || "text",
-                );
-                onInputModesChange(nextModes);
-              }}
               onChange={(nextValue) => update(index, nextValue)}
-              formulaTargeting={formulaTargeting}
-              onFormulaTargeted={onFormulaTargeted}
-              question={question}
+              selected={selectedBlankIndex === index}
+              onSelect={onBlankSelect}
+              formulaFocusRequest={formulaFocusRequest}
               value={values[index]}
             />
           )}
@@ -351,9 +311,9 @@ function InlineFillAnswer({
  * @param root0.disabled
  * @param root0.grading
  * @param root0.fillInputModes
- * @param root0.onFillInputModesChange
- * @param root0.formulaTargeting
- * @param root0.onFormulaTargeted
+ * @param root0.selectedFillBlankIndex
+ * @param root0.onFillBlankSelect
+ * @param root0.formulaFocusRequest
  */
 export default function QuestionAnswer({
   question,
@@ -364,9 +324,9 @@ export default function QuestionAnswer({
   disabled,
   grading,
   fillInputModes = [],
-  onFillInputModesChange = () => {},
-  formulaTargeting = false,
-  onFormulaTargeted = () => {},
+  selectedFillBlankIndex = null,
+  onFillBlankSelect = () => {},
+  formulaFocusRequest = 0,
 }) {
   if (question.type === "fill_blank") {
     return (
@@ -375,10 +335,10 @@ export default function QuestionAnswer({
         value={value}
         onChange={onChange}
         inputModes={fillInputModes}
-        onInputModesChange={onFillInputModesChange}
         disabled={disabled}
-        formulaTargeting={formulaTargeting}
-        onFormulaTargeted={onFormulaTargeted}
+        selectedBlankIndex={selectedFillBlankIndex}
+        onBlankSelect={onFillBlankSelect}
+        formulaFocusRequest={formulaFocusRequest}
       />
     );
   }

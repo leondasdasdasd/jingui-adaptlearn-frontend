@@ -59,9 +59,7 @@ describe("EndClassroomDialog", () => {
       }),
     );
     fireEvent.keyDown(window, { key: "Escape" });
-    fireEvent.click(
-      screen.getByRole("button", { name: "确认下课" }),
-    );
+    fireEvent.click(screen.getByRole("button", { name: "确认下课" }));
 
     expect(onCancel).toHaveBeenCalledTimes(2);
     expect(onConfirm).toHaveBeenCalledTimes(1);
@@ -80,8 +78,6 @@ describe("EndClassroomDialog", () => {
     });
 
     expect(onCancel).not.toHaveBeenCalled();
-    expect(
-      screen.getByRole("button", { name: "正在下课…" }),
-    ).toBeDisabled();
+    expect(screen.getByRole("button", { name: "正在下课…" })).toBeDisabled();
   });
 });

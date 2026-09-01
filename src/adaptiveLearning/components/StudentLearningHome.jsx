@@ -20,7 +20,12 @@ import {
   User,
 } from "lucide-react";
 
-import { dateTime, duration, percent } from "./student-learning-home/model";
+import {
+  dateTime,
+  duration,
+  percent,
+  studentProfileHeader,
+} from "./student-learning-home/model";
 import { StudentAttemptRecord } from "./student-learning-home/StudentAttemptRecord";
 import useStudentLearningHomeModel from "./student-learning-home/useStudentLearningHomeModel";
 import StudentMatrixMasteryCard from "./StudentMatrixMasteryCard";
@@ -39,6 +44,7 @@ export default function StudentLearningHome({
   viewer = "student",
   action = null,
 }) {
+  const studentHeader = studentProfileHeader(profile);
   const {
     activeDrillKp,
     attempts,
@@ -83,14 +89,13 @@ export default function StudentLearningHome({
                   <GraduationCap size={15} />
                 </div>
                 <div className="student-info-meta">
-                  <h2>{profile?.studentName || profile?.name || "张三"}</h2>
-                  <span className="student-class-chip">
-                    <User size={12} />
-                    {profile?.className ||
-                      profile?.gradeClass ||
-                      profile?.class ||
-                      "高一(1)班"}
-                  </span>
+                  <h2>{studentHeader.name}</h2>
+                  {studentHeader.className && (
+                    <span className="student-class-chip">
+                      <User size={12} />
+                      {studentHeader.className}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="student-header-actions">

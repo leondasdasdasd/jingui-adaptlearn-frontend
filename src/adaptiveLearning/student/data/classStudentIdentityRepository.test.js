@@ -26,21 +26,27 @@ describe("class student identity repository", () => {
   });
 
   test("hides transport errors and reports identity mismatches by stable code", async () => {
-    getClassStudentIdentity.mockRejectedValueOnce(new Error("private response"));
-    await expect(fetchClassStudentIdentity("token-1", "student-1")).rejects.toMatchObject(
-      { code: classStudentIdentityIssues.unavailable },
+    getClassStudentIdentity.mockRejectedValueOnce(
+      new Error("private response"),
     );
+    await expect(
+      fetchClassStudentIdentity("token-1", "student-1"),
+    ).rejects.toMatchObject({ code: classStudentIdentityIssues.unavailable });
 
-    getClassStudentIdentity.mockResolvedValueOnce({ student: { id: "student-2" } });
-    await expect(fetchClassStudentIdentity("token-1", "student-1")).rejects.toMatchObject(
-      { code: classStudentIdentityIssues.mismatch },
-    );
+    getClassStudentIdentity.mockResolvedValueOnce({
+      student: { id: "student-2" },
+    });
+    await expect(
+      fetchClassStudentIdentity("token-1", "student-1"),
+    ).rejects.toMatchObject({ code: classStudentIdentityIssues.mismatch });
   });
 
   test("preserves request cancellation semantics", async () => {
     const controller = new AbortController();
     controller.abort();
-    getClassStudentIdentity.mockRejectedValueOnce(new Error("transport stopped"));
+    getClassStudentIdentity.mockRejectedValueOnce(
+      new Error("transport stopped"),
+    );
 
     await expect(
       fetchClassStudentIdentity("token-1", "student-1", {

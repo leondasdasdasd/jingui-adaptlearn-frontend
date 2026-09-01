@@ -17,10 +17,10 @@ import MathContent from "./MathContent";
 import {
   adaptiveCueDetail,
   adaptiveCueTitle,
+  localizedFeedbackItems,
   masteryChangeLabel,
   masteryFeedbackCopy,
   masteryProgressAria,
-  localizedFeedbackItems,
   questionFeedbackCopy,
   questionFeedbackScore,
   questionFeedbackTitle,
@@ -72,9 +72,6 @@ export default function QuestionFeedbackCard(props) {
           <div>
             <strong>{questionFeedbackTitle(feedback)}</strong>
             {feedback.showScore && <b>{questionFeedbackScore(feedback)}</b>}
-            {props.grading?.syncStatus === "unpersisted" && (
-              <small>{copy.unsyncedPreview}</small>
-            )}
           </div>
         </header>
         {feedback.recognizedAnswer && (
@@ -141,10 +138,7 @@ function MasteryFeedback({
 }) {
   const copy = masteryFeedbackCopy(summary);
   return (
-    <section
-      className="question-feedback-mastery"
-      aria-label={copy.ariaLabel}
-    >
+    <section className="question-feedback-mastery" aria-label={copy.ariaLabel}>
       <header>
         <span>{copy.title}</span>
       </header>

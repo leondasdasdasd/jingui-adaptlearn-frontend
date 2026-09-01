@@ -246,10 +246,7 @@ export default function TeacherShell({
                   >
                     <LogOut size={15} />
                     <span>
-                      {trans(
-                        "adaptiveLearning.teacher.signOut",
-                        "退出登录",
-                      )}
+                      {trans("adaptiveLearning.teacher.signOut", "退出登录")}
                     </span>
                   </button>
                 </div>

@@ -1,22 +1,38 @@
+/**
+ *
+ * @param payload
+ */
 function classPayloadItems(payload) {
   if (Array.isArray(payload)) return payload;
   if (Array.isArray(payload?.classes)) return payload.classes;
   return Array.isArray(payload?.items) ? payload.items : [];
 }
 
+/**
+ *
+ * @param values
+ * @param fallback
+ */
 function firstPresent(values, fallback = "") {
   return (
     values.find((value) => value !== undefined && value !== null) ?? fallback
   );
 }
 
+/**
+ *
+ * @param value
+ */
 function finiteNumber(value) {
   if (value == null || value === "") return null;
   const numeric = Number(value);
   return Number.isFinite(numeric) ? numeric : null;
 }
 
-/** 将课堂服务班级 DTO 转成教师目录唯一数据形状。 */
+/**
+ * 将课堂服务班级 DTO 转成教师目录唯一数据形状。
+ * @param payload
+ */
 export function teacherClassesFromApi(payload) {
   return classPayloadItems(payload)
     .map((classInfo) => ({
@@ -37,7 +53,10 @@ export function teacherClassesFromApi(payload) {
     .filter((classInfo) => classInfo.classId);
 }
 
-/** 将课堂服务课时 DTO 转成教师报告目录唯一数据形状。 */
+/**
+ * 将课堂服务课时 DTO 转成教师报告目录唯一数据形状。
+ * @param payload
+ */
 export function teacherPeriodsFromApi(payload) {
   const periods = Array.isArray(payload) ? payload : [];
   return periods

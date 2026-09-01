@@ -567,8 +567,7 @@ export default function createQuizSubmit(context) {
           correction: null,
         },
       );
-    } catch (err) {
-      console.error("Quiz submission error:", err);
+    } catch {
       // 页面只消费稳定状态，避免把服务端或网络层错误原文泄露给学生。
       setGradingError("unavailable");
     } finally {

@@ -31,4 +31,16 @@ describe("createQuizProgressAction", () => {
       }).kind,
     ).toBe("continue-learning");
   });
+
+  test("does not forward the click event into the learning command", () => {
+    const onContinue = jest.fn();
+    const action = createQuizProgressAction({
+      sequenceComplete: true,
+      onContinue,
+    });
+
+    action.run({ type: "click" });
+
+    expect(onContinue).toHaveBeenCalledWith();
+  });
 });

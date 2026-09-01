@@ -149,16 +149,15 @@
   vertical-align: middle;
 }
 
-.inline-fill-blank.is-formula-target .inline-fill-input-shell {
+.inline-fill-blank.is-selected .inline-fill-input-shell {
   border-radius: var(--radius-control);
   box-shadow: 0 0 0 3px var(--color-primary-100);
   cursor: pointer;
 }
 
-.inline-fill-blank.is-formula-target input,
-.inline-fill-blank.is-formula-target .inline-fill-math-field {
+.inline-fill-blank.is-selected input,
+.inline-fill-blank.is-selected .inline-fill-math-field {
   border-color: var(--color-primary-400);
   color: var(--color-primary-700);
   background: var(--color-primary-50);
-  cursor: pointer;
 }

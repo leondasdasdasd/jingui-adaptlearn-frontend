@@ -19,7 +19,9 @@ const percentValue = (value) => {
 const average = (values) => {
   const present = values.filter((value) => value != null);
   return present.length > 0
-    ? Math.round(present.reduce((sum, value) => sum + value, 0) / present.length)
+    ? Math.round(
+        present.reduce((sum, value) => sum + value, 0) / present.length,
+      )
     : null;
 };
 
@@ -28,7 +30,10 @@ const determinedResults = (report) =>
     (item) => item.status === "DETERMINED" && item.mastery != null,
   );
 
-/** 将一个学生的结算报告映射为报告列表数据。 */
+/**
+ * 将一个学生的结算报告映射为报告列表数据。
+ * @param student
+ */
 function mappedStudent(student) {
   const report = student.report || null;
   const masteryResults = determinedResults(report);
@@ -62,7 +67,12 @@ function mappedStudent(student) {
   };
 }
 
-/** 汇总某学生在单个知识点上的真实作答。 */
+/**
+ * 汇总某学生在单个知识点上的真实作答。
+ * @param answers
+ * @param studentSessionId
+ * @param knowledgeObjectiveId
+ */
 function answerMetrics(answers, studentSessionId, knowledgeObjectiveId) {
   const items = answers.filter(
     (answer) =>
@@ -90,14 +100,23 @@ function answerMetrics(answers, studentSessionId, knowledgeObjectiveId) {
   };
 }
 
-/** 根据权威掌握度返回页面使用的稳定状态。 */
+/**
+ * 根据权威掌握度返回页面使用的稳定状态。
+ * @param postMastery
+ */
 function masteryStatus(postMastery) {
   if (postMastery == null) return "PENDING";
   if (isMasteredValue(postMastery)) return "EXCELLENT";
   return postMastery >= 65 ? "GOOD" : "NEEDS_REINFORCEMENT";
 }
 
-/** 将单个学生知识点结算映射为展示行。 */
+/**
+ * 将单个学生知识点结算映射为展示行。
+ * @param result
+ * @param student
+ * @param report
+ * @param answers
+ */
 function studentMasteryRow(result, student, report, answers) {
   const postMastery =
     result.status === "DETERMINED" ? percentValue(result.mastery) : null;
@@ -123,13 +142,19 @@ function studentMasteryRow(result, student, report, answers) {
   };
 }
 
-/** 按知识点汇总全班学生的真实结算与作答。 */
+/**
+ * 按知识点汇总全班学生的真实结算与作答。
+ * @param reports
+ * @param students
+ * @param answers
+ */
 function mappedKnowledgePoints(reports, students, answers) {
   const rows = new Map();
   for (const report of reports) {
     const student = students.find(
       (item) =>
-        item.id === report.studentId || item.sessionId === report.studentSessionId,
+        item.id === report.studentId ||
+        item.sessionId === report.studentSessionId,
     );
     for (const result of report.masteryResults || []) {
       const id = result.knowledgeObjectiveId;
@@ -153,9 +178,7 @@ function mappedKnowledgePoints(reports, students, answers) {
       ...row,
       avgPre: average(row.students.map((student) => student.preMastery)),
       avgPost: average(row.students.map((student) => student.postMastery)),
-      avgConfidence: average(
-        row.students.map((student) => student.confidence),
-      ),
+      avgConfidence: average(row.students.map((student) => student.confidence)),
       avgAccuracy: average(row.students.map((student) => student.accuracy)),
       totalQuestions: questionCount,
       avgQuestionsPerStudent:
@@ -173,7 +196,10 @@ function mappedKnowledgePoints(reports, students, answers) {
 const firstText = (values) =>
   String(values.find((value) => value != null && value !== "") || "");
 
-/** 将课堂 DTO 收窄为报告页所需元信息。 */
+/**
+ * 将课堂 DTO 收窄为报告页所需元信息。
+ * @param period
+ */
 function mappedPeriod(period = {}) {
   const durationSeconds = finiteNumber(period.durationSeconds);
   const scheduledStartAt = period.scheduledStartAt || "";

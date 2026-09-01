@@ -69,8 +69,6 @@ describe("PreAssessmentResultRoute", () => {
       resolveOldRequest({ "q-1": { correctAnswer: "old-answer" } });
       await oldRequest;
     });
-    expect(screen.getByTestId("result")).toHaveTextContent(
-      "ready:new-answer",
-    );
+    expect(screen.getByTestId("result")).toHaveTextContent("ready:new-answer");
   });
 });
