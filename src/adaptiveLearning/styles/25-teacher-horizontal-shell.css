@@ -1,0 +1,139 @@
+/* ==========================================================================
+   Teacher Horizontal Navigation Layout & Header (Yungu 2.0 Spec)
+   ========================================================================== */
+.teacher-app-horizontal {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  overflow: hidden auto !important;
+  overscroll-behavior: contain;
+  background: var(--color-surface-workspace, #f8f9fa) !important;
+}
+
+.teacher-global-header,
+.teacher-horizontal-header {
+  height: 64px !important;
+  min-height: 64px !important;
+  max-height: 64px !important;
+  padding: 0 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+  box-sizing: border-box !important;
+}
+
+.teacher-horizontal-nav {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin: 0 auto 0 24px !important;
+}
+
+.teacher-horizontal-nav-link {
+  height: 36px !important;
+  padding: 0 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border-radius: 8px !important;
+  color: #475569 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  position: relative !important;
+  border: 1px solid transparent !important;
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.teacher-horizontal-nav-link:hover {
+  color: #01113d !important;
+  background: #f1f5f9 !important;
+}
+
+.teacher-horizontal-nav-link.active {
+  color: #2563eb !important;
+  background: #eff6ff !important;
+  border-color: #bfdbfe !important;
+  font-weight: 600 !important;
+}
+
+.teacher-hnav-icon {
+  display: grid !important;
+  place-items: center !important;
+  color: inherit !important;
+}
+
+.teacher-hnav-badge {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  padding: 2px 8px !important;
+  border-radius: 9999px !important;
+  letter-spacing: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.teacher-hnav-badge.ai {
+  color: #2563eb !important;
+  background: #eff6ff !important;
+  border: 1px solid #bfdbfe !important;
+}
+
+.teacher-hnav-badge.live {
+  color: #166534 !important;
+  background: #f0fdf4 !important;
+  border: 1px solid #dcfce7 !important;
+}
+
+.teacher-header-right,
+.teacher-header-right-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex-shrink: 0 !important;
+}
+
+.teacher-header-start-class-btn {
+  height: 36px !important;
+  padding: 0 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  border: 1px solid transparent !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  background: #2563eb !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2) !important;
+  cursor: pointer !important;
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.teacher-header-start-class-btn:hover {
+  background: #1d4ed8 !important;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3) !important;
+}
+
+.teacher-header-start-class-btn:active {
+  background: #1e40af !important;
+  transform: scale(0.99) !important;
+}
+
+.teacher-main-horizontal {
+  width: 100% !important;
+  max-width: 1440px !important;
+  margin: 0 auto !important;
+  padding: 24px !important;
+  flex: 1 !important;
+}

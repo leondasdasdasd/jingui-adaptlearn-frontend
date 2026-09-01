@@ -173,6 +173,33 @@ export function viteMockAdaptivePlugin() {
           });
         }
 
+        // 12. Teacher Session
+        if (
+          pathname.endsWith("/api/teacher/session") ||
+          pathname.endsWith("/teacher/session")
+        ) {
+          return sendJson(res, {
+            status: "authenticated",
+            principal: {
+              subjectFingerprint: "mock-teacher-fingerprint-001",
+              displayName: "云谷任课教师",
+              email: "teacher@yungu-inc.org",
+              role: "TEACHER",
+            },
+            logoutUrl: "",
+          });
+        }
+
+        // 13. Generation Runs
+        if (pathname.includes("/generation-runs")) {
+          return sendJson(res, { runs: {} });
+        }
+
+        // 14. Generation Tasks
+        if (pathname.includes("/generation-tasks")) {
+          return sendJson(res, { tasks: {} });
+        }
+
         // Pass through to next middleware
         next();
       });

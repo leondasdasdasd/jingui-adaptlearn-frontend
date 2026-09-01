@@ -1,0 +1,306 @@
+/* stylelint-disable color-function-notation -- 主题兼容层保留现有颜色函数格式。 */
+
+/*
+ * 云谷课堂 2.0 visual compatibility layer.
+ *
+ * The current product predates the official token names, so this file keeps
+ * the canonical tokens as the source and maps the existing aliases to them.
+ * Feature CSS should consume the canonical variables below for new work.
+ */
+:root {
+  font-size: 100%;
+
+  --font-family-zh:
+    "Alibaba PuHuiTi 3.0", "Alibaba PuHuiTi", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+  --font-family-latin:
+    "Nunito Sans", -apple-system, blinkmacsystemfont, "Segoe UI", roboto,
+    "Helvetica Neue", arial, sans-serif;
+  --font-family-sans:
+    "Nunito Sans", "Alibaba PuHuiTi 3.0", "Alibaba PuHuiTi", -apple-system,
+    blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-family-question:
+    "Noto Serif SC Variable", "Source Han Serif SC", "Noto Serif CJK SC",
+    "Songti SC", "STSong", "SimSun", serif;
+  --font-size-caption: 0.75rem;
+  --font-size-body-sm: 0.8125rem;
+  --font-size-body: 0.875rem;
+  --font-size-body-lg: 1rem;
+  --font-size-title-sm: 1.125rem;
+  --font-size-title-md: 1.25rem;
+  --font-size-title-lg: 1.5rem;
+  --font-size-title-xl: 1.75rem;
+
+  /* Yungu Classroom 2.0 Specification Palette */
+  --color-brand-ink: #01113d;
+  --color-brand-title: #27345a;
+  --color-brand-deep: #01113d;
+  --color-surface-app: #fcfdfe;
+  --color-surface-workspace: #f8f9fa;
+  --color-surface-section: #f8f9fa;
+  --color-surface-table-header: #f8f9fa;
+  --color-surface-card-default: #ffffff;
+  --color-surface-card-soft: #fcfdfe;
+  --color-surface-disabled: #f1f5f9;
+  --color-surface-control-default: #f8f9fa;
+  --color-surface-control-hover: #f1f5f9;
+  --color-surface-control-active: #e2e8f0;
+  --color-border-default: #e2e8f0;
+  --color-border-subtle: #f1f5f9;
+  --color-border-strong: #cbd5e1;
+  --color-text-emphasis: #01113d;
+  --color-text-primary: #27345a;
+  --color-text-default: #475569;
+  --color-text-secondary: #475569;
+  --color-text-muted: #5a6481;
+  --color-text-weak: #5a6481;
+  --color-text-placeholder: #5a6481;
+  --color-text-disabled: #94a3b8;
+  --color-text-inverse: #ffffff;
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+
+  /* Status feedback colors - Soft container backgrounds */
+  --color-feedback-success-bg: #f0fdf4;
+  --color-feedback-success-border: #dcfce7;
+  --color-feedback-success-ring: #22c55e;
+  --color-feedback-success-fg: #166534;
+  --color-feedback-warning-bg: #fffbeb;
+  --color-feedback-warning-border: #fef3c7;
+  --color-feedback-warning-ring: #f59e0b;
+  --color-feedback-warning-fg: #b45309;
+  --color-feedback-danger-bg: #fef2f2;
+  --color-feedback-danger-border: #fee2e2;
+  --color-feedback-danger-ring: #ef4444;
+  --color-feedback-danger-fg: #991b1b;
+  --color-feedback-danger-badge-bg: #fee2e2;
+  --color-feedback-danger-badge-fg: #991b1b;
+  --color-feedback-info-bg: #eff6ff;
+  --color-feedback-info-border: #bfdbfe;
+  --color-feedback-info-fg: #1d4ed8;
+
+  --color-feedback-card-bg: #ffffff;
+  --color-feedback-card-border: #e2e8f0;
+  --color-feedback-card-title: #27345a;
+
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Border Radii Rules */
+  --radius-sm: 8px;   /* Buttons, tags, badges, icon controls */
+  --radius-md: 16px;  /* Inputs, cards, dialogs/modals */
+  --radius-lg: 24px;  /* Major outer containers */
+  --radius-full: 9999px; /* Pills, status dots, avatars */
+
+  --shadow-hairline: 0 1px 2px rgb(0 0 0 / 0.03);
+  --shadow-card: 0 1px 3px rgb(0 0 0 / 0.04);
+  --shadow-card-hover: 0 4px 12px rgb(1 17 61 / 0.06);
+  --shadow-panel: 0 8px 20px rgb(1 17 61 / 0.06);
+  --shadow-modal: 0 16px 36px rgb(1 17 61 / 0.16);
+  --shadow-primary-button: 0 1px 3px rgb(37 99 235 / 0.2);
+
+  --focus-ring: 0 0 0 2px #2563eb;
+  --motion-fast: 150ms;
+  --motion-default: 200ms;
+  --motion-easing: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Legacy aliases */
+  --primary: var(--color-primary-600);
+  --primary-hover: var(--color-primary-700);
+  --primary-active: var(--color-primary-800);
+  --link: var(--color-primary-700);
+  --brand-soft: var(--color-primary-50);
+  --text: var(--color-text-emphasis);
+  --text-secondary: var(--color-text-secondary);
+  --helper: var(--color-text-muted);
+  --weak: var(--color-text-weak);
+  --muted: var(--color-text-muted);
+  --border: var(--color-border-default);
+  --disabled: var(--color-surface-disabled);
+  --surface: var(--color-surface-card-default);
+  --page: var(--color-surface-workspace);
+  --success: var(--color-feedback-success-fg);
+  --success-bg: var(--color-feedback-success-bg);
+  --warning: var(--color-feedback-warning-fg);
+  --warning-bg: var(--color-feedback-warning-bg);
+  --error: var(--color-feedback-danger-fg);
+  --error-bg: var(--color-feedback-danger-bg);
+  --radius-control: var(--radius-sm);
+  --radius-card: var(--radius-md);
+  --space-panel: var(--space-6);
+  --classroom-focus-ring: 0 0 0 2px #2563eb;
+}
+
+html {
+  color-scheme: light;
+  background: var(--color-surface-workspace);
+}
+
+body {
+  color: var(--color-text-default);
+  background: var(--color-surface-workspace);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-body);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-rendering: optimizelegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  letter-spacing: 0;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-placeholder);
+  opacity: 1;
+}
+
+:is(input, select, textarea)[aria-invalid="true"] {
+  border-color: var(--color-feedback-danger-ring) !important;
+  background: var(--color-feedback-danger-bg);
+  box-shadow: 0 0 0 2px rgb(239 68 68 / 0.16);
+}
+
+:is(
+  button,
+  input,
+  select,
+  textarea,
+  a,
+  summary,
+  [role="button"],
+  [role="tab"]
+):focus-visible {
+  outline: 2px solid var(--color-primary-600);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  color: var(--color-text-disabled);
+  border-color: var(--color-border-default);
+  background: var(--color-surface-disabled);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+:is(button[aria-busy="true"], [aria-busy="true"] button) {
+  cursor: progress;
+}
+
+:is(.primary-button, .teacher-primary) {
+  min-height: 36px;
+  height: 36px;
+  padding-inline: 16px;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-inverse);
+  background: var(--color-primary-600);
+  box-shadow: var(--shadow-primary-button);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  transition: all var(--motion-default) var(--motion-easing);
+}
+
+:is(.primary-button, .teacher-primary):hover:not(:disabled) {
+  background: var(--color-primary-700);
+}
+
+:is(.primary-button, .teacher-primary):active:not(:disabled) {
+  background: var(--color-primary-800);
+  transform: scale(0.99);
+}
+
+.primary-button.large {
+  min-height: 40px;
+  height: 40px;
+  padding-inline: 20px;
+  font-size: var(--font-size-body);
+}
+
+:is(.neutral-button, .teacher-neutral) {
+  min-height: 36px;
+  height: 36px;
+  padding-inline: 16px;
+  gap: 8px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-emphasis);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-hairline);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  transition: all var(--motion-default) var(--motion-easing);
+}
+
+:is(.neutral-button, .teacher-neutral):hover:not(:disabled) {
+  color: var(--color-text-emphasis);
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-control-hover);
+}
+
+:is(.neutral-button, .teacher-neutral):active:not(:disabled) {
+  background: var(--color-surface-control-active);
+}
+
+.teacher-student-home-entry {
+  height: 32px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  border: 1px solid var(--color-primary-200);
+  border-radius: 8px;
+  color: var(--color-primary-700);
+  background: var(--color-primary-50);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.teacher-student-home-entry:hover {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-100);
+}
+
+.teacher-student-home-entry:active {
+  background: var(--color-primary-200);
+}
+
+.quiz-action-secondary .neutral-button,
+.classroom-create-panel > header .teacher-neutral {
+  flex: 0 0 auto;
+}
+
+.end-classroom-modal footer .teacher-neutral {
+  height: 40px;
+  padding-inline: 20px;
+}

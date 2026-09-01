@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ChevronDown, ChevronLeft, LogOut, UserRound } from "lucide-react";
+import { ChevronDown, ChevronLeft, GraduationCap, LogOut, UserRound } from "lucide-react";
 
 import { useNavigate } from "../routing";
 import {
@@ -168,6 +168,17 @@ export default function AppShell({
                   role="menu"
                   aria-label="账号菜单"
                 >
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setUserMenuOpen(false);
+                      window.location.hash = "#/adaptive-learning/teacher/textbook-lessons";
+                    }}
+                  >
+                    <GraduationCap size={16} />
+                    <span>切换至教师端</span>
+                  </button>
                   <button type="button" role="menuitem" onClick={logout}>
                     <LogOut size={16} />
                     <span>退出登录</span>
