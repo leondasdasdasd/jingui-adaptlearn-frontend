@@ -1,0 +1,6 @@
+{
+  "name": "自适应智能学习平台",
+  "description": "基于 React + DVA + 数学认知诊断模型的初中数学自适应学习与课前小测系统",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

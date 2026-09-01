@@ -132,8 +132,8 @@ export default function KnowledgeMapRoute() {
 
   return (
     <AppShell
-      title="学习进度"
-      eyebrow={`${course.publisher} · ${course.name}`}
+      title="学习进度与认知图谱"
+      eyebrow={course.name}
       onBack={() => navigate(routes.directory)}
       headerClassName="knowledge-map-header"
       actions={
