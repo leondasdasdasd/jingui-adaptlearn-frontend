@@ -139,9 +139,12 @@ export default function CourseSwitcher({ currentCourse, onSelectCourse }) {
           <div className="course-switcher-modal" ref={modalRef}>
             {/* 弹窗头部 */}
             <div className="course-switcher-header">
-              <div className="flex items-center gap-1.5">
-                <GraduationCap size={16} className="text-indigo-600 shrink-0" />
-                <h3 className="text-sm font-bold text-slate-800 leading-none m-0">
+              <div
+                className="course-switcher-header-title"
+                style={{ display: "flex", alignItems: "center", gap: "8px", flexDirection: "row" }}
+              >
+                <GraduationCap size={18} style={{ color: "#4F46E5", flexShrink: 0 }} />
+                <h3 style={{ margin: 0, fontSize: "15px", fontWeight: 600, color: "#1E293B", lineHeight: 1, whiteSpace: "nowrap" }}>
                   切换学科学段
                 </h3>
               </div>
@@ -151,7 +154,7 @@ export default function CourseSwitcher({ currentCourse, onSelectCourse }) {
                 onClick={() => setIsOpen(false)}
                 aria-label="关闭"
               >
-                <X size={15} />
+                <X size={16} />
               </button>
             </div>
 

@@ -958,8 +958,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--color-border-subtle, #f1f5f9);
+}
+
+.course-switcher-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-direction: row;
 }
 
 .course-switcher-close-btn {

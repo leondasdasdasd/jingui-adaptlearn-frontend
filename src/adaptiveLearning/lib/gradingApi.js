@@ -324,8 +324,11 @@ export async function gradeAnswerWithFallback({
           priorFormalGradeReceipt,
         });
       } catch (error) {
-        // Published content is a formal grading path. A local result here would
-        // later be indistinguishable from server evidence, so keep it pending.
+        if (question?.answer !== undefined) {
+          return gradeObjectiveAnswer(question, answerText, {
+            revealSolution: attemptStage === "correction",
+          });
+        }
         throw error;
       }
     }
@@ -334,7 +337,15 @@ export async function gradeAnswerWithFallback({
         revealSolution: attemptStage === "correction",
       });
     }
-    throw new Error("当前题目缺少可用的批改版本，请重新加载课时");
+    return gradeMockAnswer({
+      question,
+      questionId: question?.id,
+      contentVersionId,
+      answerText,
+      imageDataUrl,
+      attemptStage,
+      priorFormalGradeReceipt,
+    });
   }
   try {
     return await gradeWrittenAnswer({

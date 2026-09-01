@@ -1,7 +1,7 @@
 /* eslint-disable complexity, sonarjs/cognitive-complexity -- 视图只表达既有题目、反馈和干预状态。 */
 
 import React, { useState } from "react";
-import { BookOpenCheck, Lightbulb, Sigma, Sparkles, X } from "lucide-react";
+import { AlertCircle, BookOpenCheck, Lightbulb, RotateCw, Sigma, Sparkles, X } from "lucide-react";
 import PropTypes from "prop-types";
 
 import { trans } from "../../../utils/i18n";
@@ -203,19 +203,56 @@ export default function QuizPageView({ viewModel }) {
             )}
 
           {gradingError && (
-            <div className="feedback error" role="alert">
-              <strong>
-                {trans(
-                  "adaptiveLearning.quiz.gradingUnavailable",
-                  "暂时没能完成批改",
-                )}
-              </strong>
-              <p>
-                {trans(
-                  "adaptiveLearning.quiz.gradingUnavailableDetail",
-                  "请稍后重试，当前答案会继续保留。",
-                )}
-              </p>
+            <div
+              className="feedback error"
+              role="alert"
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "12px",
+                padding: "16px 20px",
+                borderRadius: "12px",
+                background: "#FEF2F2",
+                border: "1px solid #FEE2E2",
+                marginTop: "20px",
+                boxShadow: "0 1px 3px rgba(0, 0, 0, 0.02)",
+              }}
+            >
+              <AlertCircle
+                size={20}
+                style={{ color: "#EF4444", flexShrink: 0, marginTop: "1px" }}
+                aria-hidden="true"
+              />
+              <div style={{ flex: 1 }}>
+                <strong
+                  style={{
+                    display: "block",
+                    color: "#991B1B",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    lineHeight: "1.4",
+                  }}
+                >
+                  {trans(
+                    "adaptiveLearning.quiz.gradingUnavailable",
+                    "暂时没能完成批改",
+                  )}
+                </strong>
+                <p
+                  style={{
+                    margin: "4px 0 0",
+                    color: "#7F1D1D",
+                    fontSize: "13px",
+                    lineHeight: "1.6",
+                    opacity: 0.9,
+                  }}
+                >
+                  {trans(
+                    "adaptiveLearning.quiz.gradingUnavailableDetail",
+                    "请稍后重试，当前答案会继续保留。",
+                  )}
+                </p>
+              </div>
             </div>
           )}
           {grading && (
@@ -348,7 +385,9 @@ export default function QuizPageView({ viewModel }) {
             >
               {submitting
                 ? trans("adaptiveLearning.quiz.grading", "正在批改…")
-                : trans("adaptiveLearning.quiz.submitAnswer", "提交答案")}
+                : gradingError
+                  ? trans("adaptiveLearning.quiz.retryGrading", "重新提交批改")
+                  : trans("adaptiveLearning.quiz.submitAnswer", "提交答案")}
             </button>
           )}
         </div>
