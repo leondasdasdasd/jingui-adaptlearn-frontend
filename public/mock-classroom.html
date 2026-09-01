@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微课互动学习</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    body {
+      background-color: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 16px;
+    }
+    p.subtitle {
+      color: #64748b;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #334155;
+      margin: 20px 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .concept-box {
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+    }
+    .concept-box h3 {
+      font-size: 15px;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+    .concept-box p {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.5;
+    }
+    .interactive-demo {
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .number-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin: 30px 10px;
+      height: 4px;
+      background: #3b82f6;
+    }
+    .tick {
+      width: 2px;
+      height: 14px;
+      background: #3b82f6;
+      position: relative;
+    }
+    .tick span {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .btn-action {
+      display: block;
+      width: 100%;
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .btn-action:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="app-card">
+    <div class="badge">✨ 智能互动微课</div>
+    <h1 id="lesson-title">知识点深度精讲与互动建构</h1>
+    <p class="subtitle" id="lesson-desc">
+      通过数形结合与直观互动，帮助你快速掌握本节的核心数学思想与解题方法。
+    </p>
+
+    <div class="section-title">📌 核心概念与本质</div>
+    <div class="concept-grid">
+      <div class="concept-box">
+        <h3>1. 明确基准</h3>
+        <p>正数与负数用来表示具有相反意义的量。选定基准（通常是 0 或标准量），规定一个方向为正，相反方向为负。</p>
+      </div>
+      <div class="concept-box">
+        <h3>2. 数形结合</h3>
+        <p>数轴三要素：原点、正方向、单位长度。所有的有理数都可以用数轴上的点唯一确定。</p>
+      </div>
+      <div class="concept-box">
+        <h3>3. 运算法则</h3>
+        <p>先定正负号，再计算绝对值。遇到相反数和绝对值时，注意符号化简和几何距离的含义。</p>
+      </div>
+    </div>
+
+    <div class="section-title">🎯 数轴直观体验</div>
+    <div class="interactive-demo">
+      <p style="font-size: 14px; color: #64748b; margin-bottom: 16px;">
+        观察数轴上的对称性：互为相反数的两点关于原点对称，到原点的距离相等。
+      </p>
+      <div class="number-line">
+        <div class="tick"><span>-3</span></div>
+        <div class="tick"><span>-2</span></div>
+        <div class="tick"><span>-1</span></div>
+        <div class="tick" style="background:#ef4444; height:20px; width:4px;"><span style="color:#ef4444;">0</span></div>
+        <div class="tick"><span>+1</span></div>
+        <div class="tick"><span>+2</span></div>
+        <div class="tick"><span>+3</span></div>
+      </div>
+    </div>
+
+    <button class="btn-action" id="btn-complete" onclick="finishLesson()">
+      ✅ 我已理解核心内容，开始练习
+    </button>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const lessonId = params.get('lessonId');
+    const kpId = params.get('kp');
+
+    if (lessonId === 'section-1-1') {
+      document.getElementById('lesson-title').innerText = '1.1 从自然数到有理数 · 核心概念';
+    } else if (lessonId === 'section-1-2') {
+      document.getElementById('lesson-title').innerText = '1.2 数轴 · 几何直观与三要素';
+    } else if (lessonId === 'section-1-3') {
+      document.getElementById('lesson-title').innerText = '1.3 绝对值与相反数 · 性质与化简';
+    }
+
+    // Inform parent frame that runtime is ready
+    window.addEventListener('load', () => {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'runtime_ready', status: 'READY' }, '*');
+        window.parent.postMessage({ type: 'ready' }, '*');
+      }
+    });
+
+    function finishLesson() {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'learning_complete' }, '*');
+        window.parent.postMessage({ event: 'learning_complete' }, '*');
+      }
+      const btn = document.getElementById('btn-complete');
+      btn.innerText = '🎉 学习已完成，正在跳转练习...';
+      btn.style.background = '#10b981';
+    }
+  </script>
+</body>
+</html>
