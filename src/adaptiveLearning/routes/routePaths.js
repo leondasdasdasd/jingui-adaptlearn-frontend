@@ -1,0 +1,25 @@
+export const routes = {
+  teacherHome: "/adaptive-learning/teacher/curriculum",
+  directory: "/adaptive-learning/directory",
+  knowledgeMap: "/adaptive-learning/knowledge-map",
+  studentHome: "/adaptive-learning/student/home",
+  studentEntry: (id = ":id") => `/adaptive-learning/student/entry/${id}`,
+  knowledgeLearning: (id = ":id") => `/adaptive-learning/learning/${id}`,
+  lesson: (id = ":id") => `/adaptive-learning/lessons/${id}`,
+  preAssessment: "/adaptive-learning/pre-assessment",
+  preResult: "/adaptive-learning/pre-assessment/result",
+  learning: "/adaptive-learning/learning",
+  checkIn: "/adaptive-learning/check-in",
+  remediation: "/adaptive-learning/remediation",
+  postAssessment: "/adaptive-learning/post-assessment",
+  knowledgeCheckpoint: "/adaptive-learning/knowledge-checkpoint",
+  complete: "/adaptive-learning/complete",
+  subjectiveAnswerAcceptance: "/adaptive-learning/subjective-answer-acceptance",
+  familyMonitor: (id = ":id") => `/adaptive-learning/family-monitor/${id}`,
+  teacherQuestionQuality: "/adaptive-learning/teacher/question-quality",
+  teacherClasses: "/adaptive-learning/teacher/classes",
+  teacherClassStudentHome: (periodId = ":periodId", studentId = ":studentId") =>
+    `/adaptive-learning/teacher/periods/${periodId}/students/${studentId}/home`,
+  teacherClassStudents: (periodId = ":periodId") =>
+    `/adaptive-learning/teacher/periods/${periodId}/students`,
+};
