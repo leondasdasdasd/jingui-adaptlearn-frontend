@@ -14,19 +14,28 @@
 
 ```bash
 nvm use
-npm install
-npm run dev
+npm ci
+npm start
 ```
 
 访问 `http://leon.local.yungu-inc.org:3000/`。开发服务器监听 `0.0.0.0`，并已允许该云主机域名。
 
-开发服务默认连接真实接口，不会拦截请求。仅在需要独立演示时显式启用模拟数据：
+默认就是纯前端演示模式：Vite 在同一个前端进程中提供模拟接口，无需启动 BFF、课堂服务或 OpenMAIC。终端出现以下提示即表示模拟数据已启用：
+
+> 当前使用模拟课堂与测评数据 / Mock classroom and assessment data are active.
+
+`npm run dev` 与 `npm start` 等价。AI Studio 或其他云端编辑器应使用 `npm start`，并使用仓库中的 `.nvmrc` 与 `package-lock.json` 安装，避免每次重建时依赖版本漂移。
+
+需要连接真实接口时，在本地 `.env` 中设置 `VITE_ENABLE_ADAPTIVE_MOCKS=false` 后再启动。不要把包含密钥或 Cookie 的 `.env` 提交到仓库。
+
+## 构建与预览
 
 ```bash
-VITE_ENABLE_ADAPTIVE_MOCKS=true npm run dev
+npm run build
+npm run preview
 ```
 
-启用后，终端会显示“当前使用模拟课堂与测评数据 / Mock classroom and assessment data are active.”。
+`npm run preview` 同样默认启用前端模拟接口。若只把 `dist/` 放到普通静态文件服务器，Vite 模拟接口不会随静态文件发布；这种部署方式需要接入真实 API，或继续使用本仓库的 Vite 预览进程。
 
 ## 接口边界
 

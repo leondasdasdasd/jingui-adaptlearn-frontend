@@ -13,21 +13,35 @@
   </head>
   <body>
     <div id="root">
-      <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #334155; padding: 24px; text-align: center;">
+      <div id="app-bootstrap-state" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #334155; padding: 1.5rem; text-align: center;">
         <div style="width: 44px; height: 44px; border: 3px solid #cbd5e1; border-top-color: #2563eb; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px;"></div>
-        <div style="font-size: 15px; font-weight: 500; color: #1e293b;">正在加载云谷自适应学习系统…</div>
+        <strong style="font-size: 0.9375rem; font-weight: 600; color: #1e293b;">正在加载云谷自适应学习系统</strong>
+        <span style="margin-top: 0.35rem; font-size: 0.8125rem; color: #64748b;">Loading YunGu Adaptive Learning</span>
         <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
       </div>
     </div>
-    <script>
-      window.addEventListener('error', function (e) {
-        console.error('App load error:', e);
-        var root = document.getElementById('root');
-        if (root && root.querySelector && root.querySelector('@keyframes') !== null) {
-          // If still showing fallback loader, show error retry
-          root.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,sans-serif;padding:24px;"><div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:32px;max-width:440px;text-align:center;box-shadow:0 10px 25px -5px rgba(0,0,0,0.05);"><div style="font-size:32px;margin-bottom:12px;">⚠️</div><h3 style="font-size:18px;font-weight:600;color:#0f172a;margin:0 0 8px;">加载遇到问题</h3><p style="font-size:14px;color:#64748b;margin:0 0 20px;line-height:1.6;">页面初始化遇到了网络或脚本异常，请尝试重新加载。</p><button onclick="window.location.hash=\'#/adaptive-learning/teacher/textbook-lessons\';window.location.reload();" style="padding:9px 22px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-size:14px;font-weight:500;cursor:pointer;">重新加载页面</button></div></div>';
+    <script id="app-bootstrap-guard">
+      (function () {
+        var hasReportedFailure = false;
+
+        function showBootstrapFailure(error) {
+          var bootstrapState = document.getElementById('app-bootstrap-state');
+          if (!bootstrapState || hasReportedFailure) return;
+          hasReportedFailure = true;
+          console.error('App bootstrap failed:', error);
+          bootstrapState.innerHTML = '<div role="alert" style="width:min(100%,28rem);background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;padding:2rem;box-shadow:0 10px 25px -5px rgba(15,23,42,0.08);"><strong style="display:block;font-size:1.125rem;color:#0f172a;">页面未能启动</strong><span style="display:block;margin-top:0.3rem;font-size:0.875rem;font-weight:600;color:#475569;">The app could not start</span><p style="margin:1rem 0 1.25rem;font-size:0.875rem;color:#64748b;line-height:1.65;">脚本加载或初始化失败。请刷新重试；如仍失败，请检查启动终端中的首条错误。<br>Reload the page. If it still fails, check the first error in the startup terminal.</p><button type="button" onclick="window.location.reload()" style="min-height:2.5rem;padding:0.5rem 1.25rem;border:0;border-radius:0.375rem;background:#0445fc;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;">刷新页面 / Reload</button></div>';
         }
-      });
+
+        window.addEventListener('error', function (event) {
+          showBootstrapFailure(event.error || event.message || 'Resource loading failed');
+        }, true);
+        window.addEventListener('unhandledrejection', function (event) {
+          showBootstrapFailure(event.reason || 'App initialization failed');
+        });
+        window.setTimeout(function () {
+          showBootstrapFailure('App initialization timed out');
+        }, 15000);
+      })();
     </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
