@@ -1,0 +1,233 @@
+.knowledge-map-lesson-title > span {
+  grid-row: 1 / 3;
+  color: var(--primary);
+  font-size: 12px;
+}
+
+.knowledge-map-lesson-title strong {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.knowledge-map-lesson-title small {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.knowledge-map-points {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.knowledge-map-point {
+  min-height: 48px;
+  padding: 8px 10px;
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: #fff;
+}
+
+.knowledge-map-point.studying {
+  border-color: var(--color-primary-200);
+  background: var(--brand-soft);
+}
+
+.knowledge-map-point.preview {
+  border-color: var(--classroom-primary);
+  background: var(--classroom-primary-soft);
+}
+
+.knowledge-map-point.mastered {
+  border-color: var(--color-feedback-success-border);
+  background: var(--success-bg);
+}
+
+.knowledge-map-point.skilled {
+  border-color: var(--color-feedback-success-border);
+  background: var(--success-bg);
+}
+
+.knowledge-map-point.needs-review {
+  border-color: var(--color-feedback-warning-border);
+  background: var(--warning-bg);
+}
+
+.knowledge-map-point > span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.knowledge-map-point strong {
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.knowledge-map-point small {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.knowledge-map-point b {
+  color: var(--helper);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.knowledge-map-point.studying b,
+.knowledge-map-point.studying em {
+  color: var(--primary);
+}
+
+.knowledge-map-point.preview b,
+.knowledge-map-point.preview em {
+  color: var(--classroom-primary);
+}
+
+.generating-card {
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  text-align: center;
+}
+
+.generating-icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+  background: var(--brand-soft);
+  border-radius: 18px;
+  animation: breathe 1.8s ease-in-out infinite;
+}
+
+.generating-icon.error {
+  color: var(--error);
+  background: var(--error-bg);
+  animation: none;
+}
+
+.generating-card h1 {
+  margin: 24px 0 8px;
+  font-size: 22px;
+}
+
+.generating-card p {
+  max-width: 480px;
+  margin: 0;
+  color: var(--helper);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.generating-card .primary-button {
+  margin-top: 24px;
+}
+
+.learning-resource-state {
+  min-height: min(620px, calc(100vh - 152px));
+  padding: 64px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.learning-resource-state-icon {
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  color: var(--primary);
+  background: var(--brand-soft);
+}
+
+.learning-resource-state.unpublished .learning-resource-state-icon {
+  color: #a16207;
+  background: #fffbeb;
+}
+
+.learning-resource-state.unavailable .learning-resource-state-icon,
+.learning-resource-state.invalid .learning-resource-state-icon {
+  color: var(--error);
+  background: var(--error-bg);
+}
+
+.learning-resource-state-icon .spin {
+  animation: learning-resource-spin 1s linear infinite;
+}
+
+.learning-resource-state h1 {
+  margin: 24px 0 9px;
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.learning-resource-state > p {
+  max-width: 520px;
+  margin: 0;
+  color: var(--helper);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.learning-resource-reason {
+  width: min(520px, 100%);
+  margin-top: 24px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: #fff;
+  text-align: left;
+}
+
+.learning-resource-reason span {
+  flex: 0 0 auto;
+  color: var(--helper);
+  font-size: 12px;
+  line-height: 22px;
+}
+
+.learning-resource-reason strong {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  overflow-wrap: anywhere;
+}
+
+.learning-resource-actions {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.learning-resource-actions .primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}

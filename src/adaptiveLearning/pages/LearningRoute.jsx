@@ -6,6 +6,7 @@ import { createOpenMaicClassroom } from "../lib/openMaicApi";
 import { routes } from "../routes/routePaths";
 import { Navigate, useNavigate, useParams, useSearchParams } from "../routing";
 import { useLearningSession } from "../session/LearningSessionContext";
+import { useLearningSessionExit } from "../session/useLearningSessionExit";
 import { course } from "../shared/domain/courseCatalog";
 import {
   markKnowledgePointLearned,
@@ -150,6 +151,7 @@ export default function LearningRoute() {
   const { knowledgePointId } = useParams();
   const [searchParams] = useSearchParams();
   const { session, setSession } = useLearningSession();
+  const exitLearningSession = useLearningSessionExit();
   const [loadingError, setLoadingError] = useState("");
   const [contentLoadAttempt, setContentLoadAttempt] = useState(0);
   const [preparedRuntime, setPreparedRuntime] = useState(null);
@@ -373,8 +375,10 @@ export default function LearningRoute() {
   }
 
   const statePageTitle = currentKnowledgePoint?.name || lesson.title;
-  const returnToLearningList = () =>
-    navigate(directPending ? directReturnTo : routes.directory);
+  const returnToLearningList = () => {
+    if (directPending) navigate(directReturnTo);
+    else exitLearningSession(routes.directory);
+  };
 
   if (knowledgePointId && !directContext) {
     return (
@@ -455,6 +459,7 @@ export default function LearningRoute() {
       markKnowledgePointLearned(
         currentKnowledgePoint,
         selection?.section?.id || "",
+        selection,
       );
       setSession((current) => ({
         ...current,
@@ -494,11 +499,7 @@ export default function LearningRoute() {
           ? "完成学习，逐点练习"
           : "完成学习，开始练习"
       }
-      actionLabel={
-        unit.kind === "composite_learning"
-          ? "逐点练习"
-          : "开始练习"
-      }
+      actionLabel={unit.kind === "composite_learning" ? "逐点练习" : "开始练习"}
       onRuntimeEvent={(event) => {
         recordLearningEvent({
           type: `openmaic_${event.type}`,

@@ -1,0 +1,145 @@
+.knowledge-secondary-report {
+  margin-top: 18px;
+  padding: 22px;
+  border: 1px solid #e4e7ec;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.knowledge-secondary-report header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.knowledge-secondary-report header p {
+  margin: 5px 0 16px;
+  color: var(--color-text-muted);
+}
+
+.knowledge-secondary-report article {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.5fr) repeat(4, 1fr);
+  gap: 14px;
+  padding: 13px 0;
+  border-top: 1px solid #f2f4f7;
+}
+
+.knowledge-secondary-report article span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.knowledge-secondary-report article b {
+  color: var(--color-text-emphasis);
+  font-size: 15px;
+}
+
+.student-mastery-evidence {
+  margin: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #eaecf0;
+}
+
+.student-mastery-evidence h3 {
+  font-size: 15px;
+}
+
+.student-mastery-evidence article {
+  display: grid !important;
+  grid-template-columns: 1fr auto;
+  gap: 6px 16px;
+  padding: 10px 0 !important;
+}
+
+.student-mastery-evidence article small {
+  grid-column: 1 / -1;
+}
+
+.teacher-pre-assessment-evidence {
+  margin: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.teacher-pre-assessment-evidence > header {
+  min-height: 0;
+  padding: 0 0 10px;
+  align-items: flex-start;
+  border: 0;
+}
+
+.teacher-pre-assessment-evidence h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.teacher-pre-assessment-evidence header small,
+.teacher-pre-assessment-evidence time {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.teacher-pre-assessment-evidence > div {
+  display: grid;
+  gap: 8px;
+}
+
+.teacher-pre-assessment-evidence article {
+  min-height: 0;
+  padding: 10px 12px;
+  display: grid;
+  gap: 5px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.teacher-pre-assessment-evidence article > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.teacher-pre-assessment-evidence article strong {
+  font-size: 13px;
+}
+
+.teacher-pre-assessment-evidence article span {
+  min-height: 24px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-control);
+  color: var(--helper);
+  background: var(--page);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.teacher-pre-assessment-evidence article.provisionally-mastered span {
+  color: var(--success);
+  background: var(--classroom-feedback-success-bg);
+}
+
+.teacher-pre-assessment-evidence article.needs-learning span {
+  color: var(--classroom-feedback-warning-fg);
+  background: var(--classroom-feedback-warning-bg);
+}
+
+.teacher-pre-assessment-evidence article p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.teacher-pre-assessment-evidence article small {
+  color: var(--helper);
+  font-size: 12px;
+}

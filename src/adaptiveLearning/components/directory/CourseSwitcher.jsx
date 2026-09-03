@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BookOpen, Check, ChevronDown, GraduationCap, X } from "lucide-react";
 
-import {
-  findCourse,
-} from "../../shared/domain/courseCatalog";
+import { findCourse } from "../../shared/domain/courseCatalog";
 
 /**
  * 顶部导航右上角课程/学科/年级/学期切换器
@@ -141,10 +139,27 @@ export default function CourseSwitcher({ currentCourse, onSelectCourse }) {
             <div className="course-switcher-header">
               <div
                 className="course-switcher-header-title"
-                style={{ display: "flex", alignItems: "center", gap: "8px", flexDirection: "row" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  flexDirection: "row",
+                }}
               >
-                <GraduationCap size={18} style={{ color: "#4F46E5", flexShrink: 0 }} />
-                <h3 style={{ margin: 0, fontSize: "15px", fontWeight: 600, color: "#1E293B", lineHeight: 1, whiteSpace: "nowrap" }}>
+                <GraduationCap
+                  size={18}
+                  style={{ color: "#4F46E5", flexShrink: 0 }}
+                />
+                <h3
+                  style={{
+                    margin: 0,
+                    fontSize: "15px",
+                    fontWeight: 600,
+                    color: "#1E293B",
+                    lineHeight: 1,
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   切换学科学段
                 </h3>
               </div>

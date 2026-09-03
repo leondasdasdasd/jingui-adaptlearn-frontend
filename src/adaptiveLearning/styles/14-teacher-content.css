@@ -200,3 +200,15 @@
   background: #1e40af;
   transform: scale(0.99);
 }
+
+.teacher-preview-button[aria-busy="true"] {
+  cursor: progress;
+}
+
+.teacher-preview-button {
+  min-width: 8.5rem;
+}
+
+.teacher-preview-button > svg {
+  flex: 0 0 auto;
+}

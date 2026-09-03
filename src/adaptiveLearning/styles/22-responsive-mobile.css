@@ -1,0 +1,72 @@
+@media (max-width: 560px) {
+  .teacher-global-header {
+    padding: 0 10px;
+  }
+
+  .teacher-global-header .teacher-brand {
+    gap: 7px;
+  }
+
+  .teacher-global-header .teacher-brand small {
+    display: none;
+  }
+
+  .teacher-user-trigger {
+    padding-inline: 6px;
+  }
+
+  .teacher-user-name {
+    max-width: 108px;
+  }
+
+  .student-user-trigger {
+    padding-inline: 6px;
+  }
+
+  .student-user-name {
+    max-width: 96px;
+  }
+
+  .end-classroom-modal {
+    padding: 0;
+    place-items: end center;
+  }
+
+  .end-classroom-modal > section {
+    width: 100%;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .end-classroom-modal header {
+    padding: 14px 16px;
+  }
+
+  .end-classroom-body {
+    padding: 20px 16px;
+  }
+
+  .end-classroom-modal footer {
+    padding: 12px 16px;
+  }
+
+  .end-classroom-modal footer .teacher-primary,
+  .end-classroom-modal footer .teacher-secondary {
+    min-width: 0;
+    padding: 0 12px;
+    flex: 1;
+  }
+
+  .operation-feedback-toast {
+    width: calc(100vw - 32px);
+    justify-content: center;
+  }
+
+  .question-review-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .question-review-actions {
+    width: 100%;
+  }
+}

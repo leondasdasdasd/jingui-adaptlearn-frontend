@@ -1,0 +1,189 @@
+/* Tables, empty states and feedback share one visual language. */
+:is(
+  .live-table-head,
+  .student-report-table-head,
+  .report-table-head,
+  .student-question-table-head
+) {
+  color: var(--color-text-muted);
+  border-color: var(--color-border-subtle);
+  background: var(--color-surface-table-header);
+  font-size: var(--font-size-caption);
+  font-weight: 500;
+}
+
+:is(
+  .live-student-row,
+  .student-report-row,
+  .report-row,
+  .student-question-page article
+):hover {
+  background: var(--color-table-row-hover);
+}
+
+:is(
+  .teacher-empty,
+  .live-attention-empty,
+  .answer-history-empty,
+  .openmaic-empty
+) {
+  min-height: 112px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  background: var(--color-surface-card-soft);
+  text-align: center;
+}
+
+.visual-state-panel {
+  min-height: 220px;
+  padding: 40px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-default);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.visual-state-panel.compact {
+  min-height: 132px;
+  padding: 24px;
+}
+
+.visual-state-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  color: var(--color-primary-600);
+  background: var(--color-primary-50);
+}
+
+.visual-state-panel h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body-lg);
+  font-weight: 600;
+}
+
+.visual-state-panel p {
+  max-width: 520px;
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body-sm);
+}
+
+.visual-state-panel.error {
+  border-color: var(--color-feedback-danger-border);
+  background: var(--color-feedback-danger-bg);
+}
+
+.visual-state-panel.error .visual-state-icon {
+  color: var(--color-feedback-danger-fg);
+  background: var(--color-feedback-danger-badge-bg);
+}
+
+.visual-state-action {
+  margin-top: 4px;
+}
+
+:is(
+  .teacher-notice,
+  .batch-notice,
+  .classroom-entry-status,
+  .result-sync-warning
+) {
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-body-sm);
+  line-height: 1.5;
+}
+
+.teacher-notice,
+.batch-notice.info,
+.classroom-entry-status {
+  color: var(--color-primary-700);
+  border-color: var(--color-primary-200);
+  background: var(--color-primary-50);
+}
+
+.teacher-notice.has-list strong {
+  color: inherit;
+}
+
+:is(.teacher-notice, .batch-notice).error,
+.classroom-entry-status.error,
+.result-sync-warning {
+  color: var(--color-feedback-danger-fg);
+  border-color: var(--color-feedback-danger-border);
+  background: var(--color-feedback-danger-bg);
+}
+
+:is(.teacher-notice, .batch-notice).warning {
+  color: var(--color-feedback-warning-fg);
+  border-color: var(--color-feedback-warning-border);
+  background: var(--color-feedback-warning-bg);
+}
+
+:is(.teacher-notice, .batch-notice).success,
+.operation-feedback-toast.success {
+  color: var(--color-feedback-success-fg);
+  border-color: var(--color-feedback-success-border);
+  background: var(--color-feedback-success-bg);
+}
+
+.operation-feedback-toast.success > span {
+  color: var(--color-feedback-success-fg);
+  background: var(--color-feedback-success-border);
+}
+
+.classroom-entry-status {
+  min-height: 56px;
+  max-width: calc(100vw - 32px);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  z-index: 11000;
+  border: 1px solid var(--color-feedback-info-border);
+  border-radius: var(--radius-full);
+  color: var(--color-feedback-info-fg);
+  background: var(--color-feedback-info-bg);
+  box-shadow: var(--shadow-modal);
+}
+
+.classroom-entry-status.error {
+  color: var(--color-feedback-danger-fg);
+  border-color: var(--color-feedback-danger-border);
+  background: var(--color-feedback-danger-bg);
+}
+
+:is(
+  .teacher-help-modal > section,
+  .end-classroom-modal > section,
+  .question-editor-modal > section,
+  .drawing-board-modal > section
+) {
+  border-radius: var(--radius-md);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-modal);
+}
+
+:is(
+  .teacher-help-mask,
+  .end-classroom-mask,
+  .question-editor-mask,
+  .drawing-board-modal
+) {
+  background: var(--color-overlay-scrim);
+  backdrop-filter: blur(4px);
+}

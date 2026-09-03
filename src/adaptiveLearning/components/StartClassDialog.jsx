@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AlertCircle, ChevronRight, LoaderCircle, Play, X } from "lucide-react";
 import PropTypes from "prop-types";
 
@@ -9,6 +9,7 @@ import {
   getLatestLessonVersion,
   getPublishedLessonVersions,
 } from "../shared/infrastructure/classroomApi";
+import useModalLifecycle from "../shared/react/useModalLifecycle";
 import {
   ensureStartClassContent,
   MAX_LINKED_LESSON_COUNT,
@@ -53,6 +54,15 @@ export default function StartClassDialog({
   const [searchQuery, setSearchQuery] = useState("");
   const [classDate, setClassDate] = useState(today);
   const [classTime, setClassTime] = useState("08:30");
+  const dialogRef = useRef(null);
+  const closeButtonRef = useRef(null);
+
+  useModalLifecycle({
+    open,
+    dialogRef,
+    initialFocusRef: closeButtonRef,
+    onEscape: onClose,
+  });
 
   const allLessons = useMemo(
     () =>
@@ -252,12 +262,20 @@ export default function StartClassDialog({
   const busy = directory.loading || contentLoading;
 
   return (
-    <div className="start-class-dialog-mask" role="presentation">
+    <div
+      className="start-class-dialog-mask"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
       <div
+        ref={dialogRef}
         className="start-class-dialog-card"
         role="dialog"
         aria-modal="true"
         aria-labelledby="start-class-title"
+        tabIndex={-1}
       >
         <header className="start-class-dialog-header">
           <div className="start-class-header-title-area">
@@ -305,6 +323,7 @@ export default function StartClassDialog({
             </button>
           </div>
           <button
+            ref={closeButtonRef}
             type="button"
             className="start-class-close-btn"
             onClick={onClose}

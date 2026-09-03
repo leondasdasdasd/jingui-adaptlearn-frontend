@@ -1,20 +1,21 @@
-import React from "react";
-import { CheckCircle2, XCircle, HelpCircle, ArrowLeft, ChevronLeft, ChevronRight, BookOpen, Clock, Award, Check, Sparkles, X } from "lucide-react";
-
 export {
+  Camera,
   Check,
-  CheckCircle2,
-  XCircle,
-  HelpCircle,
-  ArrowLeft,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
-  BookOpen,
-  Clock,
-  Award,
+  ClipboardList,
+  Clock3,
+  Image as ImageIcon,
+  MessageCircle,
+  Mic,
+  Pause,
+  Send,
   Sparkles,
+  Square,
+  Star,
+  TrendingDown,
+  TrendingUp,
+  Volume2,
   X,
-};
-
-export const CheckIcon = CheckCircle2;
-export const CrossIcon = XCircle;
+} from "lucide-react";

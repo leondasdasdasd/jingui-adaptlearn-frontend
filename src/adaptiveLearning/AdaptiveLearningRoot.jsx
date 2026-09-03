@@ -1,42 +1,36 @@
 import React from "react";
 import { Redirect, Route, Switch } from "dva/router";
 
-import DirectoryRoute from "./components/DirectoryPage";
+import RoleSwitcherFloat from "./components/RoleSwitcherFloat";
+import DirectoryRoute from "./pages/DirectoryRoute";
+import FamilyStudentMonitorRoute from "./pages/FamilyStudentMonitorRoute";
+import KnowledgeCheckpointRoute from "./pages/KnowledgeCheckpointRoute";
 import KnowledgeMapRoute from "./pages/KnowledgeMapRoute";
+import LearningCheckInRoute from "./pages/LearningCheckInRoute";
 import LearningRoute from "./pages/LearningRoute";
-import PreAssessmentResultRoute from "./components/PreAssessmentResultPage";
+import PostAssessmentRoute from "./pages/PostAssessmentRoute";
+import PreAssessmentResultRoute from "./pages/PreAssessmentResultRoute";
+import PreAssessmentRoute from "./pages/PreAssessmentRoute";
+import RemediationRoute from "./pages/RemediationRoute";
+import ResultRoute from "./pages/ResultRoute";
+import StudentAuthoritativeHomeRoute from "./pages/StudentAuthoritativeHomeRoute";
+import StudentEntryRoute from "./pages/StudentEntryRoute";
+import SubjectiveAnswerAcceptanceRoute from "./pages/SubjectiveAnswerAcceptanceRoute";
+import TeacherClassesRoute from "./pages/TeacherClassesRoute";
+import TeacherClassStudentHomeRoute from "./pages/TeacherClassStudentHomeRoute";
+import TeacherClassStudentsRoute from "./pages/TeacherClassStudentsRoute";
+import TeacherContentRoute from "./pages/TeacherContentRoute";
 import TeacherCurriculumRoute from "./pages/TeacherCurriculumRoute";
-import TeacherContentRoute from "./teacher/content-route/TeacherContentOpenMaicSection";
-
-const StubPage = ({ name }) => (
-  <div style={{ padding: "40px", textAlign: "center", color: "#64748b" }}>
-    <h3>{name || "页面建设中"}</h3>
-  </div>
-);
-
-const FamilyStudentMonitorRoute = () => <StubPage name="家庭学情监测" />;
-const KnowledgeCheckpointRoute = () => <StubPage name="知识检查点" />;
-const LearningCheckInRoute = () => <StubPage name="学习签到" />;
-const PostAssessmentRoute = () => <StubPage name="课后测评" />;
-const PreAssessmentRoute = () => <StubPage name="课前小测" />;
-const RemediationRoute = () => <StubPage name="巩固补救" />;
-const ResultRoute = () => <StubPage name="学习结果报告" />;
-const StudentAuthoritativeHomeRoute = () => <StubPage name="学生主页" />;
-const StudentEntryRoute = () => <StubPage name="学生入口" />;
-const SubjectiveAnswerAcceptanceRoute = () => <StubPage name="主观题批改" />;
-const TeacherClassesRoute = () => <StubPage name="班级管理" />;
-const TeacherClassStudentHomeRoute = () => <StubPage name="学生主页" />;
-const TeacherClassStudentsRoute = () => <StubPage name="班级学生列表" />;
-const TeacherLiveRoute = () => <StubPage name="实时课堂" />;
-const TeacherQuestionQualityRoute = () => <StubPage name="题目质量分析" />;
-const TeacherReportRoute = () => <StubPage name="教学报告" />;
-const TeacherReportsRoute = () => <StubPage name="报告中心" />;
-const TeacherStudentDetailRoute = () => <StubPage name="学生详情" />;
-const TeacherStudentHomeRoute = () => <StubPage name="学生个人中心" />;
+import TeacherLiveRoute from "./pages/TeacherLiveRoute";
+import TeacherQuestionQualityRoute from "./pages/TeacherQuestionQualityRoute";
+import TeacherReportRoute from "./pages/TeacherReportRoute";
+import TeacherReportsRoute from "./pages/TeacherReportsRoute";
+import TeacherStudentDetailRoute from "./pages/TeacherStudentDetailRoute";
+import TeacherStudentHomeRoute from "./pages/TeacherStudentHomeRoute";
+import TeacherUnitAssessmentRoute from "./pages/TeacherUnitAssessmentRoute";
 import RequirePreAssessment from "./routes/RequirePreAssessment";
 import RequireSession from "./routes/RequireSession";
 import { routes } from "./routes/routePaths";
-import RoleSwitcherFloat from "./components/RoleSwitcherFloat";
 import ScrollToTop from "./routes/ScrollToTop";
 import TeacherAuthorizationBoundary from "./routes/TeacherAuthorizationBoundary";
 import { RoutingProvider } from "./routing";
@@ -126,6 +120,10 @@ export default function AdaptiveLearningRoot(routeProperties) {
             {route(
               "/adaptive-learning/teacher/textbook-lessons/:lessonId/content",
               requireTeacher(<TeacherContentRoute />),
+            )}
+            {route(
+              routes.teacherUnitAssessment(),
+              requireTeacher(<TeacherUnitAssessmentRoute />),
             )}
             {route(
               routes.teacherQuestionQuality,

@@ -1,0 +1,85 @@
+@media (prefers-reduced-motion: reduce) {
+  .teacher-question-agent,
+  .teacher-question-agent-scrim,
+  .teacher-question-agent .ai-assistant-message,
+  .teacher-agent-task-progress > span {
+    transition: none;
+    animation: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .answer-tools {
+    flex-wrap: wrap;
+  }
+
+  .answer-voice-button {
+    flex-basis: 100%;
+  }
+
+  .answer-tool-button {
+    flex-basis: calc(50% - 4px);
+  }
+}
+
+.teacher-question-main > div {
+  min-width: 0;
+}
+
+.teacher-question-main > div span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacher-question-main > div span:last-child {
+  max-width: 62%;
+}
+
+.openmaic-preview-actions,
+.openmaic-preview-actions button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.openmaic-preview-actions button {
+  padding: 4px 7px;
+  border: 0;
+  border-radius: 5px;
+  color: var(--primary);
+  background: var(--brand-soft);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.openmaic-review-preview:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+}
+
+.openmaic-review-preview:fullscreen iframe {
+  height: calc(100vh - 46px);
+}
+
+.openmaic-review-preview.expanded {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+}
+
+.openmaic-review-preview.expanded iframe {
+  height: calc(100vh - 46px);
+}
+
+.openmaic-scene-select {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

@@ -337,7 +337,7 @@ export default function DrawingBoardDialog({
 
   const portalHost =
     getAdaptivePortalHost() ||
-    (typeof document !== "undefined" ? document.body : null);
+    (typeof document === "undefined" ? null : document.body);
   if ((!open && !keepMounted) || !portalHost) return null;
 
   const startMove = (event) => {

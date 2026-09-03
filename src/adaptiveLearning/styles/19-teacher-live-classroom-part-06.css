@@ -1,0 +1,179 @@
+.drawer-empty p {
+  max-width: 340px;
+  margin: 5px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.report-summary {
+  justify-content: space-between;
+}
+
+.end-classroom-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.end-classroom-mask {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  cursor: default;
+}
+
+.end-classroom-modal > section {
+  position: relative;
+  z-index: 1;
+  width: min(480px, 100%);
+  overflow: hidden;
+  border: 1px solid var(--color-border-subtle);
+}
+
+.end-classroom-modal header {
+  min-height: 72px;
+  padding: 16px 24px;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 32px;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.end-classroom-heading-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  color: var(--color-feedback-warning-fg);
+  background: var(--color-feedback-warning-bg);
+}
+
+.end-classroom-modal header > div:nth-child(2) {
+  min-width: 0;
+}
+
+.end-classroom-body > p {
+  margin: 0;
+}
+
+.end-classroom-modal h2 {
+  margin: 0;
+  color: var(--color-text-emphasis);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.end-classroom-modal header p {
+  margin: 3px 0 0;
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.end-classroom-modal header > button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-weak);
+  background: transparent;
+}
+
+.end-classroom-modal header > button:focus-visible,
+.end-classroom-mask:focus-visible {
+  outline: 2px solid var(--color-primary-600);
+  outline-offset: 2px;
+}
+
+.end-classroom-mask:focus-visible {
+  outline-offset: -4px;
+}
+
+.end-classroom-modal header > button:hover:not(:disabled) {
+  color: var(--color-text-default);
+  background: var(--color-surface-section);
+}
+
+.end-classroom-body {
+  padding: 24px;
+  color: var(--color-text-default);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.end-classroom-body ul {
+  margin: 14px 0 0;
+  padding-left: 22px;
+  color: var(--color-text-secondary);
+}
+
+.end-classroom-body li + li {
+  margin-top: 6px;
+}
+
+.end-classroom-online-warning,
+.end-classroom-error {
+  margin-top: 16px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  border: 1px solid var(--color-feedback-warning-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-feedback-warning-fg);
+  background: var(--color-feedback-warning-bg);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.end-classroom-online-warning svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.end-classroom-error {
+  border-color: var(--color-feedback-danger-border);
+  color: var(--color-feedback-danger-fg);
+  background: var(--color-feedback-danger-bg);
+}
+
+.end-classroom-modal footer {
+  min-height: 72px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--color-border-subtle);
+  background: var(--color-surface-section);
+}
+
+.end-classroom-modal footer .teacher-primary,
+.end-classroom-modal footer .teacher-neutral {
+  min-width: 104px;
+  height: 40px;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.end-classroom-confirm-button[aria-busy="true"] {
+  cursor: progress;
+}

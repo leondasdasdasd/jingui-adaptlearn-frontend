@@ -1,0 +1,121 @@
+.attention-card-main > svg,
+.derived-alert-card > svg {
+  margin-top: 2px;
+  flex: 0 0 auto;
+  color: var(--helper);
+}
+
+.attention-card-main > span,
+.derived-alert-card > span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.attention-card-main strong,
+.derived-alert-card strong {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.attention-card-main b,
+.derived-alert-card b {
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attention-card-main small,
+.derived-alert-card small {
+  overflow: hidden;
+  color: var(--helper);
+  font-size: 12px;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attention-card-actions {
+  padding: 0 12px 10px 38px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.attention-card-actions button {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--classroom-primary);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.attention-card-actions button:hover:not(:disabled) {
+  border-color: #bfdbfe;
+  background: var(--classroom-primary-soft);
+}
+
+.attention-card-actions button:last-child:not(:first-child) {
+  color: var(--helper);
+}
+
+.live-attention-empty {
+  padding: 28px 14px;
+  color: var(--helper);
+  font-size: 12px;
+  text-align: center;
+}
+
+.student-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.drawer-mask {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: 0;
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.student-drawer > aside {
+  width: min(560px, 94vw);
+  height: 100%;
+  padding: 20px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  overflow-y: auto;
+  background: #fff;
+  box-shadow: -8px 0 24px rgba(1, 17, 61, 0.12);
+}
+
+.student-drawer header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.student-drawer header small {
+  color: var(--primary);
+  font-size: 12px;
+}
+
+.student-drawer h2 {
+  margin: 5px 0 3px;
+}
+
+.student-drawer header p {
+  margin: 0;
+  color: var(--helper);
+  font-size: 12px;
+}

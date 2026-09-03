@@ -32,7 +32,11 @@
   right: -60px;
   bottom: -100px;
   border-radius: var(--radius-full);
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0) 70%);
+  background: radial-gradient(
+    circle,
+    rgba(59, 130, 246, 0.12) 0%,
+    rgba(59, 130, 246, 0) 70%
+  );
   content: "";
   pointer-events: none;
 }
@@ -67,7 +71,7 @@
 }
 
 .pre-result-summary-copy h1 {
-  margin: 0 0 6px 0;
+  margin: 0 0 6px;
   color: #0f172a;
   font-size: 1.35rem;
   font-weight: 700;
@@ -511,7 +515,10 @@
   border-radius: 16px;
   background: #ffffff;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.2s ease;
 }
 
 .pre-mastery-card:hover {

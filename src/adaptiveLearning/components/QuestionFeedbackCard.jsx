@@ -201,7 +201,10 @@ function MasteryFeedback({
                   correctStreak={item.correctStreak}
                   difficulty={item.difficulty || item.questionDifficulty}
                   streakFactor={item.streakFactor}
-                  hasMatrixCoverage={item.hasMatrixCoverage || Boolean(item.matrixCellId || item.matrixCellCode)}
+                  hasMatrixCoverage={
+                    item.hasMatrixCoverage ||
+                    Boolean(item.matrixCellId || item.matrixCellCode)
+                  }
                   matrixCellCode={item.matrixCellCode}
                 />
               )}
@@ -218,7 +221,7 @@ const getDifficultyFactor = (diff) => {
     const d = diff.toUpperCase();
     if (d === "D1") return 0.8;
     if (d === "D2") return 0.9;
-    if (d === "D3") return 1.0;
+    if (d === "D3") return 1;
     if (d === "D4") return 1.25;
     if (d === "D5") return 1.5;
   }
@@ -226,37 +229,56 @@ const getDifficultyFactor = (diff) => {
   if (Number.isFinite(n)) {
     if (n <= 1) return 0.8;
     if (n === 2) return 0.9;
-    if (n === 3) return 1.0;
+    if (n === 3) return 1;
     if (n === 4) return 1.25;
     if (n >= 5) return 1.5;
   }
-  return 1.0;
+  return 1;
 };
 
+/**
+ *
+ * @param streak
+ * @param factor
+ */
 function getStreakInfo(streak, factor) {
   const n = Number(streak) || 0;
   if (n < 2) return null;
   let title = "渐入佳境";
   let defaultFactor = 1.15;
 
-  if (n === 2) {
-    title = "渐入佳境";
-    defaultFactor = 1.15;
-  } else if (n === 3) {
-    title = "势如破竹";
-    defaultFactor = 1.30;
-  } else if (n === 4) {
-    title = "融会贯通";
-    defaultFactor = 1.50;
-  } else if (n === 5) {
-    title = "出神入化";
-    defaultFactor = 1.75;
-  } else {
-    title = "炉火纯青";
-    defaultFactor = 2.00;
+  switch (n) {
+    case 2: {
+      title = "渐入佳境";
+      defaultFactor = 1.15;
+
+      break;
+    }
+    case 3: {
+      title = "势如破竹";
+      defaultFactor = 1.3;
+
+      break;
+    }
+    case 4: {
+      title = "融会贯通";
+      defaultFactor = 1.5;
+
+      break;
+    }
+    case 5: {
+      title = "出神入化";
+      defaultFactor = 1.75;
+
+      break;
+    }
+    default: {
+      title = "炉火纯青";
+      defaultFactor = 2;
+    }
   }
 
-  const actFactor = Number(factor) > 1.0 ? Number(factor) : defaultFactor;
+  const actFactor = Number(factor) > 1 ? Number(factor) : defaultFactor;
   return {
     title,
     streak: n,
@@ -266,6 +288,18 @@ function getStreakInfo(streak, factor) {
   };
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.before
+ * @param root0.after
+ * @param root0.delta
+ * @param root0.correctStreak
+ * @param root0.difficulty
+ * @param root0.streakFactor
+ * @param root0.hasMatrixCoverage
+ * @param root0.matrixCellCode
+ */
 function buildStages({
   before,
   after,
@@ -286,18 +320,18 @@ function buildStages({
 
   const dFactor = getDifficultyFactor(difficulty);
   const streakInfo = getStreakInfo(correctStreak, streakFactor);
-  const sFactor = streakInfo ? streakInfo.factor : 1.0;
+  const sFactor = streakInfo ? streakInfo.factor : 1;
   const isMatrixLit = Boolean(hasMatrixCoverage);
-  const mFactor = isMatrixLit ? 1.10 : 1.0;
+  const mFactor = isMatrixLit ? 1.1 : 1;
 
   if (totalDelta > 0) {
-    const hasDiffBonus = Math.abs(dFactor - 1.0) >= 0.05 || Boolean(difficulty);
+    const hasDiffBonus = Math.abs(dFactor - 1) >= 0.05 || Boolean(difficulty);
     const hasStreakBonus = Boolean(streakInfo);
 
     const totalMultiplier =
-      (hasDiffBonus ? dFactor : 1.0) *
-      (hasStreakBonus ? sFactor : 1.0) *
-      (isMatrixLit ? mFactor : 1.0);
+      (hasDiffBonus ? dFactor : 1) *
+      (hasStreakBonus ? sFactor : 1) *
+      (isMatrixLit ? mFactor : 1);
 
     const baseDelta = totalDelta / totalMultiplier;
 
@@ -319,7 +353,7 @@ function buildStages({
 
     // 2. 难度加成 (Difficulty Bonus)
     if (hasDiffBonus) {
-      const diffDelta = baseDelta * (dFactor - 1.0);
+      const diffDelta = baseDelta * (dFactor - 1);
       currentVal = Number((currentVal + diffDelta).toFixed(2));
       const diffName = String(difficulty || "D3").toUpperCase();
       const badge2 = {
@@ -335,7 +369,7 @@ function buildStages({
     // 3. 连对加成 (5 Prompt Words: 渐入佳境 / 势如破竹 / 融会贯通 / 出神入化 / 炉火纯青)
     if (hasStreakBonus && streakInfo) {
       const streakDelta =
-        baseDelta * (hasDiffBonus ? dFactor : 1.0) * (sFactor - 1.0);
+        baseDelta * (hasDiffBonus ? dFactor : 1) * (sFactor - 1);
       currentVal = Number((currentVal + streakDelta).toFixed(2));
       const badge3 = {
         id: "streak",
@@ -362,7 +396,7 @@ function buildStages({
       stages.push({ value: normAfter, badges: [badge4] });
     }
 
-    stages[stages.length - 1].value = normAfter;
+    stages.at(-1).value = normAfter;
     return stages;
   } else {
     const badge1 = {
@@ -389,6 +423,20 @@ function buildStages({
   }
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.before
+ * @param root0.after
+ * @param root0.delta
+ * @param root0.deltaLabel
+ * @param root0.changed
+ * @param root0.correctStreak
+ * @param root0.difficulty
+ * @param root0.streakFactor
+ * @param root0.hasMatrixCoverage
+ * @param root0.matrixCellCode
+ */
 function MasteryProgress({
   before,
   after,
@@ -397,7 +445,7 @@ function MasteryProgress({
   changed,
   correctStreak,
   difficulty = "D3",
-  streakFactor = 1.0,
+  streakFactor = 1,
   hasMatrixCoverage = false,
   matrixCellCode = null,
 }) {
@@ -457,8 +505,8 @@ function MasteryProgress({
     const timers = [];
     const stepDuration = 900; // ms per pulse
 
-    stages.forEach((stage, idx) => {
-      if (idx === 0) return;
+    for (const [idx, stage] of stages.entries()) {
+      if (idx === 0) continue;
       const delay = idx * stepDuration;
       const timer = setTimeout(() => {
         setCurrentStageIndex(idx);
@@ -474,21 +522,19 @@ function MasteryProgress({
         }
       }, delay);
       timers.push(timer);
-    });
+    }
 
     return () => {
-      timers.forEach((t) => clearTimeout(t));
+      for (const t of timers) clearTimeout(t);
     };
   }, [changed, normBefore, normAfter, stages]);
 
-  const currentStage = stages[currentStageIndex] || stages[stages.length - 1];
+  const currentStage = stages[currentStageIndex] || stages.at(-1);
   const displayTargetValue = currentStage?.value ?? normAfter;
 
   const direction = changed ? (Number(delta) < 0 ? "down" : "up") : "steady";
   const breakthrough =
-    changed &&
-    normBefore < MASTERY_THRESHOLD &&
-    normAfter >= MASTERY_THRESHOLD;
+    changed && normBefore < MASTERY_THRESHOLD && normAfter >= MASTERY_THRESHOLD;
   const TrendIcon = breakthrough
     ? Trophy
     : direction === "down"
@@ -567,7 +613,10 @@ function MasteryProgress({
       </div>
 
       {activeBadges.length > 0 && (
-        <div className="question-feedback-mastery-breakdown" aria-label="计算加成明细">
+        <div
+          className="question-feedback-mastery-breakdown"
+          aria-label="计算加成明细"
+        >
           {activeBadges.map((badge) => {
             const BadgeIconComponent = badge.icon || Sparkles;
             return (
@@ -593,6 +642,13 @@ function MasteryProgress({
   );
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.from
+ * @param root0.to
+ * @param root0.animate
+ */
 function AnimatedMasteryValue({ from, to, animate }) {
   const [value, setValue] = useState(animate ? from : to);
 

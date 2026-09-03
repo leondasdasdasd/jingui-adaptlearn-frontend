@@ -1,0 +1,433 @@
+/* stylelint-disable color-function-notation -- 响应式兼容层保留现有颜色函数格式。 */
+
+@media (min-width: 821px) {
+  .lesson-heading {
+    margin: -24px -24px 0;
+    padding: 24px;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    background: var(--gradient-primary-soft);
+  }
+}
+
+.question-editor-validation-summary {
+  grid-column: 1 / -1;
+  padding: 10px 12px;
+  border: 1px solid var(--color-feedback-danger-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-feedback-danger-fg);
+  background: var(--color-feedback-danger-bg);
+  font-size: var(--font-size-body-sm);
+  font-weight: 600;
+}
+
+.question-editor-form .field-error {
+  margin-top: 0;
+  color: var(--color-feedback-danger-fg);
+  font-size: var(--font-size-caption);
+  font-weight: 500;
+}
+
+.question-platform-content-editor[aria-invalid="true"] {
+  padding: 12px;
+  border: 1px solid var(--color-feedback-danger-ring);
+  border-radius: var(--radius-md);
+  background: var(--color-feedback-danger-bg);
+}
+
+.teacher-agent-task-status {
+  min-height: 32px;
+  padding-inline: 12px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-body-sm);
+  font-weight: 600;
+}
+
+:is(
+    .answer-tool-button,
+    .answer-voice-button,
+    .openmaic-preview-actions button,
+    .attention-card-actions button,
+    .classroom-plan-table-actions button,
+    .teacher-question-actions button,
+    .check-in-agent-send
+  ):active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.check-in-agent-page {
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      rgb(219 234 254 / 0.44),
+      transparent 28rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-surface-workspace),
+      var(--color-surface-card-default) 52%
+    );
+}
+
+.check-in-agent-composer {
+  border-radius: var(--radius-md);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-panel);
+}
+
+.check-in-agent-composer textarea {
+  color: var(--color-text-default);
+  font-size: var(--font-size-body);
+}
+
+.check-in-agent-composer-tools {
+  gap: 8px;
+}
+
+.check-in-agent-voice {
+  min-width: 0;
+  height: 44px;
+  padding-inline: 16px;
+  flex: 1 1 auto;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--color-text-inverse);
+  background: var(--color-primary-600);
+  box-shadow: var(--shadow-primary-button);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+}
+
+.check-in-agent-voice:hover:not(:disabled, .recording) {
+  color: var(--color-text-inverse);
+  border-color: transparent;
+  background: var(--color-primary-700);
+}
+
+.check-in-agent-voice:active:not(:disabled, .recording) {
+  background: var(--color-primary-800);
+  transform: scale(0.98);
+}
+
+.check-in-agent-voice.recording {
+  color: var(--color-text-inverse);
+  border-color: var(--color-feedback-danger-fg);
+  background: var(--color-feedback-danger-fg);
+}
+
+.check-in-agent-voice.recording:hover:not(:disabled),
+.check-in-agent-voice.recording:active:not(:disabled) {
+  color: var(--color-text-inverse);
+  border-color: var(--color-feedback-danger-fg);
+  background: var(--color-feedback-danger-fg);
+}
+
+.check-in-agent-send {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: var(--radius-md);
+}
+
+.check-in-agent-result {
+  border-radius: var(--radius-md);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-panel);
+}
+
+.check-in-agent-result.needs-help {
+  border-color: var(--color-feedback-warning-border);
+  background: var(--gradient-warning-soft);
+}
+
+.check-in-agent-result.clear {
+  border-color: var(--color-feedback-success-border);
+  background: var(--gradient-success-soft);
+}
+
+.directory-layout[aria-busy="true"] {
+  opacity: 0.64;
+  filter: saturate(0.72);
+  transition:
+    opacity var(--motion-default) var(--motion-easing),
+    filter var(--motion-default) var(--motion-easing);
+}
+
+.real-openmaic-frame-wrap {
+  position: relative;
+}
+
+.content-tab-panel {
+  min-width: 0;
+  margin-top: 14px;
+}
+
+.content-tab-panel:focus {
+  outline: 0;
+}
+
+.openmaic-review-frame-wrap {
+  min-height: 604px;
+  position: relative;
+}
+
+.openmaic-mobile-preview-note {
+  display: none;
+}
+
+.openmaic-review-frame-state {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  padding: 24px;
+  background: rgb(248 249 250 / 0.94);
+  backdrop-filter: blur(4px);
+}
+
+.openmaic-review-frame-state .visual-state-panel {
+  width: min(480px, 100%);
+  border-style: solid;
+}
+
+@media (max-width: 1023px) {
+  .openmaic-review-preview > header {
+    min-height: 54px;
+    height: auto;
+    padding-block: 8px;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .openmaic-preview-actions button {
+    display: none;
+  }
+
+  .openmaic-review-frame-wrap {
+    display: none;
+  }
+
+  .openmaic-mobile-preview-note {
+    min-height: 360px;
+    padding: 24px;
+    display: grid;
+    place-items: center;
+    background: var(--color-surface-workspace);
+  }
+
+  .openmaic-mobile-preview-note .visual-state-panel {
+    width: min(480px, 100%);
+  }
+
+  .openmaic-mobile-preview-note .teacher-neutral {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+}
+
+.openmaic-frame-state {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  padding: 24px;
+  background: rgb(248 249 250 / 0.94);
+  backdrop-filter: blur(4px);
+}
+
+.openmaic-frame-state .visual-state-panel {
+  width: min(480px, 100%);
+  border-style: solid;
+}
+
+.operation-feedback-toast {
+  z-index: 11000;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-modal);
+}
+
+svg.lucide:not([data-custom-stroke]) {
+  stroke-width: 1.75;
+}
+
+.pre-answer-review-head span,
+.openmaic-confirm-status {
+  min-height: 32px;
+  padding-inline: 12px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-feedback-danger-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-feedback-danger-fg);
+  background: var(--color-feedback-danger-bg);
+  font-size: var(--font-size-body-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pre-answer-review-item.correct .pre-answer-review-head span,
+.openmaic-confirm-status.confirmed {
+  border-color: var(--color-feedback-success-border);
+  color: var(--color-feedback-success-fg);
+  background: var(--color-feedback-success-bg);
+}
+
+.pre-answer-review-item.partial .pre-answer-review-head span {
+  border-color: var(--color-feedback-warning-border);
+  color: var(--color-feedback-warning-fg);
+  background: var(--color-feedback-warning-bg);
+}
+
+.pre-answer-review-item.skipped .pre-answer-review-head span {
+  border-color: var(--color-feedback-info-border);
+  color: var(--color-feedback-info-fg);
+  background: var(--color-feedback-info-bg);
+}
+
+.pre-answer-review-item.unanswered .pre-answer-review-head span {
+  border-color: var(--color-border-default);
+  color: var(--color-text-muted);
+  background: var(--color-surface-section);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 820px) {
+  .directory-layout > .lesson-panel {
+    order: -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .pre-result-hero {
+    min-height: 0;
+    align-items: flex-start;
+  }
+
+  .pre-result-hero strong {
+    font-size: 2rem;
+  }
+
+  .teacher-page-header {
+    gap: 12px;
+  }
+
+  .end-classroom-modal footer .teacher-neutral,
+  .learning-resource-actions .neutral-button,
+  .quiz-action-secondary .neutral-button {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .teacher-page-heading {
+    flex: 1 1 auto;
+  }
+
+  .teacher-page-heading-copy {
+    flex: 1 1 auto;
+  }
+
+  .teacher-page-header h1 {
+    font-size: var(--font-size-title-sm);
+  }
+
+  .teacher-header-actions .teacher-primary {
+    width: 36px;
+    min-width: 36px;
+    padding-inline: 0;
+    justify-content: center;
+    font-size: 0;
+  }
+
+  .teacher-page-header:has(.teacher-header-actions > :nth-child(3)) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .teacher-page-header:has(.teacher-header-actions > :nth-child(3))
+    .teacher-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .report-summary {
+    min-height: 0;
+    padding: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .report-summary > div {
+    min-width: 0;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-card-soft);
+  }
+
+  .student-class-report {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .student-class-report > header {
+    min-width: 0;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .teacher-score-filter {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .student-detail-tabs {
+    width: 100%;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .student-detail-tabs button {
+    min-width: 0;
+    padding-inline: 4px;
+    justify-content: center;
+  }
+
+  .student-detail-tabs button > svg,
+  .student-detail-tabs button > span {
+    display: none;
+  }
+
+  .knowledge-secondary-report {
+    min-width: 0;
+    padding: 16px;
+  }
+
+  .knowledge-secondary-report article {
+    min-width: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 16px;
+  }
+
+  .knowledge-secondary-report article > strong {
+    grid-column: 1 / -1;
+  }
+}

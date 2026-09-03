@@ -1,0 +1,131 @@
+@media (max-width: 820px) {
+  .teacher-nav-disabled span,
+  .teacher-sidebar nav a span {
+    display: none;
+  }
+
+  .teacher-sidebar-toggle {
+    display: none;
+  }
+
+  .teacher-page-header {
+    padding: 12px var(--space-page-x);
+  }
+
+  .teacher-page-body {
+    padding: 16px var(--space-page-x);
+  }
+
+  .teacher-question-agent-scrim.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      opacity 240ms ease,
+      visibility 0ms step-start;
+  }
+
+  .teacher-question-agent {
+    width: min(var(--classroom-ai-panel-width), 100%);
+  }
+
+  .content-review-layout {
+    grid-template-columns: 150px minmax(320px, 1fr);
+  }
+
+  .content-assistant {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border);
+    border-left: 0;
+  }
+
+  .content-object-summary {
+    grid-template-columns: repeat(2, minmax(130px, 1fr));
+  }
+
+  .content-object-summary > .teacher-status {
+    grid-column: 1 / -1;
+  }
+
+  .student-detail-summary {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+
+  .student-tutoring-status {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .student-full-record-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .teacher-student-score {
+    grid-template-columns: 1fr;
+  }
+
+  .teacher-student-score-breakdown {
+    flex-wrap: wrap;
+  }
+
+  .live-layout {
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .live-alerts,
+  .live-attention-panel {
+    min-width: 0;
+    order: -1;
+  }
+
+  .live-kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .result-enhancement-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+
+  .result-enhancement-meta {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .result-enhancement-card .primary-button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .pre-assessment-header-estimate {
+    display: none;
+  }
+
+  .question-idle-support {
+    width: calc(100vw - 24px);
+    min-height: 0;
+    padding: 14px 46px 14px 14px;
+    grid-template-columns: 36px minmax(0, 1fr);
+    align-items: start;
+    bottom: 136px;
+  }
+
+  .question-idle-support-icon {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+
+  .question-idle-support-actions {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .question-idle-support-actions button {
+    width: 100%;
+    padding-inline: 10px;
+  }
+}

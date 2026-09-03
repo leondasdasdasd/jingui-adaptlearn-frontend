@@ -29,6 +29,7 @@ import {
   databaseGenerationState,
   getLessonGenerationTasks,
 } from "../lib/generationTaskApi";
+import { routes } from "../routes/routePaths";
 import { useNavigate } from "../routing";
 import {
   AVAILABLE_GRADES,
@@ -36,6 +37,8 @@ import {
   AVAILABLE_SUBJECTS,
   findCourse,
 } from "../shared/domain/courseCatalog";
+import UnitAssessmentRow from "../teacher/components/UnitAssessmentRow";
+import { fetchCurriculumCatalog } from "../teacher/data/curriculumCatalogRepository";
 import { fetchPublishedLessonVersions } from "../teacher/data/curriculumRepository";
 import {
   curriculumLessons,
@@ -51,6 +54,7 @@ import {
   curriculumOperationError,
   curriculumText,
 } from "../teacher/presentation/curriculumPresentation";
+import { projectUnitAssessmentEntry } from "../teacher/presentation/unitAssessmentPresentation";
 
 import "../curriculum-batch.css";
 
@@ -71,6 +75,16 @@ const cancelableStatuses = new Set([
   "validating",
   "repairing",
 ]);
+
+const subjectAllowsGrade = (subject, gradeKey) =>
+  subject !== "physics" || !gradeKey.startsWith("grade7");
+
+const subjectAllowsPublisher = (subject, publisherKey) =>
+  subject === "science"
+    ? publisherKey === "zhejiang"
+    : subject === "physics"
+      ? publisherKey === "pep"
+      : true;
 
 /**
  *
@@ -136,6 +150,10 @@ export default function TeacherCurriculumRoute() {
   const [selectedSubject, setSelectedSubject] = useState("math");
   const [selectedGradeKey, setSelectedGradeKey] = useState("grade7-up");
   const [selectedPublisherKey, setSelectedPublisherKey] = useState("zhejiang");
+  const [remoteCourse, setRemoteCourse] = useState(null);
+  const [catalogLoading, setCatalogLoading] = useState(false);
+  const [catalogError, setCatalogError] = useState("");
+  const [catalogReloadVersion, setCatalogReloadVersion] = useState(0);
 
   const selectedSubjectMeta = useMemo(
     () =>
@@ -157,12 +175,25 @@ export default function TeacherCurriculumRoute() {
   );
 
   const currentCourse = useMemo(() => {
+    if (selectedSubject !== "math") {
+      return (
+        remoteCourse || {
+          id: `${selectedSubject}-loading`,
+          subject: selectedSubjectMeta.name,
+          grade: selectedGradeMeta.name,
+          publisher: selectedPublisherMeta.name,
+          chapters: [],
+        }
+      );
+    }
     return findCourse({
       subject: selectedSubjectMeta.name,
       grade: selectedGradeMeta.name,
       publisher: selectedPublisherMeta.name,
     });
   }, [
+    remoteCourse,
+    selectedSubject,
     selectedSubjectMeta.name,
     selectedGradeMeta.name,
     selectedPublisherMeta.name,
@@ -188,6 +219,13 @@ export default function TeacherCurriculumRoute() {
   const handleSubjectSelect = (sub) => {
     if (sub.enabled) {
       setSelectedSubject(sub.id);
+      if (sub.id === "science") setSelectedPublisherKey("zhejiang");
+      if (sub.id === "physics") {
+        setSelectedPublisherKey("pep");
+        if (selectedGradeKey.startsWith("grade7")) {
+          setSelectedGradeKey("grade8-up");
+        }
+      }
       setSelectedLessonIds(new Set());
       setNotice(null);
     } else {
@@ -204,13 +242,50 @@ export default function TeacherCurriculumRoute() {
     }
   };
 
+  useEffect(() => {
+    if (selectedSubject === "math") {
+      setRemoteCourse(null);
+      setCatalogError("");
+      setCatalogLoading(false);
+      return;
+    }
+    const controller = new AbortController();
+    setRemoteCourse(null);
+    setCatalogError("");
+    setCatalogLoading(true);
+    void fetchCurriculumCatalog(
+      {
+        subject: selectedSubject,
+        publisher: selectedPublisherKey,
+        grade: selectedGradeKey,
+        volume: selectedGradeKey.endsWith("-down") ? "down" : "up",
+      },
+      { signal: controller.signal },
+    )
+      .then(setRemoteCourse)
+      .catch((error) => {
+        if (error?.name !== "AbortError") setCatalogError(error.message);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setCatalogLoading(false);
+      });
+    return () => controller.abort();
+  }, [
+    catalogReloadVersion,
+    selectedGradeKey,
+    selectedPublisherKey,
+    selectedSubject,
+  ]);
+
   const handleGradeSelect = (gradeKey) => {
+    if (!subjectAllowsGrade(selectedSubject, gradeKey)) return;
     setSelectedGradeKey(gradeKey);
     setSelectedLessonIds(new Set());
     setNotice(null);
   };
 
   const handlePublisherSelect = (pubKey) => {
+    if (!subjectAllowsPublisher(selectedSubject, pubKey)) return;
     setSelectedPublisherKey(pubKey);
     setSelectedLessonIds(new Set());
     setNotice(null);
@@ -249,6 +324,7 @@ export default function TeacherCurriculumRoute() {
           }
           return next;
         });
+        return;
       })
       .catch((error) => {
         if (!active || error?.name === "AbortError") return;
@@ -545,7 +621,12 @@ export default function TeacherCurriculumRoute() {
                 : curriculumText(
                     "generateSelected",
                     "生成所选完整课时（{$count}）",
-                    { count: availableSelectedLessonIds.length || "—" },
+                    {
+                      count:
+                        availableSelectedLessonIds.length > 0
+                          ? availableSelectedLessonIds.length
+                          : "—",
+                    },
                   )}
             </button>
           </div>
@@ -639,11 +720,16 @@ export default function TeacherCurriculumRoute() {
               <div className="curriculum-filter-options">
                 {AVAILABLE_GRADES.map((gradeItem) => {
                   const isSelected = selectedGradeKey === gradeItem.id;
+                  const isAvailable = subjectAllowsGrade(
+                    selectedSubject,
+                    gradeItem.id,
+                  );
                   return (
                     <button
                       key={gradeItem.id}
                       type="button"
-                      className={`grade-filter-chip${isSelected ? " active" : ""}`}
+                      className={`grade-filter-chip${isSelected ? " active" : ""}${isAvailable ? "" : " disabled"}`}
+                      disabled={!isAvailable}
                       onClick={() => handleGradeSelect(gradeItem.id)}
                     >
                       <span>
@@ -670,11 +756,16 @@ export default function TeacherCurriculumRoute() {
               <div className="curriculum-filter-options">
                 {AVAILABLE_PUBLISHERS.map((pubItem) => {
                   const isSelected = selectedPublisherKey === pubItem.id;
+                  const isAvailable = subjectAllowsPublisher(
+                    selectedSubject,
+                    pubItem.id,
+                  );
                   return (
                     <button
                       key={pubItem.id}
                       type="button"
-                      className={`publisher-filter-chip${isSelected ? " active" : ""}`}
+                      className={`publisher-filter-chip${isSelected ? " active" : ""}${isAvailable ? "" : " disabled"}`}
+                      disabled={!isAvailable}
                       onClick={() => handlePublisherSelect(pubItem.id)}
                       title={curriculumCatalogLabel(
                         "publisher",
@@ -703,6 +794,25 @@ export default function TeacherCurriculumRoute() {
             role={notice.tone === "error" ? "alert" : "status"}
           >
             {notice.text}
+          </div>
+        )}
+
+        {catalogLoading && (
+          <div className="batch-notice info" role="status" aria-busy="true">
+            <LoaderCircle size={16} className="batch-spin" />
+            {curriculumText("catalogLoading", "正在加载真实教材目录")}
+          </div>
+        )}
+        {catalogError && (
+          <div className="batch-notice error" role="alert">
+            <span>{catalogError}</span>
+            <button
+              type="button"
+              className="batch-generate-one"
+              onClick={() => setCatalogReloadVersion((value) => value + 1)}
+            >
+              {curriculumText("retryCatalog", "重新加载")}
+            </button>
           </div>
         )}
 
@@ -782,8 +892,6 @@ export default function TeacherCurriculumRoute() {
                     const cancelable = cancelableStatuses.has(
                       generation.status,
                     );
-                    const isPublished = contentStatus === "published";
-
                     return (
                       <article
                         className={`batch-row${selectedLessonIds.has(lesson.id) ? " selected" : ""}`}
@@ -792,6 +900,11 @@ export default function TeacherCurriculumRoute() {
                       >
                         <label
                           className="batch-checkbox"
+                          aria-label={curriculumText(
+                            "selectLesson",
+                            "选择 {$lesson}",
+                            { lesson: lesson.title },
+                          )}
                           title={curriculumText(
                             "selectLesson",
                             "选择 {$lesson}",
@@ -820,8 +933,11 @@ export default function TeacherCurriculumRoute() {
                           <span className="batch-lesson-name">
                             <strong className="flex items-center gap-1.5">
                               <span>{lesson.title}</span>
-                              {(selectedStartLessonId === lesson.id || lesson.index === "1.1") && (
-                                <span className="current-lesson-tag">本课</span>
+                              {(selectedStartLessonId === lesson.id ||
+                                lesson.index === "1.1") && (
+                                <span className="current-lesson-tag">
+                                  {curriculumText("currentLesson", "本课")}
+                                </span>
                               )}
                             </strong>
                             <small>
@@ -922,6 +1038,22 @@ export default function TeacherCurriculumRoute() {
                       </article>
                     );
                   })}
+                  <UnitAssessmentRow
+                    entry={projectUnitAssessmentEntry(chapter)}
+                    onOpen={() =>
+                      navigate(
+                        routes.teacherUnitAssessment(
+                          currentCourse.id,
+                          chapter.id,
+                        ),
+                        {
+                          state: {
+                            chapter: { ...chapter, course: currentCourse },
+                          },
+                        },
+                      )
+                    }
+                  />
                 </div>
               </section>
             );

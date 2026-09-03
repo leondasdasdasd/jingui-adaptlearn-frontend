@@ -1,7 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ChevronDown, ChevronLeft, GraduationCap, LogOut, UserRound } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronLeft,
+  GraduationCap,
+  LogOut,
+  UserRound,
+} from "lucide-react";
 
 import { useNavigate } from "../routing";
+import { routes } from "../routes/routePaths";
 import {
   emptySession,
   useLearningSession,
@@ -50,6 +57,7 @@ function PersistenceNotice() {
  * @param root0.shellClassName
  * @param root0.headerClassName
  * @param root0.helpContext
+ * @param root0.showUserMenu
  */
 export default function AppShell({
   title,
@@ -173,7 +181,7 @@ export default function AppShell({
                     role="menuitem"
                     onClick={() => {
                       setUserMenuOpen(false);
-                      window.location.hash = "#/adaptive-learning/teacher/textbook-lessons";
+                      navigate(routes.teacherHome);
                     }}
                   >
                     <GraduationCap size={16} />

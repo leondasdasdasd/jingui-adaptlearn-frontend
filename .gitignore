@@ -2,6 +2,9 @@ node_modules/
 build/
 dist/
 coverage/
+.jscpd/
+.playwright-cli/
+output/
 .DS_Store
 *.log
 .env*

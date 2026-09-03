@@ -1,16 +1,20 @@
 import {
-  getMockPublishedLessonVersion,
-  getMockPublishedLessonSummaries,
-  getMockLearningPeriods,
-  startMockStudentSession,
-  getMockStudentSessionContent,
-  getMockSessionSnapshot,
-  putMockSessionSnapshot,
-  gradeMockAnswer,
   getMockAnswerReviews,
   getMockCheckInDiagnosis,
+  getMockLearningPeriods,
+  getMockPublishedLessonSummaries,
+  getMockPublishedLessonVersion,
+  getMockSessionSnapshot,
+  getMockStudentSessionContent,
+  gradeMockAnswer,
+  putMockSessionSnapshot,
+  startMockStudentSession,
 } from "./mockDataService.js";
 
+/**
+ *
+ * @param req
+ */
 function parseJsonBody(req) {
   return new Promise((resolve) => {
     let body = "";
@@ -27,18 +31,33 @@ function parseJsonBody(req) {
   });
 }
 
+/**
+ *
+ * @param res
+ * @param data
+ * @param status
+ */
 function sendJson(res, data, status = 200) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   res.end(JSON.stringify(data));
 }
 
+/**
+ *
+ */
 export function viteMockAdaptivePlugin() {
   return {
     name: "vite-mock-adaptive-api",
     configureServer(server) {
+      server.config.logger.warn(
+        "[Adaptive mock enabled] 当前使用模拟课堂与测评数据 / Mock classroom and assessment data are active.",
+      );
       server.middlewares.use(async (req, res, next) => {
-        const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
+        const url = new URL(
+          req.url || "/",
+          `http://${req.headers.host || "localhost"}`,
+        );
         const pathname = url.pathname;
 
         // 1. Published lesson content version

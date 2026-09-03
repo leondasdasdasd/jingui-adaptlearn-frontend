@@ -1,0 +1,63 @@
+.start-class-btn-primary:disabled {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+.start-class-btn-primary.launch-glow {
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .start-class-dialog-card {
+    width: 100% !important;
+    max-height: 95vh !important;
+  }
+
+  .start-class-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .start-class-lesson-options {
+    grid-template-columns: 1fr !important;
+  }
+
+  .start-class-dual-panel {
+    grid-template-columns: 1fr !important;
+    height: auto !important;
+  }
+
+  .start-class-step2-top-bar,
+  .start-class-time-group,
+  .start-class-dialog-footer {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .start-class-search-box {
+    max-width: none !important;
+  }
+
+  .footer-actions-right,
+  .footer-summary-left {
+    justify-content: space-between !important;
+  }
+
+  .start-class-step-pills {
+    display: none !important;
+  }
+}

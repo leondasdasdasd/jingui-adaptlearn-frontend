@@ -1,3 +1,4 @@
+import { assessAnswerQuality } from "../shared/domain/answerQuality.js";
 import {
   ALL_COURSES,
   course,
@@ -5,7 +6,6 @@ import {
 } from "../shared/domain/courseCatalog.js";
 import { getMockLessonContent } from "../shared/domain/defaultLessonContent.js";
 import { objectiveScoreRatio } from "../shared/domain/questionEvidence.js";
-import { assessAnswerQuality } from "../lib/gradingApi.js";
 
 // In-memory store for snapshots and sessions
 const sessionStore = new Map();
@@ -13,6 +13,7 @@ const snapshotStore = new Map();
 
 /**
  * Build a standard published content version matching the classroom service contract
+ * @param lessonId
  */
 export function getMockPublishedLessonVersion(lessonId = "section-1-1") {
   const lesson = findLessonById(lessonId);
@@ -68,6 +69,7 @@ export function getMockPublishedLessonVersion(lessonId = "section-1-1") {
 
 /**
  * Get summaries for multiple lesson IDs
+ * @param lessonIds
  */
 export function getMockPublishedLessonSummaries(lessonIds = []) {
   const ids = Array.isArray(lessonIds) ? lessonIds : [lessonIds];
@@ -84,6 +86,8 @@ export function getMockPublishedLessonSummaries(lessonIds = []) {
 
 /**
  * Find question definition by ID across all courses
+ * @param questionId
+ * @param contentVersionId
  */
 export function findQuestionById(questionId, contentVersionId = "") {
   if (!questionId) return null;
@@ -129,6 +133,14 @@ export function findQuestionById(questionId, contentVersionId = "") {
 
 /**
  * Mock grade student answer
+ * @param root0
+ * @param root0.question
+ * @param root0.questionId
+ * @param root0.contentVersionId
+ * @param root0.answerText
+ * @param root0.imageDataUrl
+ * @param root0.attemptStage
+ * @param root0.priorFormalGradeReceipt
  */
 export function gradeMockAnswer({
   question,
@@ -139,15 +151,18 @@ export function gradeMockAnswer({
   attemptStage = "initial",
   priorFormalGradeReceipt = "",
 }) {
-  const targetQuestion = question || findQuestionById(questionId, contentVersionId) || {
-    id: questionId || "mock-q",
-    type: "single_choice",
-    maxScore: 2,
-    answer: "A",
-    analysis: "先明确题目中的基准和正方向，再判断符号与数值关系。",
-  };
+  const targetQuestion = question ||
+    findQuestionById(questionId, contentVersionId) || {
+      id: questionId || "mock-q",
+      type: "single_choice",
+      maxScore: 2,
+      answer: "A",
+      analysis: "先明确题目中的基准和正方向，再判断符号与数值关系。",
+    };
 
-  const quality = assessAnswerQuality ? assessAnswerQuality(targetQuestion, answerText) : { quality: "valid", message: "" };
+  const quality = assessAnswerQuality
+    ? assessAnswerQuality(targetQuestion, answerText)
+    : { quality: "valid", message: "" };
   if (quality.quality === "off_task") {
     return {
       score: 0,
@@ -187,8 +202,12 @@ export function gradeMockAnswer({
     scoreRatio = objectiveScoreRatio(targetQuestion, answerText);
   } else {
     // short answer text matching
-    const ref = String(targetQuestion.answer || "").trim().toLowerCase();
-    const user = String(answerText || "").trim().toLowerCase();
+    const ref = String(targetQuestion.answer || "")
+      .trim()
+      .toLowerCase();
+    const user = String(answerText || "")
+      .trim()
+      .toLowerCase();
     if (ref && user.includes(ref)) {
       scoreRatio = 1;
     } else if (user.length > 5) {
@@ -212,7 +231,11 @@ export function gradeMockAnswer({
       : scoreRatio > 0
         ? "部分正确，继续加油！"
         : "答案有误，请仔细核对题目条件和运算符号。",
-    strengths: correct ? ["概念理解准确", "结论正确"] : scoreRatio > 0 ? ["部分判断准确"] : [],
+    strengths: correct
+      ? ["概念理解准确", "结论正确"]
+      : scoreRatio > 0
+        ? ["部分判断准确"]
+        : [],
     improvements: correct ? [] : ["核对题目关键已知条件与正负号"],
     recognizedAnswer: Array.isArray(answerText)
       ? answerText.join("、")
@@ -220,7 +243,8 @@ export function gradeMockAnswer({
     answerQuality: correct ? "valid" : quality.quality || "valid",
     behaviorFeedback: quality.quality === "off_task" ? quality.message : "",
     correctAnswer: targetQuestion.answer,
-    analysis: targetQuestion.analysis || "解析：根据相关数学概念及法则分析得出。",
+    analysis:
+      targetQuestion.analysis || "解析：根据相关数学概念及法则分析得出。",
     formalGradeReceipt: `receipt-mock-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
     gradingStatus: "final",
     evidenceEligible: true,
@@ -232,6 +256,8 @@ export function gradeMockAnswer({
 
 /**
  * Mock answer reviews
+ * @param questionIds
+ * @param contentVersionId
  */
 export function getMockAnswerReviews(questionIds = [], contentVersionId = "") {
   const ids = Array.isArray(questionIds) ? questionIds : [questionIds];
@@ -289,8 +315,13 @@ export function getMockLearningPeriods() {
 
 /**
  * Mock start student session
+ * @param periodId
+ * @param accessToken
  */
-export function startMockStudentSession(periodId = "mock-period-1-1", accessToken = "") {
+export function startMockStudentSession(
+  periodId = "mock-period-1-1",
+  accessToken = "",
+) {
   let lessonId = "section-1-1";
   if (periodId.includes("1-2")) lessonId = "section-1-2";
   if (periodId.includes("1-3")) lessonId = "section-1-3";
@@ -311,6 +342,7 @@ export function startMockStudentSession(periodId = "mock-period-1-1", accessToke
 
 /**
  * Mock get session content
+ * @param sessionId
  */
 export function getMockStudentSessionContent(sessionId = "") {
   const session = sessionStore.get(sessionId);
@@ -323,11 +355,17 @@ export function getMockStudentSessionContent(sessionId = "") {
 
 /**
  * Mock snapshot store
+ * @param sessionId
  */
 export function getMockSessionSnapshot(sessionId = "") {
   return snapshotStore.get(sessionId) || { hydrated: null };
 }
 
+/**
+ *
+ * @param sessionId
+ * @param payload
+ */
 export function putMockSessionSnapshot(sessionId = "", payload = {}) {
   snapshotStore.set(sessionId, payload);
   return { ok: true, updatedAt: new Date().toISOString() };
@@ -335,6 +373,11 @@ export function putMockSessionSnapshot(sessionId = "", payload = {}) {
 
 /**
  * Mock check-in analysis
+ * @param root0
+ * @param root0.lesson
+ * @param root0.knowledgePoints
+ * @param root0.practiceContext
+ * @param root0.messages
  */
 export function getMockCheckInDiagnosis({
   lesson = {},
@@ -342,7 +385,10 @@ export function getMockCheckInDiagnosis({
   practiceContext = {},
   messages = [],
 }) {
-  const kpTitle = practiceContext?.knowledgePointTitle || knowledgePoints[0]?.name || "核心概念";
+  const kpTitle =
+    practiceContext?.knowledgePointTitle ||
+    knowledgePoints[0]?.name ||
+    "核心概念";
   const userMessages = messages.filter((m) => m.role === "user");
 
   if (userMessages.length === 0) {
@@ -360,9 +406,11 @@ export function getMockCheckInDiagnosis({
     diagnosis: {
       summary: `针对知识点「${kpTitle}」的诊断：学生已理清正负号判定法则与基准点概念，具备再次练习能力。`,
       causeType: "CONCEPT_CONFUSION",
-      studentTip: "做题时养成习惯：第一步圈出基准，第二步判定方向，第三步计算数值。",
+      studentTip:
+        "做题时养成习惯：第一步圈出基准，第二步判定方向，第三步计算数值。",
       promptVersion: "v1",
-      reviewedQuestionIds: practiceContext?.evidence?.map((e) => e.questionId) || [],
+      reviewedQuestionIds:
+        practiceContext?.evidence?.map((e) => e.questionId) || [],
       needsRemediation: false,
     },
     needsRemediation: false,

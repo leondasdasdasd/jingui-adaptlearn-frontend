@@ -1,0 +1,266 @@
+.report-row strong,
+.report-row span {
+  font-size: 12px;
+}
+
+.report-row b {
+  display: flex;
+  align-items: center;
+  color: var(--success);
+  font-size: 12px;
+}
+
+.confidence {
+  width: 36px;
+  padding: 2px 0;
+  border-radius: 4px;
+  color: var(--color-feedback-warning-fg);
+  background: var(--color-feedback-warning-bg);
+  text-align: center;
+}
+
+.confidence.high {
+  color: var(--success);
+  background: var(--success-bg);
+}
+
+.report-bottom {
+  margin-top: 14px;
+}
+
+.report-bottom > section {
+  padding: 16px;
+}
+
+.distribution-bars {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.distribution-bars > div {
+  display: grid;
+  grid-template-columns: 80px 1fr 38px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.distribution-bars i {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--color-primary-100);
+}
+
+.distribution-bars b {
+  height: 100%;
+  display: block;
+  background: var(--color-primary-600);
+}
+
+.report-bottom p {
+  margin: 12px 0 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.live-alert-empty {
+  padding: 40px 16px;
+  color: var(--helper);
+  font-size: 12px;
+  text-align: center;
+}
+
+.student-detail-summary {
+  min-height: 82px;
+  padding: 10px 16px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: #fff;
+}
+
+.student-detail-summary > div {
+  padding-right: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  border-right: 1px solid var(--border);
+}
+
+.student-detail-summary > div:last-child {
+  border-right: 0;
+}
+
+.student-detail-summary span {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.student-detail-summary strong {
+  font-size: 18px;
+}
+
+.student-detail-summary small {
+  color: var(--weak);
+  font-size: 12px;
+}
+
+.teacher-student-score {
+  margin-top: 12px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: auto minmax(280px, 1fr);
+  gap: 12px 24px;
+  border: 1px solid #bfdbfe;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.teacher-student-score.insufficient {
+  display: block;
+  border-color: var(--classroom-feedback-info-border);
+  background: var(--classroom-feedback-info-bg);
+}
+
+.teacher-student-score-main {
+  display: flex;
+  gap: 22px;
+}
+
+.teacher-student-score-main > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.teacher-student-score-main strong {
+  color: var(--text);
+  font-size: 27px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.teacher-student-score-main small {
+  margin-left: 2px;
+  font-size: 12px;
+}
+
+.teacher-student-score-breakdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.teacher-student-score-breakdown span {
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--helper);
+  background: #fafbfd;
+  font-size: 12px;
+}
+
+.teacher-student-score-breakdown b {
+  color: var(--classroom-primary);
+  font-weight: 600;
+}
+
+.teacher-student-score > p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.625;
+}
+
+.teacher-student-score > small {
+  grid-column: 1 / -1;
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.student-tutoring-status {
+  margin-top: 12px;
+  min-height: 72px;
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 220px minmax(220px, 1fr) minmax(220px, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid var(--color-primary-200);
+  border-radius: var(--radius-card);
+  background: var(--color-surface-section);
+}
+
+.student-tutoring-status > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--primary);
+}
+
+.student-tutoring-status > div span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.student-tutoring-status small {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.student-tutoring-status strong {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.student-tutoring-status p {
+  margin: 3px 0 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.student-tutoring-status time {
+  color: var(--weak);
+  font-size: 12px;
+}
+
+.student-tutoring-status.needs-support {
+  border-color: var(--color-feedback-warning-border);
+  background: var(--color-feedback-warning-bg);
+}
+
+.student-detail-warnings {
+  margin-top: 12px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  border: 1px solid #ffc9c4;
+  border-radius: var(--radius-card);
+  color: #8b2f2f;
+  background: var(--error-bg);
+}
+
+.student-detail-warnings header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.student-detail-warnings header strong {
+  font-size: 12px;
+}

@@ -1,0 +1,43 @@
+.student-class-report header p {
+  margin: 3px 0 0;
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.student-class-report header > span {
+  color: var(--classroom-primary);
+  font-size: 12px;
+}
+
+.student-report-table-head,
+.student-report-row {
+  display: grid;
+  grid-template-columns:
+    110px 125px 78px 78px 100px 85px minmax(220px, 1fr)
+    18px;
+  align-items: center;
+  gap: 9px;
+}
+
+.student-report-table-head {
+  height: 38px;
+  padding: 0 12px;
+  color: var(--helper);
+  background: var(--page);
+  font-size: 12px;
+}
+
+.student-report-row {
+  width: 100%;
+  min-height: 64px;
+  padding: 8px 12px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  background: #fff;
+  text-align: left;
+}
+
+.student-report-row:hover {
+  background: var(--color-surface-section);
+}

@@ -1,9 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 
+import { trans } from "../../utils/i18n";
+import { DEFAULT_CLASSROOM_LEARNING_MODE } from "../shared/domain/classroomLearningMode";
 import AppShell from "./AppShell";
 import ChapterNavigator from "./directory/ChapterNavigator";
 import CourseSwitcher from "./directory/CourseSwitcher";
 import LessonWorkspace from "./directory/LessonWorkspace";
+import StudentLearningModeSelector from "./StudentLearningModeSelector";
 
 import "../styles/directory-modern.css";
 
@@ -19,6 +22,8 @@ import "../styles/directory-modern.css";
  * @param root0.onSelectCourse
  * @param root0.localExperience
  * @param root0.busy
+ * @param root0.knowledgeProfile
+ * @param root0.onStartNewLesson
  */
 export default function DirectoryPage({
   course,
@@ -30,7 +35,12 @@ export default function DirectoryPage({
   onSelectCourse,
   localExperience = false,
   busy = false,
+  knowledgeProfile = {},
+  onStartNewLesson,
 }) {
+  const [learningMode, setLearningMode] = useState(
+    DEFAULT_CLASSROOM_LEARNING_MODE,
+  );
   // 根据学习进度定位当前章节和课时
   const progressLocation = useMemo(() => {
     for (const chapter of course.chapters) {
@@ -42,26 +52,16 @@ export default function DirectoryPage({
     return null;
   }, [course.chapters, progress?.lessonId]);
 
-  const [openChapter, setOpenChapter] = useState(
-    () => progressLocation?.chapter.id || course.chapters[0]?.id || "",
-  );
   const [selectedSection, setSelectedSection] = useState(
     () => progressLocation?.section || course.chapters[0]?.sections[0] || null,
   );
 
+  // 课程或活动会话变化时统一定位；恢复进度优先于课程首课。
   useEffect(() => {
-    if (!progressLocation) return;
-    setSelectedSection(progressLocation.section);
-    setOpenChapter(progressLocation.chapter.id);
-  }, [progressLocation]);
-
-  // 当课程切换时，重置选中的章节与课时
-  useEffect(() => {
-    if (course?.chapters?.[0]?.sections?.[0]) {
-      setSelectedSection(course.chapters[0].sections[0]);
-      setOpenChapter(course.chapters[0].id);
-    }
-  }, [course?.id]);
+    setSelectedSection(
+      progressLocation?.section || course.chapters[0]?.sections[0] || null,
+    );
+  }, [course.chapters, course.id, progressLocation]);
 
   const selectedChapter = useMemo(
     () =>
@@ -71,10 +71,13 @@ export default function DirectoryPage({
     [course.chapters, selectedSection],
   );
 
-  const chooseSection = (chapter, section) => {
+  const chooseSection = (_chapter, section) => {
     setSelectedSection(section);
-    setOpenChapter(chapter.id);
   };
+
+  // 学习模式只作用于当前选中的课时，其他课时的历史进度不能锁住新入口。
+  const currentLessonProgress =
+    progress?.lessonId === selectedSection?.id ? progress : null;
 
   // 统计掌握知识点数
   const totalKpCount = useMemo(() => {
@@ -98,7 +101,7 @@ export default function DirectoryPage({
 
   return (
     <AppShell
-      title="智能自适应学习"
+      title={trans("adaptiveLearning.directory.title", "智能自适应学习")}
       shellClassName="directory-app-shell"
       actions={
         <CourseSwitcher
@@ -112,6 +115,12 @@ export default function DirectoryPage({
         aria-busy={busy}
         inert={busy || undefined}
       >
+        {!currentLessonProgress && (
+          <StudentLearningModeSelector
+            value={learningMode}
+            onChange={setLearningMode}
+          />
+        )}
         <div className="modern-directory-layout">
           {/* 左侧：章节课时导航 */}
           <ChapterNavigator
@@ -127,19 +136,25 @@ export default function DirectoryPage({
               courseName={course.name}
               selectedChapter={selectedChapter}
               selectedSection={selectedSection}
-              progress={progress}
+              progress={currentLessonProgress}
+              knowledgeProfile={knowledgeProfile}
               localExperience={localExperience}
               busy={busy}
               onStart={onStart}
+              onStartNewLesson={onStartNewLesson}
               onContinue={onContinue}
               onLearnKnowledge={onLearnKnowledge}
               onOpenKnowledgeMap={onOpenKnowledgeMap}
               masteredKpCount={masteredKpCount}
               totalKpCount={totalKpCount}
+              learningMode={learningMode}
             />
           ) : (
             <div className="p-12 text-center text-slate-400">
-              请在左侧选择要学习的课时
+              {trans(
+                "adaptiveLearning.directory.selectLesson",
+                "请在左侧选择要学习的课时",
+              )}
             </div>
           )}
         </div>

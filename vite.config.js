@@ -1,4 +1,3 @@
-import path from "path";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 import { viteMockAdaptivePlugin } from "./src/adaptiveLearning/mock/viteMockPlugin.js";
@@ -35,19 +34,32 @@ function createDevelopmentProxy(options = {}) {
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
+  const enableAdaptiveMocks = env.VITE_ENABLE_ADAPTIVE_MOCKS === "true";
 
   return {
     resolve: {
       alias: {
-        "dva/router": path.resolve(__dirname, "./src/adaptiveLearning/routing/dvaRouterShim.jsx"),
+        "dva/router": "react-router-dom",
       },
     },
-    plugins: [react(), viteMockAdaptivePlugin()],
+    plugins: [react(), enableAdaptiveMocks && viteMockAdaptivePlugin()].filter(
+      Boolean,
+    ),
+    test: {
+      environment: "jsdom",
+      globals: true,
+      setupFiles: ["./src/test/setup.js"],
+      server: {
+        deps: {
+          inline: [/@yungu-fed\/question-editor/, /@yungu-fed\/rich-text-editor/],
+        },
+      },
+    },
     server: {
       host: "0.0.0.0",
       port: 3000,
       strictPort: true,
-      allowedHosts: true,
+      allowedHosts: ["leon.local.yungu-inc.org"],
       proxy: createDevelopmentProxy({
         adaptiveBffTarget:
           env.DEV_ADAPTIVE_BFF_PROXY_TARGET || "http://127.0.0.1:8787",
@@ -60,8 +72,7 @@ export default defineConfig(({ mode }) => {
     preview: {
       host: "0.0.0.0",
       port: 3000,
-      allowedHosts: true,
+      allowedHosts: ["leon.local.yungu-inc.org"],
     },
   };
 });
-

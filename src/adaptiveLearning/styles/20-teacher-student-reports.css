@@ -1,0 +1,44 @@
+.mastery-report {
+  margin-top: 14px;
+}
+
+.mastery-report header > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.mastery-report header > span {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.report-table-head,
+.report-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 90px 90px 80px 100px 80px 18px;
+  align-items: center;
+  gap: 10px;
+}
+
+.report-table-head {
+  height: 36px;
+  padding: 0 14px;
+  color: var(--helper);
+  background: var(--page);
+  font-size: 12px;
+}
+
+.report-row {
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 14px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  background: #fff;
+  text-align: left;
+}
+
+.report-row:hover {
+  background: var(--color-surface-section);
+}

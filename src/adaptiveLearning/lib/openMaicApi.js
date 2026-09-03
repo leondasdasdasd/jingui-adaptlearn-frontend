@@ -83,25 +83,16 @@ const enqueueOpenMaicBatch = createGenerationBatchQueue({
  * @param root0.signal
  */
 async function createSingleOpenMaicClassroom(payload, { signal } = {}) {
-  try {
-    const response = await fetch(adaptiveApiUrl("/api/openmaic/classrooms"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      signal,
-    });
-    const body = await response.json().catch(() => ({}));
-    if (!response.ok)
-      throw new Error(body.message || "学习内容准备失败，请稍后重试");
-    return body;
-  } catch (error) {
-    return {
-      status: "READY",
-      classroomId: `classroom-${payload?.lesson?.id || "mock"}`,
-      classroomUrl: `/mock-classroom.html?lessonId=${encodeURIComponent(payload?.lesson?.id || "section-1-1")}`,
-      message: "课堂已就绪",
-    };
-  }
+  const response = await fetch(adaptiveApiUrl("/api/openmaic/classrooms"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    signal,
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok)
+    throw new Error(body.message || "学习内容准备失败，请稍后重试");
+  return body;
 }
 
 /**

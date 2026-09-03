@@ -207,7 +207,11 @@ function AnswerDetail({
   return (
     <section className="pre-answer-detail">
       <div className="pre-answer-detail-topbar">
-        <button className="pre-answer-detail-back" type="button" onClick={onBack}>
+        <button
+          className="pre-answer-detail-back"
+          type="button"
+          onClick={onBack}
+        >
           <ChevronLeft size={17} />
           <span>{copy.backToMastery}</span>
         </button>

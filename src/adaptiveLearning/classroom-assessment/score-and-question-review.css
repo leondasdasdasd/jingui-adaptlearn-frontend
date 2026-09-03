@@ -1,0 +1,631 @@
+/* stylelint-disable no-descending-specificity -- 评分与题目复核按原顺序维持级联。 */
+
+.classroom-score-card {
+  margin-top: 0;
+  padding: 24px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-card);
+}
+
+.classroom-score-card.ready {
+  border-color: var(--color-primary-200);
+}
+
+.result-wrap .classroom-score-card.insufficient {
+  border-color: var(--color-feedback-card-border);
+  background: var(--color-feedback-card-bg);
+}
+
+.classroom-score-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.classroom-score-heading > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.classroom-score-heading > div > span {
+  color: var(--color-primary-600);
+  font-size: var(--font-size-caption);
+  font-weight: 600;
+}
+
+.classroom-score-heading > div > strong {
+  color: var(--color-text-emphasis);
+  font-size: var(--font-size-title-sm);
+  font-weight: 500;
+}
+
+.score-state-tag,
+.classroom-score-card .score-state-tag,
+.teacher-student-score .score-state-tag {
+  min-height: 32px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  flex: 0 0 auto;
+  border: 1px solid var(--classroom-feedback-info-border);
+  border-radius: var(--radius-sm);
+  color: var(--classroom-feedback-info-fg);
+  background: var(--classroom-feedback-info-bg);
+  font-size: var(--font-size-body-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.score-state-tag.ready {
+  border-color: var(--color-feedback-success-border);
+  color: var(--color-feedback-success-fg);
+  background: var(--color-feedback-success-bg);
+}
+
+.classroom-score-metrics {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.classroom-score-metrics > div {
+  min-width: 0;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 2px 12px;
+  border: 1px solid var(--color-feedback-card-border);
+  border-radius: var(--radius-md);
+  background: var(--color-feedback-card-bg);
+  box-shadow: var(--shadow-card);
+}
+
+.classroom-score-metrics > div:first-child {
+  border-color: var(--color-feedback-card-border);
+}
+
+.classroom-score-metrics span {
+  grid-column: 1;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+  font-weight: 500;
+}
+
+.classroom-score-metrics strong {
+  grid-column: 1;
+  color: var(--color-text-emphasis);
+  font-size: 2.5rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.classroom-score-metrics > div:first-child strong {
+  color: var(--color-primary-600);
+}
+
+.classroom-score-metrics > div:last-child strong {
+  color: var(--color-feedback-success-fg);
+}
+
+.classroom-score-metrics strong small {
+  margin-left: 3px;
+  font-size: var(--font-size-body);
+}
+
+.score-level-label,
+.classroom-score-card .score-level-label,
+.teacher-student-score .score-level-label {
+  min-height: 32px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid var(--color-primary-200);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary-700);
+  background: var(--color-primary-50);
+  font-size: var(--font-size-body-sm);
+  font-weight: 600;
+  font-style: normal;
+  white-space: nowrap;
+}
+
+.classroom-score-metrics .score-level-label {
+  grid-row: 1 / 3;
+  grid-column: 2;
+  align-self: end;
+}
+
+.score-level-label.excellent {
+  border-color: var(--color-feedback-success-border);
+  color: var(--color-feedback-success-fg);
+  background: var(--color-feedback-success-bg);
+}
+
+.score-level-label.developing {
+  border-color: var(--color-feedback-warning-border);
+  color: var(--color-feedback-warning-fg);
+  background: var(--color-feedback-warning-bg);
+}
+
+.score-level-label.support {
+  border-color: var(--color-feedback-danger-border);
+  color: var(--color-feedback-danger-badge-fg);
+  background: var(--color-feedback-danger-badge-bg);
+}
+
+.classroom-score-card > .score-summary {
+  margin: 18px 0 0;
+  color: var(--color-text-emphasis);
+  font-size: var(--font-size-body-lg);
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+.classroom-score-dimensions {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+}
+
+.classroom-score-dimensions > div {
+  min-height: 56px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+}
+
+.classroom-score-dimensions > div + div {
+  border-left: 1px solid var(--color-border-default);
+}
+
+.classroom-score-dimensions span {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+.classroom-score-dimensions b {
+  color: var(--color-primary-600);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.score-explanation {
+  margin-top: 12px;
+  border-top: 1px solid var(--color-border-default);
+}
+
+.score-explanation summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--color-primary-700);
+  font-size: var(--font-size-body-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.score-explanation > div {
+  padding-bottom: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.score-explanation span {
+  min-width: 0;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  background: var(--color-surface-workspace);
+  font-size: var(--font-size-caption);
+}
+
+.score-explanation b {
+  color: var(--color-text-emphasis);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.classroom-score-card + .result-hero {
+  min-height: 112px;
+  margin-top: 16px;
+  padding: 22px 24px;
+  gap: 16px;
+  border: 1px solid var(--color-border-default);
+  color: var(--color-text-default);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-card);
+}
+
+.classroom-score-card + .result-hero .complete-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  color: var(--color-primary-600);
+  background: var(--color-primary-50);
+}
+
+.classroom-score-card + .result-hero span {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.classroom-score-card + .result-hero strong {
+  color: var(--color-text-emphasis);
+  font-size: 2.25rem;
+  font-weight: 500;
+}
+
+.classroom-score-card + .result-hero strong small {
+  font-size: var(--font-size-body-lg);
+}
+
+.classroom-score-card + .result-hero strong.mastery-unavailable {
+  font-size: var(--font-size-title-md);
+  line-height: 1.4;
+}
+
+.classroom-score-card + .result-hero p {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+}
+
+.teacher-score-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: fit-content;
+  padding: 4px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-control-default);
+}
+
+.teacher-score-filter button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  background: transparent;
+  font-size: var(--font-size-body-sm);
+  font-weight: 600;
+}
+
+.teacher-score-filter button:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface-control-hover);
+}
+
+.teacher-score-filter button.active {
+  color: var(--color-primary-700);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-card);
+}
+
+.teacher-score-filter button:active:not(:disabled),
+.student-report-row:active:not(:disabled) {
+  background: var(--color-primary-50);
+}
+
+.teacher-score-evidence-state {
+  color: var(--color-text-muted);
+}
+
+.teacher-score-evidence-state.ready {
+  color: var(--color-feedback-success-fg);
+}
+
+.teacher-score-rationale {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+}
+
+.student-class-report .student-report-table-head,
+.student-class-report .student-report-row {
+  min-width: 920px;
+  grid-template-columns: 130px 130px 130px 100px 100px minmax(240px, 1fr) 18px;
+}
+
+.student-report-row > strong {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.student-report-row > strong small {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+  font-weight: 400;
+}
+
+.teacher-student-score .score-level-label {
+  margin-top: 2px;
+}
+
+.teacher-student-score-review {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.teacher-student-score-review small {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+.teacher-student-score {
+  box-shadow: var(--shadow-card);
+}
+
+.teacher-student-score.insufficient {
+  border-color: var(--color-feedback-card-border);
+  background: var(--color-feedback-card-bg);
+}
+
+.teacher-page-body .student-detail-tabs {
+  gap: 4px;
+  padding: 4px;
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-control-default);
+}
+
+.teacher-page-body .student-detail-tabs button {
+  height: 36px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-body-sm);
+  font-weight: 500;
+}
+
+.teacher-page-body .student-detail-tabs button:hover:not(:disabled) {
+  color: var(--color-text-primary);
+  background: var(--color-surface-control-hover);
+}
+
+.teacher-page-body .student-detail-tabs button.active {
+  color: var(--color-primary-700);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-card);
+}
+
+.teacher-page-body
+  :is(
+    .student-learning-timeline,
+    .student-learning-overview,
+    .student-question-page,
+    .student-dialogue-page
+  )
+  h2,
+.teacher-page-body .knowledge-secondary-report header h2,
+.teacher-page-body .student-mastery-evidence h3 {
+  font-size: var(--font-size-body-lg);
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .classroom-score-card {
+    padding: 18px;
+  }
+
+  .classroom-score-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .classroom-score-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .classroom-score-metrics > div {
+    padding: 14px;
+  }
+
+  .classroom-score-metrics strong {
+    font-size: 2.25rem;
+  }
+
+  .classroom-score-dimensions > div {
+    min-height: 54px;
+    padding: 8px;
+  }
+
+  .score-explanation > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .classroom-score-card + .result-hero {
+    padding: 18px;
+  }
+
+  .teacher-page-body .report-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .teacher-page-body .report-summary > div {
+    min-width: 0;
+  }
+
+  .student-class-report {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .teacher-page-body .student-class-report > header {
+    min-width: 0;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .student-class-report .student-report-table-head {
+    display: none;
+  }
+
+  .student-class-report .student-report-row {
+    min-width: 0;
+    min-height: 0;
+    padding: 16px 40px 16px 16px;
+    position: relative;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 12px 16px;
+  }
+
+  .student-report-row > strong,
+  .student-report-row > .student-report-summary {
+    grid-column: 1 / -1;
+  }
+
+  .student-report-row > b,
+  .student-report-row > span {
+    min-width: 0;
+    overflow: visible;
+    white-space: normal;
+    text-overflow: clip;
+  }
+
+  .student-report-row > b,
+  .student-report-row > span:not(.student-report-summary) {
+    display: grid;
+    gap: 4px;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-body-sm);
+  }
+
+  .student-report-row > b::before,
+  .student-report-row > span:not(.student-report-summary)::before,
+  .student-report-row > .student-report-summary::before {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
+    font-weight: 400;
+  }
+
+  .student-report-row > b:nth-of-type(1)::before {
+    content: "综合表现";
+  }
+
+  .student-report-row > b:nth-of-type(2)::before {
+    content: "课堂效率";
+  }
+
+  .student-report-row > span:nth-of-type(1)::before {
+    content: "掌握知识点";
+  }
+
+  .student-report-row > span:nth-of-type(2)::before {
+    content: "证据状态";
+  }
+
+  .student-report-row > .student-report-summary {
+    display: grid;
+    gap: 4px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-sm);
+    line-height: 1.55;
+    white-space: normal;
+  }
+
+  .student-report-row > .student-report-summary::before {
+    content: "一句话总评";
+  }
+
+  .student-report-row > svg {
+    position: absolute;
+    top: 18px;
+    right: 16px;
+  }
+
+  .teacher-page-body .knowledge-secondary-report {
+    min-width: 0;
+    padding: 18px;
+  }
+
+  .teacher-page-body .knowledge-secondary-report header h2 {
+    font-size: var(--font-size-body-lg);
+  }
+
+  .teacher-page-body .knowledge-secondary-report article {
+    min-width: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 16px;
+    padding: 16px 0;
+  }
+
+  .teacher-page-body .knowledge-secondary-report article > strong {
+    grid-column: 1 / -1;
+  }
+
+  .teacher-page-body .knowledge-secondary-report article span {
+    min-width: 0;
+  }
+
+  .teacher-student-score-review {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .teacher-student-score-review .teacher-primary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .teacher-score-filter {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .teacher-score-filter button {
+    width: 100%;
+    padding: 0 8px;
+  }
+
+  .teacher-page-body .student-detail-tabs {
+    width: 100%;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .teacher-page-body .student-detail-tabs button {
+    min-width: 0;
+    padding: 0 6px;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .teacher-page-body .student-detail-tabs button > svg,
+  .teacher-page-body .student-detail-tabs button > span {
+    display: none;
+  }
+}

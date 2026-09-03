@@ -1,0 +1,124 @@
+.teacher-question-agent .ai-assistant-send:focus-visible {
+  outline: 0;
+  box-shadow: var(--classroom-focus-ring);
+}
+
+.teacher-question-agent .ai-assistant-send[aria-busy="true"] {
+  cursor: progress;
+}
+
+.teacher-question-agent .ai-assistant-send svg {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes teacher-agent-message-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.question-kp-tabs {
+  padding: 10px 12px 4px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+}
+
+.question-kp-tabs button {
+  min-height: 32px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  background: var(--color-surface-card-default);
+  font-size: var(--font-size-body-sm);
+}
+
+.question-kp-tabs button:hover:not(:disabled) {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-section);
+}
+
+.question-kp-tabs button.active {
+  border-color: var(--color-primary-200);
+  color: var(--color-primary-700);
+  background: var(--color-primary-50);
+}
+
+.question-kp-tabs button span {
+  min-width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  background: var(--color-surface-disabled);
+  font-size: var(--font-size-caption);
+}
+
+.question-review-list {
+  padding: 14px;
+  display: grid;
+  gap: 14px;
+  background: var(--page);
+}
+
+.teacher-question-row {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(1, 17, 61, 0.04);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.teacher-question-row:hover {
+  border-color: #c8d5ff;
+  box-shadow: 0 8px 20px rgba(1, 17, 61, 0.08);
+  transform: translateY(-1px);
+}
+
+.teacher-question-row-header {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.teacher-question-index {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--primary);
+  background: var(--brand-soft);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.teacher-question-meta {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}

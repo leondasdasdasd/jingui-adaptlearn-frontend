@@ -1,0 +1,335 @@
+.class-checkbox-wrap input,
+.student-checkbox-wrap input,
+.select-all-row-label input {
+  display: none !important;
+}
+
+.custom-checkbox {
+  width: 18px !important;
+  height: 18px !important;
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 5px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  background: #ffffff !important;
+  transition: all 150ms ease !important;
+  flex-shrink: 0 !important;
+}
+
+input:checked + .custom-checkbox {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+input:checked + .custom-checkbox::after {
+  content: "" !important;
+  width: 4px !important;
+  height: 8px !important;
+  border: solid white !important;
+  border-width: 0 2px 2px 0 !important;
+  transform: rotate(45deg) translate(-1px, -1px) !important;
+}
+
+input:indeterminate + .custom-checkbox {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+input:indeterminate + .custom-checkbox::after {
+  content: "" !important;
+  width: 8px !important;
+  height: 2px !important;
+  background: white !important;
+  border-radius: 1px !important;
+}
+
+.class-nav-info {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.class-nav-info .class-name {
+  font-size: 13px !important;
+  color: var(--text) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.class-nav-item.active .class-name {
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+}
+
+.class-nav-info .class-count {
+  font-size: 12px !important;
+  color: var(--helper) !important;
+}
+
+.class-badge {
+  font-size: 12px !important;
+  padding: 1px 6px !important;
+  border-radius: 999px !important;
+  font-weight: 600 !important;
+}
+
+.class-badge.full {
+  background: #ecfdf5 !important;
+  color: #059669 !important;
+}
+
+.class-badge.part {
+  background: #eff6ff !important;
+  color: #2563eb !important;
+}
+
+/* Right Students Panel */
+
+.start-class-right-students {
+  background: #ffffff !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.right-panel-header-row {
+  padding: 10px 16px !important;
+  border-bottom: 1px solid var(--border) !important;
+  background: #f8fafc !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.select-all-row-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  cursor: pointer !important;
+}
+
+.select-all-info {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.select-all-info strong {
+  font-size: 13px !important;
+  color: var(--text) !important;
+}
+
+.right-header-counter {
+  font-size: 12px !important;
+  color: var(--helper) !important;
+}
+
+.right-header-counter strong {
+  color: var(--primary) !important;
+  font-size: 14px !important;
+}
+
+.students-scroll-area {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  padding: 14px !important;
+}
+
+.no-students-found {
+  height: 200px !important;
+  display: grid !important;
+  place-items: center !important;
+  color: var(--helper) !important;
+  font-size: 13px !important;
+}
+
+.students-grid-list {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.student-item-card {
+  padding: 10px 12px !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--border) !important;
+  background: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  cursor: pointer !important;
+  transition: all 140ms ease !important;
+  user-select: none !important;
+}
+
+.student-item-card:hover {
+  border-color: #93c5fd !important;
+  background: #f8fafc !important;
+}
+
+.student-item-card.selected {
+  border-color: #a5b4fc !important;
+  background: #f5f7ff !important;
+}
+
+.student-avatar-circle {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 999px !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  flex-shrink: 0 !important;
+}
+
+.student-card-details {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1px !important;
+  min-width: 0 !important;
+  flex: 1 !important;
+}
+
+.student-name-text {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--text) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.student-code-text {
+  font-size: 12px !important;
+  color: var(--helper) !important;
+  letter-spacing: 0 !important;
+}
+
+.student-avatar-circle {
+  overflow: hidden !important;
+  background: #eef2ff !important;
+  color: var(--primary) !important;
+}
+
+.student-avatar-circle img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.start-class-empty-state {
+  display: grid !important;
+  min-height: 8rem !important;
+  place-items: center !important;
+  padding: 1rem !important;
+  color: var(--helper) !important;
+  font-size: 12px !important;
+  line-height: 1.25rem !important;
+  text-align: center !important;
+}
+
+/* Dialog Footer */
+
+.start-class-dialog-footer {
+  padding: 14px 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  border-top: 1px solid var(--border) !important;
+  background: #ffffff !important;
+}
+
+.footer-summary-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+
+.btn-back-step {
+  height: 36px !important;
+  padding: 0 14px !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--border) !important;
+  background: #ffffff !important;
+  color: var(--text-secondary) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 150ms ease !important;
+}
+
+.btn-back-step:hover {
+  background: #f1f5f9 !important;
+  color: var(--text) !important;
+}
+
+.footer-stats-text {
+  font-size: 13px !important;
+  color: var(--text-secondary) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.footer-stats-text strong {
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+}
+
+.stat-separator {
+  color: #cbd5e1 !important;
+}
+
+.footer-actions-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.start-class-btn-cancel {
+  height: 38px !important;
+  padding: 0 16px !important;
+  border-radius: 999px !important;
+  border: 1px solid var(--border) !important;
+  background: #ffffff !important;
+  color: var(--text-secondary) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 150ms ease !important;
+}
+
+.start-class-btn-cancel:hover {
+  background: #f1f5f9 !important;
+  color: var(--text) !important;
+}
+
+.start-class-btn-primary {
+  height: 38px !important;
+  padding: 0 20px !important;
+  border-radius: 999px !important;
+  border: 0 !important;
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%) !important;
+  color: #ffffff !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  cursor: pointer !important;
+  box-shadow: 0 3px 10px rgba(79, 70, 229, 0.28) !important;
+  transition: all 180ms ease !important;
+}
+
+.start-class-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4338ca 0%, #2563eb 100%) !important;
+  box-shadow: 0 5px 16px rgba(79, 70, 229, 0.38) !important;
+  transform: translateY(-1px) !important;
+}

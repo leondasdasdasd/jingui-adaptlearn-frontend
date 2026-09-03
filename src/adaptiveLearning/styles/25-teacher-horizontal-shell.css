@@ -137,3 +137,28 @@
   padding: 24px !important;
   flex: 1 !important;
 }
+
+@media (max-width: 640px) {
+  .teacher-horizontal-header {
+    padding: 0 0.75rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .teacher-horizontal-header .teacher-brand-info,
+  .teacher-horizontal-header .teacher-horizontal-nav,
+  .teacher-horizontal-header .teacher-user-menu {
+    display: none !important;
+  }
+
+  .teacher-horizontal-header .teacher-header-right-actions {
+    margin-left: auto !important;
+  }
+
+  .teacher-horizontal-header .teacher-header-start-class-btn {
+    padding: 0 0.75rem !important;
+  }
+
+  .teacher-main-horizontal {
+    padding: 1rem 0.75rem !important;
+  }
+}

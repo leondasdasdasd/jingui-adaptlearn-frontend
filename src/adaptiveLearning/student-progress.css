@@ -1,4 +1,3 @@
-/* student-progress.css */
-.student-progress-container {
-  padding: 16px;
-}
+@import "./student-progress/learning-history.css";
+@import "./student-progress/attempt-history.css";
+@import "./student-progress/attempt-history-responsive.css";

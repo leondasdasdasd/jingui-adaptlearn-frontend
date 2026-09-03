@@ -1,21 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronDown, ChevronRight, Folder, FolderOpen } from "lucide-react";
 import PropTypes from "prop-types";
 
 import { trans } from "../../utils/i18n";
 
 const GRADE_OPTIONS = [
-  { id: "grade-7", name: "七年级" },
-  { id: "grade-8", name: "八年级" },
-  { id: "grade-9", name: "九年级" },
-  { id: "grade-10", name: "预备十年级" },
-  { id: "grade-11", name: "高一" },
-  { id: "grade-12", name: "高二" },
+  { id: "grade-7", key: "grade7", name: "七年级" },
+  { id: "grade-8", key: "grade8", name: "八年级" },
+  { id: "grade-9", key: "grade9", name: "九年级" },
+  { id: "grade-10", key: "grade10Prep", name: "预备十年级" },
+  { id: "grade-11", key: "grade11", name: "高一" },
+  { id: "grade-12", key: "grade12", name: "高二" },
 ];
 
 /**
  * 开课第一步：系统课程与自适应内容课时选择。
  * @param {object} props 目录、选择状态与配置动作。
+ * @param props.subjects
+ * @param props.courses
+ * @param props.semesterName
+ * @param props.selectedSubjectId
+ * @param props.selectedCourseId
+ * @param props.selectedGradeId
+ * @param props.onGradeChange
+ * @param props.onSubjectChange
+ * @param props.onCourseChange
+ * @param props.chapters
+ * @param props.availableLessonIds
+ * @param props.selectedLessonIds
+ * @param props.onToggleLesson
+ * @param props.loading
  * @returns {React.ReactElement} 课程和课时配置视图。
  */
 export default function StartClassCourseStep({
@@ -34,8 +48,32 @@ export default function StartClassCourseStep({
   onToggleLesson,
   loading,
 }) {
-  // 默认不展开课程列表（收起状态），按需点击展开
-  const [expandedChapterIds, setExpandedChapterIds] = useState(() => new Set());
+  const [expandedChapterIds, setExpandedChapterIds] = useState(
+    () =>
+      new Set(
+        chapters
+          .filter((chapter) =>
+            chapter.sections.some((section) =>
+              selectedLessonIds.includes(section.id),
+            ),
+          )
+          .map((chapter) => chapter.id),
+      ),
+  );
+
+  useEffect(() => {
+    const selectedChapterIds = chapters
+      .filter((chapter) =>
+        chapter.sections.some((section) =>
+          selectedLessonIds.includes(section.id),
+        ),
+      )
+      .map((chapter) => chapter.id);
+    if (selectedChapterIds.length === 0) return;
+    setExpandedChapterIds(
+      (current) => new Set([...current, ...selectedChapterIds]),
+    );
+  }, [chapters, selectedLessonIds]);
 
   const toggleChapterExpand = (chapterId) => {
     setExpandedChapterIds((prev) => {
@@ -71,11 +109,13 @@ export default function StartClassCourseStep({
               id="start-class-grade"
               disabled={loading}
               value={selectedGradeId}
-              onChange={(event) => onGradeChange && onGradeChange(event.target.value)}
+              onChange={(event) =>
+                onGradeChange && onGradeChange(event.target.value)
+              }
             >
               {GRADE_OPTIONS.map((g) => (
                 <option key={g.id} value={g.id}>
-                  {g.name}
+                  {trans(`adaptiveLearning.startClass.${g.key}`, g.name)}
                 </option>
               ))}
             </select>
@@ -86,9 +126,7 @@ export default function StartClassCourseStep({
         {/* 学科选择 */}
         <div className="start-class-form-field">
           <label htmlFor="start-class-subject">
-            <span>
-              {trans("adaptiveLearning.startClass.subject", "学科")}
-            </span>
+            <span>{trans("adaptiveLearning.startClass.subject", "学科")}</span>
             <strong className="required-star">*</strong>
           </label>
           <div className="start-class-select-wrap">
@@ -115,9 +153,7 @@ export default function StartClassCourseStep({
         {/* 所属课程选择 */}
         <div className="start-class-form-field full-width">
           <label htmlFor="start-class-course">
-            <span>
-              {trans("adaptiveLearning.startClass.course", "课程")}
-            </span>
+            <span>{trans("adaptiveLearning.startClass.course", "课程")}</span>
             <strong className="required-star">*</strong>
           </label>
           <div className="start-class-select-wrap">
@@ -154,17 +190,18 @@ export default function StartClassCourseStep({
 
         {/* 关联/选择课时列表 - 默认收起列表 */}
         <fieldset className="start-class-lesson-scope full-width">
-          <legend className="flex items-center justify-between w-full">
-            <span className="flex items-center gap-1">
-              {trans("adaptiveLearning.startClass.selectDirectoryHint", "点击下拉选择课程目录。支持多选，")}
+          <legend className="start-class-lesson-scope-heading">
+            <p>
+              {trans(
+                "adaptiveLearning.startClass.selectDirectoryHint",
+                "点击下拉选择课程目录。支持多选，",
+              )}
               <strong className="required-star">*</strong>
-            </span>
-            <button
-              type="button"
-              className="text-xs text-blue-600 hover:text-blue-800 font-normal cursor-pointer bg-transparent border-0"
-              onClick={toggleAllChapters}
-            >
-              {expandedChapterIds.size === chapters.length ? "收起全部" : "展开全部"}
+            </p>
+            <button type="button" onClick={toggleAllChapters}>
+              {expandedChapterIds.size === chapters.length
+                ? trans("adaptiveLearning.startClass.collapseAll", "收起全部")
+                : trans("adaptiveLearning.startClass.expandAll", "展开全部")}
             </button>
           </legend>
           <div className="start-class-lesson-chapters">
@@ -175,27 +212,36 @@ export default function StartClassCourseStep({
               ).length;
 
               return (
-                <section key={chapter.id} className="start-class-lesson-chapter">
-                  <header
+                <section
+                  key={chapter.id}
+                  className="start-class-lesson-chapter"
+                >
+                  <button
+                    type="button"
                     onClick={() => toggleChapterExpand(chapter.id)}
-                    className="cursor-pointer select-none hover:bg-slate-50 transition-colors"
+                    aria-expanded={isExpanded}
+                    className="start-class-chapter-trigger"
                   >
-                    <strong className="flex items-center gap-2">
+                    <span className="start-class-chapter-title">
                       {isExpanded ? (
-                        <FolderOpen size={16} className="text-blue-600" />
+                        <FolderOpen size={16} />
                       ) : (
-                        <Folder size={16} className="text-slate-400" />
+                        <Folder size={16} />
                       )}
-                      <span>
+                      <strong>
                         {chapter.index} {chapter.title}
-                      </span>
+                      </strong>
                       {selectedInChapterCount > 0 && (
-                        <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-semibold">
-                          已选 {selectedInChapterCount}
+                        <span className="start-class-selected-count">
+                          {trans(
+                            "adaptiveLearning.startClass.selectedCount",
+                            "已选 {$count}",
+                            { count: selectedInChapterCount },
+                          )}
                         </span>
                       )}
-                    </strong>
-                    <div className="flex items-center gap-2">
+                    </span>
+                    <span className="start-class-chapter-meta">
                       <span>
                         {trans(
                           "adaptiveLearning.startClass.lessonCount",
@@ -203,20 +249,17 @@ export default function StartClassCourseStep({
                           { count: chapter.sections.length },
                         )}
                       </span>
-                      <ChevronRight
-                        size={15}
-                        className={`text-slate-400 transition-transform duration-200 ${
-                          isExpanded ? "rotate-90" : ""
-                        }`}
-                      />
-                    </div>
-                  </header>
+                      <ChevronRight size={15} />
+                    </span>
+                  </button>
 
                   {isExpanded && (
                     <div className="start-class-lesson-options">
                       {chapter.sections.map((lesson) => {
                         const checked = selectedLessonIds.includes(lesson.id);
-                        const published = availableLessonIds.includes(lesson.id);
+                        const published = availableLessonIds.includes(
+                          lesson.id,
+                        );
                         return (
                           <label
                             key={lesson.id}

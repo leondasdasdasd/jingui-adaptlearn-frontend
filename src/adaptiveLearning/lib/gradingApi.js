@@ -1,4 +1,7 @@
-import { gradeMockAnswer, getMockAnswerReviews } from "../mock/mockDataService.js";
+import {
+  assessAnswerQuality,
+  normalizedAnswerText,
+} from "../shared/domain/answerQuality.js";
 import { objectiveScoreRatio } from "../shared/domain/questionEvidence.js";
 import { assessmentPurposeForQuestion } from "../shared/domain/questionPurpose.js";
 import { adaptiveApiUrl } from "../shared/infrastructure/runtimeEndpoints.js";
@@ -22,34 +25,22 @@ export async function gradeWrittenAnswer({
   priorFormalGradeReceipt = "",
 }) {
   const purpose = assessmentPurposeForQuestion(question);
-  try {
-    const response = await fetch(adaptiveApiUrl("/api/answers/grade"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contentVersionId,
-        questionId: question.id,
-        purpose,
-        answerText,
-        imageDataUrl,
-        attemptStage,
-        priorFormalGradeReceipt,
-      }),
-    });
-    const body = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(body.message || "答案批改失败，请重试");
-    return body;
-  } catch (error) {
-    return gradeMockAnswer({
-      question,
-      questionId: question.id,
+  const response = await fetch(adaptiveApiUrl("/api/answers/grade"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
       contentVersionId,
+      questionId: question.id,
+      purpose,
       answerText,
       imageDataUrl,
       attemptStage,
       priorFormalGradeReceipt,
-    });
-  }
+    }),
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(body.message || "答案批改失败，请重试");
+  return body;
 }
 
 /**
@@ -62,8 +53,8 @@ export async function gradeWrittenAnswer({
 export function gradeShortAnswerLocally(question, answerText) {
   const answer = String(answerText || "").trim();
   const reference = String(question?.answer || "").trim();
-  const normalizedAnswer = normalizedText(answer);
-  const normalizedReference = normalizedText(reference);
+  const normalizedAnswer = normalizedAnswerText(answer);
+  const normalizedReference = normalizedAnswerText(reference);
   if (!normalizedReference) {
     return {
       gradingStatus: "unresolved",
@@ -130,87 +121,33 @@ export async function loadAnswerReviews(
     ),
   ];
   if (!contentVersionId || ids.length === 0) return {};
-  try {
-    const batches = [];
-    for (let index = 0; index < ids.length; index += 100)
-      batches.push(ids.slice(index, index + 100));
-    const bodies = await Promise.all(
-      batches.map(async (batch) => {
-        const response = await fetch(adaptiveApiUrl("/api/answers/review"), {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({
-            contentVersionId,
-            questionIds: batch,
-            studentSessionId,
-          }),
-        });
-        const body = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(body.message || "参考答案加载失败");
-        return body;
-      }),
-    );
-    return Object.fromEntries(
-      bodies
-        .flatMap((body) => body.items || [])
-        .map((item) => [item.questionId, item]),
-    );
-  } catch (error) {
-    const mockReviews = getMockAnswerReviews(ids, contentVersionId);
-    return Object.fromEntries(
-      (mockReviews.items || []).map((item) => [item.questionId, item]),
-    );
-  }
-}
-
-/**
- *
- * @param value
- */
-function normalizedText(value) {
-  return String(value || "")
-    .replaceAll(/\s+/g, "")
-    .replaceAll(/[。，；]/g, "")
-    .toLowerCase();
-}
-
-/**
- *
- * @param question
- * @param answerText
- */
-export function assessAnswerQuality(question, answerText) {
-  const answer = String(answerText || "").trim();
-  const compact = normalizedText(answer);
-  if (!answer) return { quality: "no_attempt", message: "" };
-  if (
-    /(随便|乱写|瞎写|蒙的|测试流程|开发工程师|无关答案|asdf|test)/i.test(answer)
-  ) {
-    return {
-      quality: "off_task",
-      message:
-        "这次答案还不能用于判断。请回到题目，写下一个相关条件、公式或步骤。",
-    };
-  }
-  if (/^(不知道|不会|不懂|忘了|没学会)[!?。了！？]*$/.test(compact)) {
-    return {
-      quality: "no_attempt",
-      message: "可以暂时不会，但请先写出你能确定的条件或第一步。",
-    };
-  }
-  if (
-    question.type === "fill_blank" &&
-    /^(是的|不是|好的|对|错|随便|哈{2,})$/.test(compact)
-  ) {
-    return {
-      quality: "off_task",
-      message: "这次答案还不能用于判断。请填写题目需要的数值或符号。",
-    };
-  }
-  return { quality: "valid", message: "" };
+  const batches = [];
+  for (let index = 0; index < ids.length; index += 100)
+    batches.push(ids.slice(index, index + 100));
+  const bodies = await Promise.all(
+    batches.map(async (batch) => {
+      const response = await fetch(adaptiveApiUrl("/api/answers/review"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          contentVersionId,
+          questionIds: batch,
+          studentSessionId,
+        }),
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(body.message || "参考答案加载失败");
+      return body;
+    }),
+  );
+  return Object.fromEntries(
+    bodies
+      .flatMap((body) => body.items || [])
+      .map((item) => [item.questionId, item]),
+  );
 }
 
 /**
@@ -314,38 +251,21 @@ export async function gradeAnswerWithFallback({
     ].includes(question?.type)
   ) {
     if (contentVersionId) {
-      try {
-        return await gradeWrittenAnswer({
-          question,
-          contentVersionId,
-          answerText,
-          imageDataUrl,
-          attemptStage,
-          priorFormalGradeReceipt,
-        });
-      } catch (error) {
-        if (question?.answer !== undefined) {
-          return gradeObjectiveAnswer(question, answerText, {
-            revealSolution: attemptStage === "correction",
-          });
-        }
-        throw error;
-      }
+      return gradeWrittenAnswer({
+        question,
+        contentVersionId,
+        answerText,
+        imageDataUrl,
+        attemptStage,
+        priorFormalGradeReceipt,
+      });
     }
     if (question?.answer !== undefined) {
       return gradeObjectiveAnswer(question, answerText, {
         revealSolution: attemptStage === "correction",
       });
     }
-    return gradeMockAnswer({
-      question,
-      questionId: question?.id,
-      contentVersionId,
-      answerText,
-      imageDataUrl,
-      attemptStage,
-      priorFormalGradeReceipt,
-    });
+    throw new Error("当前题目缺少已发布内容版本，无法进行正式批改");
   }
   try {
     return await gradeWrittenAnswer({
@@ -357,7 +277,7 @@ export async function gradeAnswerWithFallback({
       priorFormalGradeReceipt,
     });
   } catch (error) {
-    if (question?.type === "short_answer" && !imageDataUrl)
+    if (!contentVersionId && question?.type === "short_answer" && !imageDataUrl)
       return gradeShortAnswerLocally(question, answerText);
     throw error;
   }

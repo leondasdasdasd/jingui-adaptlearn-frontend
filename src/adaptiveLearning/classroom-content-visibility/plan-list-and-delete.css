@@ -1,0 +1,361 @@
+/* stylelint-disable color-function-notation, no-descending-specificity -- 保留既有颜色兼容写法与级联顺序。 */
+
+.classroom-plan-list,
+.classroom-plan-create,
+.classroom-plan-confirm,
+.classroom-plan-review,
+.classroom-content-outline,
+.classroom-content-confirm {
+  --classroom-primary: var(--color-primary-600);
+  --classroom-primary-hover: var(--color-primary-700);
+  --classroom-link: var(--color-primary-700);
+  --classroom-text: var(--color-text-emphasis);
+  --classroom-secondary: var(--color-text-secondary);
+  --classroom-helper: var(--color-text-muted);
+  --classroom-weak: var(--color-text-weak);
+  --classroom-border: var(--color-border-default);
+  --classroom-page: var(--color-surface-workspace);
+  --classroom-brand-soft: var(--color-primary-50);
+  --classroom-success: var(--color-feedback-success-fg);
+
+  color: var(--classroom-text);
+  font-family: var(--font-family-sans);
+}
+
+.classroom-plan-list,
+.classroom-plan-create,
+.classroom-plan-confirm,
+.classroom-plan-review {
+  overflow: hidden;
+  border: 1px solid var(--classroom-border);
+  border-radius: var(--radius-md, 16px);
+  background: #fff;
+}
+
+.teacher-page-body:has(> .classroom-plan-create) {
+  height: calc(100dvh - 74px);
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.classroom-plan-create {
+  min-height: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border-bottom: 0;
+  border-radius: 11px 11px 0 0;
+}
+
+.classroom-plan-list > header,
+.classroom-plan-create > header,
+.classroom-plan-confirm > header,
+.classroom-plan-review > header {
+  min-height: 56px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--classroom-border);
+}
+
+.classroom-plan-list h2,
+.classroom-plan-create h2,
+.classroom-plan-confirm h2,
+.classroom-plan-review h2 {
+  margin: 0;
+  color: var(--classroom-text);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.classroom-plan-list header > div,
+.classroom-plan-create header > div,
+.classroom-plan-confirm header > div,
+.classroom-plan-review header > div {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.classroom-plan-list header span,
+.classroom-plan-create header span,
+.classroom-plan-confirm header span,
+.classroom-plan-review header span {
+  overflow: hidden;
+  color: var(--classroom-helper);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-plan-table {
+  overflow-x: auto;
+}
+
+.classroom-plan-table-head,
+.classroom-plan-table article {
+  min-width: 960px;
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) 72px 150px 92px 220px;
+  align-items: center;
+  gap: 12px;
+}
+
+.classroom-plan-table-head {
+  min-height: 40px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--classroom-border);
+  color: var(--classroom-helper);
+  background: var(--classroom-page);
+  font-size: 14px;
+}
+
+.classroom-plan-table article {
+  min-height: 64px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--classroom-border);
+  background: #fff;
+}
+
+.classroom-plan-table-item:last-child article {
+  border-bottom: 0;
+}
+
+.classroom-plan-table article:hover {
+  background: var(--color-table-row-hover);
+}
+
+.classroom-plan-table article > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.classroom-plan-table article strong {
+  overflow: hidden;
+  color: var(--classroom-text);
+  font-size: 14px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-plan-table article small,
+.classroom-plan-table article span,
+.classroom-plan-table article time {
+  overflow: hidden;
+  color: var(--classroom-helper);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classroom-plan-table article b {
+  min-height: 32px;
+  width: fit-content;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--color-feedback-success-border, #8feed0);
+  border-radius: var(--radius-sm, 8px);
+  color: var(--color-feedback-success-fg, #047857);
+  background: var(--color-feedback-success-bg, #e9fff7);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.classroom-plan-table article > .classroom-plan-table-actions {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.classroom-plan-table-actions > button {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--classroom-border);
+  border-radius: 7px;
+  color: var(--classroom-link);
+  background: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.classroom-plan-table-actions > button:hover {
+  background: var(--classroom-page);
+}
+
+.classroom-plan-table-actions > button.primary {
+  border-color: var(--classroom-primary);
+  color: #fff;
+  background: var(--classroom-primary);
+}
+
+.classroom-plan-table-actions > button.primary:hover {
+  background: var(--classroom-primary-hover);
+}
+
+.classroom-plan-table-actions > button.danger-icon {
+  width: 32px;
+  padding: 0;
+  flex: 0 0 32px;
+  display: grid;
+  place-items: center;
+  color: var(--color-feedback-danger-fg, #ff6559);
+}
+
+.classroom-plan-table-actions > button.danger-icon:hover {
+  border-color: var(--color-feedback-danger-border, #ffd6d6);
+  background: var(--color-feedback-danger-bg, #ffeaea);
+}
+
+.classroom-plan-table-detail {
+  padding: 16px 20px 20px;
+  border-bottom: 1px solid var(--classroom-border);
+  background: var(--classroom-page);
+}
+
+.classroom-plan-delete-modal {
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  position: fixed;
+  z-index: 60;
+  inset: 0;
+}
+
+.classroom-plan-delete-mask {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(0 0 0 / 0.5);
+}
+
+.classroom-plan-delete-modal > section {
+  width: min(480px, 100%);
+  position: relative;
+  overflow: hidden;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.12);
+}
+
+.classroom-plan-delete-modal header {
+  height: 56px;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 32px;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--color-border-default, #e6e7ec);
+}
+
+.classroom-plan-delete-heading-icon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  color: var(--color-feedback-danger-fg, #ff6559);
+  background: var(--color-feedback-danger-bg, #ffeaea);
+}
+
+.classroom-plan-delete-modal h2 {
+  margin: 0;
+  color: var(--color-text-emphasis, #01113d);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.classroom-plan-delete-modal header > button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 7px;
+  color: var(--color-text-muted, #5a6481);
+  background: transparent;
+}
+
+.classroom-plan-delete-modal header > button:hover:not(:disabled) {
+  background: var(--color-surface-workspace, #f7f8f9);
+}
+
+.classroom-plan-delete-body {
+  padding: 32px;
+  color: var(--color-text-emphasis, #01113d);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.classroom-plan-delete-body p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.classroom-plan-delete-body p + p {
+  margin-top: 8px;
+  color: var(--color-text-muted, #5a6481);
+}
+
+.classroom-plan-delete-error {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-feedback-danger-border, #ffd6d6);
+  border-radius: 7px;
+  color: var(--color-feedback-danger-fg, #ff6559);
+  background: var(--color-feedback-danger-bg, #ffeaea);
+}
+
+.classroom-plan-delete-modal footer {
+  height: 56px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--color-border-default, #e6e7ec);
+}
+
+.classroom-plan-delete-confirm {
+  height: 32px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 7px;
+  color: #fff;
+  background: var(--color-feedback-danger-fg, #ff6559);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.classroom-plan-delete-confirm:hover:not(:disabled) {
+  background: var(--color-feedback-danger-strong, #e23b3b);
+}
+
+.classroom-plan-delete-confirm:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.classroom-plan-delete-modal button:focus-visible {
+  outline: 2px solid var(--color-primary-600, #0445fc);
+  outline-offset: 2px;
+}

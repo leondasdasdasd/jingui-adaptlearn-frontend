@@ -1,0 +1,67 @@
+.live-table-head,
+.live-student-row {
+  display: grid;
+  grid-template-columns:
+    138px 145px minmax(130px, 1fr) 68px minmax(150px, 1fr)
+    18px;
+  align-items: center;
+  gap: 10px;
+}
+
+.live-table-head {
+  height: 34px;
+  padding: 0 12px;
+  color: var(--helper);
+  background: var(--page);
+  font-size: 12px;
+}
+
+.live-student-row {
+  width: 100%;
+  min-height: 62px;
+  padding: 7px 12px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  background: #fff;
+  text-align: left;
+}
+
+.live-table-head + .live-student-row {
+  border-top: 0;
+}
+
+.live-student-row:hover {
+  background: var(--color-surface-section);
+}
+
+.live-student-row.danger {
+  box-shadow: inset 3px 0 var(--error);
+}
+
+.live-student-row.warning {
+  box-shadow: inset 3px 0 var(--color-feedback-warning-ring);
+}
+
+.live-student-row > div:first-child,
+.live-student-row > span:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.live-student-row strong {
+  font-size: 12px;
+}
+
+.live-student-row small {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.row-progress {
+  display: grid;
+  grid-template-columns: 1fr 34px;
+  align-items: center;
+  gap: 7px;
+}

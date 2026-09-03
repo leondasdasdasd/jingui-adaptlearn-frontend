@@ -244,7 +244,10 @@ export default function OpenMaicPage({
               <div className="exit-confirm-icon-wrap">
                 <Sparkles size={24} />
               </div>
-              <h3 id="exit-learning-dialog-title" className="exit-confirm-title">
+              <h3
+                id="exit-learning-dialog-title"
+                className="exit-confirm-title"
+              >
                 确认要退出学习吗？
               </h3>
               <p className="exit-confirm-desc">

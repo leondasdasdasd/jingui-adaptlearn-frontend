@@ -1,18 +1,18 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   BookMarked,
-  BookOpen,
   CheckCircle2,
   ChevronRight,
   Clock3,
   LockKeyhole,
-  Sparkles,
   Target,
   Trophy,
   Zap,
 } from "lucide-react";
 
-import { readKnowledgeProfile } from "../../student/data/knowledgeProfileRepository";
+import { trans } from "../../../utils/i18n";
+import { getNewLessonEligibility } from "../../student/domain/newLessonEligibility";
+import StudentLearningModeAction from "./StudentLearningModeAction";
 
 /**
  * 课时自适应核心工作台（分开的两段式结构 + 底部固定行动栏）
@@ -30,6 +30,8 @@ import { readKnowledgeProfile } from "../../student/data/knowledgeProfileReposit
  * @param root0.onOpenKnowledgeMap
  * @param root0.masteredKpCount
  * @param root0.totalKpCount
+ * @param root0.knowledgeProfile
+ * @param root0.learningMode
  */
 export default function LessonWorkspace({
   course,
@@ -45,9 +47,16 @@ export default function LessonWorkspace({
   onOpenKnowledgeMap,
   masteredKpCount = 0,
   totalKpCount = 0,
+  knowledgeProfile = {},
+  learningMode,
 }) {
   const [toastMessage, setToastMessage] = useState("");
-  const knowledgeProfile = readKnowledgeProfile();
+
+  useEffect(() => {
+    if (!toastMessage) return;
+    const timer = window.setTimeout(() => setToastMessage(""), 3500);
+    return () => window.clearTimeout(timer);
+  }, [toastMessage]);
 
   const currentLessonProgress =
     progress?.lessonId === selectedSection?.id ? progress : null;
@@ -62,8 +71,8 @@ export default function LessonWorkspace({
 
   const isUnlocked = Boolean(
     currentLessonProgress?.preAssessmentCompleted ||
-      hasStartedAnyKp ||
-      currentLessonProgress,
+    hasStartedAnyKp ||
+    currentLessonProgress,
   );
 
   const progressByKp = Object.fromEntries(
@@ -73,59 +82,46 @@ export default function LessonWorkspace({
     (item) => item.state === "complete" || item.state === "mastered",
   ).length;
 
-  // 判断上新课前置条件：上一课的内容已全部学完且知识点掌握度均达90%以上
   const newLessonEligibility = useMemo(() => {
-    if (!course?.chapters?.length || !selectedSection?.id) {
-      return { eligible: true };
-    }
-    const allSections = course.chapters.flatMap((ch) => ch.sections || []);
-    const currentIndex = allSections.findIndex((s) => s.id === selectedSection.id);
-
-    // 第一课无需前置条件，直接可上新课
-    if (currentIndex <= 0) {
-      return { eligible: true };
-    }
-
-    const prevSection = allSections[currentIndex - 1];
-    const prevKps = prevSection?.knowledgePoints || [];
-    if (prevKps.length === 0) {
-      return { eligible: true };
-    }
-
-    // 检查上一课的所有考点是否已学习且掌握度>=90%
-    const unmasteredKps = prevKps.filter((kp) => {
-      const record = knowledgeProfile[kp.id];
-      if (!record) return true;
-      const mastery = record.mastery != null ? Number(record.mastery) : null;
-      if (record.status === "mastered") return false;
-      return mastery === null || mastery < 90;
+    return getNewLessonEligibility({
+      course,
+      selectedSection,
+      knowledgeProfile,
     });
-
-    const eligible = unmasteredKps.length === 0;
-    return {
-      eligible,
-      prevSectionTitle: prevSection.title || "上一课",
-      reason: eligible
-        ? ""
-        : `需上一课「${prevSection.title}」全部学完且掌握度达90%以上`,
-    };
   }, [course?.chapters, knowledgeProfile, selectedSection?.id]);
+  const newLessonBlockReason = newLessonEligibility.eligible
+    ? ""
+    : trans(
+        "adaptiveLearning.directory.previousLessonRequirement",
+        "需上一课「{$lesson}」全部学完且掌握度达90%以上",
+        { lesson: newLessonEligibility.previousSectionTitle || "上一课" },
+      );
 
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 6) return "夜深了，注意休息";
-    if (hour < 12) return "早晨好";
-    if (hour < 14) return "中午好";
-    if (hour < 18) return "下午好";
-    return "晚上好";
+    if (hour < 6)
+      return trans(
+        "adaptiveLearning.directory.greetingLate",
+        "夜深了，注意休息",
+      );
+    if (hour < 12)
+      return trans("adaptiveLearning.directory.greetingMorning", "早晨好");
+    if (hour < 14)
+      return trans("adaptiveLearning.directory.greetingNoon", "中午好");
+    if (hour < 18)
+      return trans("adaptiveLearning.directory.greetingAfternoon", "下午好");
+    return trans("adaptiveLearning.directory.greetingEvening", "晚上好");
   };
 
   const handleStartNewLesson = () => {
     if (!newLessonEligibility.eligible) {
       setToastMessage(
-        newLessonEligibility.reason || "需上一课全部学完且掌握度达90%以上",
+        newLessonBlockReason ||
+          trans(
+            "adaptiveLearning.directory.previousLessonRequirementFallback",
+            "需上一课全部学完且掌握度达90%以上",
+          ),
       );
-      setTimeout(() => setToastMessage(""), 3500);
       return;
     }
     if (onStartNewLesson) {
@@ -139,11 +135,25 @@ export default function LessonWorkspace({
     }
   };
 
+  const handleStartRemediation = () => {
+    setToastMessage(
+      trans(
+        "adaptiveLearning.learningMode.unitAssessmentUnavailable",
+        "这个单元还没有可用的单元测试",
+      ),
+    );
+  };
+
   return (
     <div className="modern-workspace-container">
       {/* 提示消息 */}
       {toastMessage && (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-slate-800 text-white text-sm px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div
+          className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-slate-800 text-white text-sm px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-in fade-in slide-in-from-top-2 duration-200"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           <LockKeyhole size={15} className="text-amber-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
@@ -155,11 +165,21 @@ export default function LessonWorkspace({
           <div className="overview-sub-meta">
             <span className="overview-chapter-tag">
               <BookMarked size={13} className="overview-tag-icon" />
-              <span>{selectedChapter?.title || "章节学习"}</span>
+              <span>
+                {selectedChapter?.title ||
+                  trans(
+                    "adaptiveLearning.directory.chapterLearning",
+                    "章节学习",
+                  )}
+              </span>
             </span>
           </div>
           <h1 className="overview-welcome-title">
-            {getGreeting()}，开启今天的学习吧
+            {trans(
+              "adaptiveLearning.directory.welcome",
+              "{$greeting}，开启今天的学习吧",
+              { greeting: getGreeting() },
+            )}
           </h1>
         </div>
 
@@ -168,18 +188,23 @@ export default function LessonWorkspace({
             type="button"
             className="minimal-portrait-btn"
             onClick={onOpenKnowledgeMap}
-            title="查看已掌握考点与学习进度"
-            aria-label="查看已掌握考点与学习进度"
+            title={trans(
+              "adaptiveLearning.directory.viewMastery",
+              "查看已掌握考点与学习进度",
+            )}
+            aria-label={trans(
+              "adaptiveLearning.directory.viewMastery",
+              "查看已掌握考点与学习进度",
+            )}
           >
             <Trophy size={16} className="portrait-trophy-icon" />
-            <span className="portrait-label">已掌握考点</span>
+            <span className="portrait-label">
+              {trans("adaptiveLearning.directory.masteredPoints", "已掌握考点")}
+            </span>
             <span className="portrait-count">
               {masteredKpCount}/{totalKpCount}
             </span>
-            <ChevronRight
-              size={14}
-              className="portrait-arrow-icon"
-            />
+            <ChevronRight size={14} className="portrait-arrow-icon" />
           </button>
         </div>
       </section>
@@ -189,21 +214,30 @@ export default function LessonWorkspace({
         <div className="knowledge-section-header">
           <div className="knowledge-header-left">
             <span className="lesson-index-tag">
-              {selectedSection.index || "当前课时"}
+              {selectedSection.index ||
+                trans("adaptiveLearning.directory.currentLesson", "当前课时")}
             </span>
-            <h2 className="knowledge-lesson-title">
-              {selectedSection.title}
-            </h2>
+            <h2 className="knowledge-lesson-title">{selectedSection.title}</h2>
           </div>
           <div className="knowledge-header-right">
             <span className="knowledge-count-badge">
               <Target size={13} className="badge-icon badge-icon-indigo" />
-              <span>共 {selectedSection.knowledgePoints.length} 个考点</span>
+              <span>
+                {trans(
+                  "adaptiveLearning.directory.knowledgePointCount",
+                  "共 {$count} 个考点",
+                  { count: selectedSection.knowledgePoints.length },
+                )}
+              </span>
             </span>
             <span className="lesson-time-pill">
               <Clock3 size={13} className="badge-icon badge-icon-muted" />
               <span>
-                建议用时 约 {selectedSection.estimatedMinutes || 20} 分钟
+                {trans(
+                  "adaptiveLearning.directory.estimatedTime",
+                  "建议用时 约 {$minutes} 分钟",
+                  { minutes: selectedSection.estimatedMinutes || 20 },
+                )}
               </span>
             </span>
           </div>
@@ -218,7 +252,8 @@ export default function LessonWorkspace({
               pItem?.status === "mastered" ||
               (pItem?.mastery != null && pItem.mastery >= 90);
             const isNeedsReview =
-              pItem?.state === "needs_review" || pItem?.status === "needs_review";
+              pItem?.state === "needs_review" ||
+              pItem?.status === "needs_review";
 
             return (
               <div
@@ -269,22 +304,36 @@ export default function LessonWorkspace({
                     >
                       {isMastered && <CheckCircle2 size={13} />}
                       {pItem.mastery == null
-                        ? pItem.label || "已学习"
-                        : `${pItem.mastery}% 掌握`}
+                        ? pItem.label ||
+                          trans("adaptiveLearning.directory.learned", "已学习")
+                        : trans(
+                            "adaptiveLearning.directory.masteryPercent",
+                            "{$mastery}% 掌握",
+                            { mastery: pItem.mastery },
+                          )}
                     </span>
                   ) : (
                     <span className="kp-mastery-pill locked">
                       <LockKeyhole size={13} />
-                      待测验
+                      {trans(
+                        "adaptiveLearning.directory.pendingQuiz",
+                        "待测验",
+                      )}
                     </span>
                   )}
 
                   {isUnlocked ? (
                     <span className="kp-action-hint">
-                      针对练习 <ChevronRight size={14} />
+                      {trans(
+                        "adaptiveLearning.directory.targetedPractice",
+                        "针对练习",
+                      )}{" "}
+                      <ChevronRight size={14} />
                     </span>
                   ) : (
-                    <span className="text-xs text-slate-400">待解锁</span>
+                    <span className="text-xs text-slate-400">
+                      {trans("adaptiveLearning.directory.locked", "待解锁")}
+                    </span>
                   )}
                 </div>
               </div>
@@ -300,8 +349,14 @@ export default function LessonWorkspace({
           <div className="action-dock-info">
             {currentLessonProgress ? (
               <strong>
-                已完成 {completedCount}/{selectedSection.knowledgePoints.length}{" "}
-                个考点测验
+                {trans(
+                  "adaptiveLearning.directory.completedQuizCount",
+                  "已完成 {$completed}/{$total} 个考点测验",
+                  {
+                    completed: completedCount,
+                    total: selectedSection.knowledgePoints.length,
+                  },
+                )}
               </strong>
             ) : null}
           </div>
@@ -314,58 +369,31 @@ export default function LessonWorkspace({
               onClick={onContinue}
             >
               <Zap size={18} />
-              <span>{currentLessonProgress.actionLabel || "继续学习"}</span>
+              <span>
+                {currentLessonProgress.actionLabel ||
+                  trans(
+                    "adaptiveLearning.directory.continueLearning",
+                    "继续学习",
+                  )}
+              </span>
               <ChevronRight size={18} />
             </button>
           ) : (
-            <div className="action-dock-actions">
-              {/* 上新课 按钮 */}
-              <div className="action-dock-btn-wrapper">
-                <button
-                  type="button"
-                  className={`modern-new-lesson-btn ${
-                    !newLessonEligibility.eligible ? "disabled" : ""
-                  }`}
-                  disabled={busy}
-                  onClick={handleStartNewLesson}
-                  title={
-                    !newLessonEligibility.eligible
-                      ? newLessonEligibility.reason
-                      : "从第 1 个知识点开始学习"
-                  }
-                >
-                  {!newLessonEligibility.eligible ? (
-                    <LockKeyhole size={16} className="text-slate-400 shrink-0" />
-                  ) : (
-                    <BookOpen size={16} className="text-emerald-600 shrink-0" />
-                  )}
-                  <span>上新课</span>
-                </button>
-                {!newLessonEligibility.eligible && (
-                  <div className="new-lesson-tooltip">
-                    {newLessonEligibility.reason}
-                  </div>
-                )}
-              </div>
-
-              {/* 开始课时测验 按钮 */}
-              <button
-                type="button"
-                className="modern-cta-btn"
-                disabled={busy}
-                onClick={() =>
-                  onStart({
-                    chapter: selectedChapter,
-                    section: selectedSection,
-                    knowledgePoints: selectedSection.knowledgePoints,
-                  })
-                }
-              >
-                <Sparkles size={18} />
-                <span>开始课时测验</span>
-                <ChevronRight size={18} />
-              </button>
-            </div>
+            <StudentLearningModeAction
+              learningMode={learningMode}
+              busy={busy}
+              newLessonEligible={newLessonEligibility.eligible}
+              newLessonBlockReason={newLessonBlockReason}
+              onStartNewLesson={handleStartNewLesson}
+              onStartFoundation={() =>
+                onStart({
+                  chapter: selectedChapter,
+                  section: selectedSection,
+                  knowledgePoints: selectedSection.knowledgePoints,
+                })
+              }
+              onStartRemediation={handleStartRemediation}
+            />
           )}
         </div>
       </section>

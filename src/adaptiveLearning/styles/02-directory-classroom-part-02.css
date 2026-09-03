@@ -1,0 +1,107 @@
+.result-answer-mastery > span {
+  min-width: 0;
+  padding: 9px 11px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 3px 8px;
+  border: 1px solid var(--color-primary-200);
+  border-radius: var(--radius-control);
+  background: var(--color-primary-50);
+}
+
+.result-answer-mastery b {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-answer-mastery em {
+  color: var(--color-feedback-success-fg);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.result-answer-mastery em.down {
+  color: var(--color-feedback-danger-fg);
+}
+
+.result-answer-mastery small {
+  grid-column: 1 / -1;
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.knowledge-map-point em {
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.knowledge-map-point-action {
+  align-items: flex-end;
+}
+
+.openmaic-learning-review {
+  display: grid;
+  grid-template-columns: minmax(13rem, 0.24fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.openmaic-scope-tabs {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: #fff;
+}
+
+.openmaic-scope-tabs button {
+  min-height: 3.5rem;
+  padding: 0.625rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  background: transparent;
+  text-align: left;
+}
+
+.openmaic-scope-tabs button:hover {
+  background: var(--page);
+}
+
+.openmaic-scope-tabs button.active {
+  border-color: var(--color-primary-200);
+  color: var(--primary);
+  background: var(--brand-soft);
+}
+
+.openmaic-scope-tabs small {
+  color: var(--helper);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .openmaic-learning-review {
+    grid-template-columns: 1fr;
+  }
+
+  .openmaic-scope-tabs {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .openmaic-scope-tabs button {
+    min-width: 12rem;
+  }
+}

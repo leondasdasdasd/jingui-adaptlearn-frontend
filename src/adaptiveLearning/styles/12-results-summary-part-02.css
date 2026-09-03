@@ -1,0 +1,20 @@
+.mastery-meter > div {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--color-primary-100);
+}
+
+.mastery-meter > div span {
+  height: 100%;
+  display: block;
+  border-radius: inherit;
+  background: var(--primary);
+}
+
+.mastery-meter > strong {
+  color: var(--primary);
+  font-size: 15px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

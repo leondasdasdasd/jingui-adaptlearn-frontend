@@ -44,7 +44,9 @@
   border-radius: 14px;
   color: #0f172a;
   background: #ffffff;
-  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.22), 0 0 0 1px rgba(15, 23, 42, 0.05);
+  box-shadow:
+    0 20px 45px -10px rgba(15, 23, 42, 0.22),
+    0 0 0 1px rgba(15, 23, 42, 0.05);
   outline: 0;
   will-change: width, height, transform;
 }
@@ -160,8 +162,7 @@
   inset: 0;
   pointer-events: none;
   opacity: 0.45;
-  background-image: 
-    radial-gradient(circle, #cbd5e1 0.8px, transparent 0.8px);
+  background-image: radial-gradient(circle, #cbd5e1 0.8px, transparent 0.8px);
   background-size: 20px 20px;
   z-index: 0;
 }
@@ -185,7 +186,9 @@
   height: var(--drawing-dialog-icon-size);
   border-color: #94a3b8;
   border-style: solid;
-  transition: border-color 140ms ease, transform 140ms ease;
+  transition:
+    border-color 140ms ease,
+    transform 140ms ease;
 }
 
 .resizeHandle:hover::after,

@@ -127,20 +127,31 @@ export function masteryUpdateFromAttempt(
   const difficulty =
     update?.difficulty || attempt.difficulty || previous.difficulty || "D3";
   const matrixCellId =
-    update?.matrixCellId || question?.matrixCellId || attempt?.matrixCellId || previous.matrixCellId || null;
+    update?.matrixCellId ||
+    attempt.question?.matrixCellId ||
+    attempt.matrixCellId ||
+    previous.matrixCellId ||
+    null;
   const matrixCellCode =
-    update?.matrixCellCode || question?.matrixCellCode || attempt?.matrixCellCode || previous.matrixCellCode || null;
+    update?.matrixCellCode ||
+    attempt.question?.matrixCellCode ||
+    attempt.matrixCellCode ||
+    previous.matrixCellCode ||
+    null;
   const hasMatrixCoverage = Boolean(
     update?.hasMatrixCoverage ??
-      attempt?.hasMatrixCoverage ??
-      (matrixCellId || matrixCellCode || attempt?.blueprint?.matrixCellId || question?.blueprint?.matrixCellId),
+    attempt?.hasMatrixCoverage ??
+    (matrixCellId ||
+      matrixCellCode ||
+      attempt.blueprint?.matrixCellId ||
+      attempt.question?.blueprint?.matrixCellId),
   );
   const streakFactor = Number(
     update?.streakFactor ??
-      (correctStreak >= 3 ? 1.5 : correctStreak === 2 ? 1.25 : 1.0),
+      (correctStreak >= 3 ? 1.5 : correctStreak === 2 ? 1.25 : 1),
   );
   const responseFactor = Number(
-    update?.masteryResponseFactor ?? update?.responseFactor ?? 1.0,
+    update?.masteryResponseFactor ?? update?.responseFactor ?? 1,
   );
   const delta =
     after == null || before == null
@@ -158,8 +169,8 @@ export function masteryUpdateFromAttempt(
     matrixCellId,
     matrixCellCode,
     hasMatrixCoverage,
-    streakFactor: Number.isFinite(streakFactor) ? streakFactor : 1.0,
-    responseFactor: Number.isFinite(responseFactor) ? responseFactor : 1.0,
+    streakFactor: Number.isFinite(streakFactor) ? streakFactor : 1,
+    responseFactor: Number.isFinite(responseFactor) ? responseFactor : 1,
     lowerBound: clampPercent(update?.lowerBound),
     upperBound: clampPercent(update?.upperBound),
     reason: update?.reason || attempt.masteryReason || "",
@@ -277,7 +288,10 @@ export function masteryFeedbackForQuestion({
       const knowledgePoint = knowledgePoints.find(
         (item) => item.id === knowledgePointId,
       );
-      const cellId = question?.matrixCellId || question?.blueprint?.matrixCellId || attempt?.matrixCellId;
+      const cellId =
+        question?.matrixCellId ||
+        question?.blueprint?.matrixCellId ||
+        attempt?.matrixCellId;
       const cellCode = question?.matrixCellCode || attempt?.matrixCellCode;
       const hasCoverage = Boolean(
         cellId ||
@@ -287,7 +301,7 @@ export function masteryFeedbackForQuestion({
         attempt?.matrixCellId ||
         attempt?.matrixCellCode ||
         question?.hasMatrixCoverage ||
-        attempt?.hasMatrixCoverage
+        attempt?.hasMatrixCoverage,
       );
       return masteryUpdateFromAttempt(
         {

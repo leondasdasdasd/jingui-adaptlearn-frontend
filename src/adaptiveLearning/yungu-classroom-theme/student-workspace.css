@@ -1,0 +1,237 @@
+/* stylelint-disable color-function-notation, no-descending-specificity -- 保留学生工作区既有视觉级联。 */
+
+/* Student workspace: calm canvas, stronger current-task hierarchy. */
+.app-shell {
+  background:
+    radial-gradient(
+      circle at 50% -6rem,
+      rgb(219 234 254 / 0.38),
+      transparent 28rem
+    ),
+    var(--color-surface-workspace);
+}
+
+.app-header {
+  box-shadow: 0 1px 0 rgb(1 17 61 / 0.03);
+}
+
+.chapter-rail {
+  box-shadow: var(--shadow-card);
+}
+
+.rail-chapter.open > button,
+.rail-lesson.active {
+  color: var(--color-primary-700);
+}
+
+.rail-lesson.active {
+  background: var(--color-primary-50);
+  box-shadow: inset 3px 0 var(--color-primary-600);
+}
+
+.lesson-panel {
+  box-shadow: var(--shadow-card);
+}
+
+.rail-heading {
+  background: var(--gradient-primary-soft);
+}
+
+.start-bar {
+  background: var(--color-surface-section);
+}
+
+.knowledge-row {
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-card-default);
+}
+
+.knowledge-row:hover {
+  background: var(--gradient-primary-soft);
+}
+
+.generating-card,
+.learning-resource-state {
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-card);
+}
+
+.generating-icon,
+.learning-resource-state-icon {
+  color: var(--color-primary-600);
+  background: var(--color-primary-50);
+  box-shadow: var(--shadow-primary-glow);
+}
+
+.option-row:hover:not(:disabled, .active) {
+  background: var(--color-surface-card-soft);
+}
+
+.option-row.active {
+  color: var(--color-primary-700);
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-50);
+  box-shadow: var(--focus-ring);
+}
+
+.question-platform-player ol {
+  display: grid;
+  gap: 10px;
+}
+
+.question-platform-player ol > li > button {
+  min-height: 52px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-default);
+  background: var(--color-surface-card-default);
+  transition:
+    color var(--motion-default) var(--motion-easing),
+    background-color var(--motion-default) var(--motion-easing),
+    border-color var(--motion-default) var(--motion-easing),
+    box-shadow var(--motion-default) var(--motion-easing),
+    transform var(--motion-fast) var(--motion-easing);
+}
+
+.question-platform-player ol > li > button:hover:not(:disabled) {
+  border-color: var(--color-primary-200);
+  background: var(--color-surface-card-soft);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.question-platform-player ol > li > button[aria-pressed="true"] {
+  color: var(--color-primary-800);
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-50);
+  box-shadow: var(--focus-ring);
+}
+
+.question-platform-player ol > li > button:active:not(:disabled) {
+  transform: scale(0.995);
+}
+
+.result-hero {
+  box-shadow: var(--shadow-primary-hero);
+}
+
+.pre-result-hero {
+  min-height: 156px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-text-emphasis);
+  background: linear-gradient(
+    135deg,
+    var(--color-surface-card-default) 0%,
+    var(--color-primary-50) 72%,
+    var(--color-feedback-info-bg) 100%
+  );
+  box-shadow:
+    inset 4px 0 var(--color-primary-600),
+    var(--shadow-panel);
+}
+
+.pre-result-hero::after {
+  width: 180px;
+  height: 180px;
+  position: absolute;
+  right: -64px;
+  bottom: -92px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(
+    circle,
+    rgb(37 99 235 / 0.13),
+    rgb(37 99 235 / 0) 70%
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.pre-result-hero .complete-mark {
+  width: 58px;
+  height: 58px;
+  border: 1px solid var(--color-primary-200);
+  border-radius: var(--radius-md);
+  color: var(--color-primary-600);
+  background: var(--color-surface-card-default);
+  box-shadow: var(--shadow-card);
+}
+
+.pre-result-hero > div:last-child {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pre-result-hero span {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.pre-result-hero strong {
+  color: var(--color-text-emphasis);
+  font-size: 2.75rem;
+  font-weight: 600;
+  line-height: 1.08;
+}
+
+.pre-result-hero p {
+  margin-top: 3px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+}
+
+.classroom-score-card.ready {
+  border-color: var(--color-primary-200);
+  background: var(--gradient-primary-soft);
+}
+
+.classroom-score-card.insufficient {
+  border-color: var(--color-feedback-info-border);
+  background: linear-gradient(
+    135deg,
+    var(--color-feedback-info-bg),
+    #ffffff 74%
+  );
+}
+
+.method-note {
+  border-color: var(--color-feedback-info-border);
+  background: var(--color-feedback-info-bg);
+}
+
+.teacher-question-agent,
+.check-in-question-drawer aside {
+  background: var(--color-surface-app);
+  box-shadow: var(--shadow-left-drawer);
+}
+
+:is(
+  .teacher-question-agent .ai-assistant-bubble,
+  .check-in-agent-message:not(.user) .check-in-agent-bubble > p,
+  .student-dialogue-page article:not(.user) p
+) {
+  color: var(--color-text-emphasis);
+  border-color: var(--color-border-default);
+  background: #f8fafc;
+  border-radius: 6px var(--radius-md) var(--radius-md);
+}
+
+:is(
+  .teacher-question-agent .ai-assistant-message.user .ai-assistant-bubble,
+  .check-in-agent-message.user .check-in-agent-bubble > p,
+  .student-dialogue-page article.user p
+) {
+  color: var(--color-primary-800);
+  border-color: var(--color-primary-200);
+  background: var(--color-primary-50);
+  border-radius: var(--radius-md) 6px var(--radius-md) var(--radius-md);
+}
+
+.drawing-board-modal {
+  z-index: 70;
+}

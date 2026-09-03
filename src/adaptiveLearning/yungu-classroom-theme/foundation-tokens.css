@@ -86,11 +86,9 @@
   --color-feedback-info-bg: #eff6ff;
   --color-feedback-info-border: #bfdbfe;
   --color-feedback-info-fg: #1d4ed8;
-
   --color-feedback-card-bg: #ffffff;
   --color-feedback-card-border: #e2e8f0;
   --color-feedback-card-title: #27345a;
-
   --space-2: 8px;
   --space-4: 16px;
   --space-6: 24px;
@@ -99,18 +97,16 @@
   --space-12: 48px;
 
   /* Border Radii Rules */
-  --radius-sm: 8px;   /* Buttons, tags, badges, icon controls */
-  --radius-md: 16px;  /* Inputs, cards, dialogs/modals */
-  --radius-lg: 24px;  /* Major outer containers */
+  --radius-sm: 8px; /* Buttons, tags, badges, icon controls */
+  --radius-md: 16px; /* Inputs, cards, dialogs/modals */
+  --radius-lg: 24px; /* Major outer containers */
   --radius-full: 9999px; /* Pills, status dots, avatars */
-
   --shadow-hairline: 0 1px 2px rgb(0 0 0 / 0.03);
   --shadow-card: 0 1px 3px rgb(0 0 0 / 0.04);
   --shadow-card-hover: 0 4px 12px rgb(1 17 61 / 0.06);
   --shadow-panel: 0 8px 20px rgb(1 17 61 / 0.06);
   --shadow-modal: 0 16px 36px rgb(1 17 61 / 0.16);
   --shadow-primary-button: 0 1px 3px rgb(37 99 235 / 0.2);
-
   --focus-ring: 0 0 0 2px #2563eb;
   --motion-fast: 150ms;
   --motion-default: 200ms;

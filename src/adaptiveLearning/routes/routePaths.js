@@ -1,25 +1,30 @@
 export const routes = {
-  teacherHome: "/adaptive-learning/teacher/curriculum",
-  directory: "/adaptive-learning/directory",
+  teacherHome: "/adaptive-learning/teacher/textbook-lessons",
+  teacherUnitAssessment: (courseId = ":courseId", chapterId = ":chapterId") =>
+    `/adaptive-learning/teacher/textbook-courses/${courseId}/chapters/${chapterId}/unit-assessment`,
+  teacherQuestionQuality: "/adaptive-learning/teacher/question-quality",
+  directory: "/adaptive-learning/today",
   knowledgeMap: "/adaptive-learning/knowledge-map",
   studentHome: "/adaptive-learning/student/home",
-  studentEntry: (id = ":id") => `/adaptive-learning/student/entry/${id}`,
-  knowledgeLearning: (id = ":id") => `/adaptive-learning/learning/${id}`,
-  lesson: (id = ":id") => `/adaptive-learning/lessons/${id}`,
-  preAssessment: "/adaptive-learning/pre-assessment",
-  preResult: "/adaptive-learning/pre-assessment/result",
-  learning: "/adaptive-learning/learning",
-  checkIn: "/adaptive-learning/check-in",
-  remediation: "/adaptive-learning/remediation",
-  postAssessment: "/adaptive-learning/post-assessment",
-  knowledgeCheckpoint: "/adaptive-learning/knowledge-checkpoint",
-  complete: "/adaptive-learning/complete",
-  subjectiveAnswerAcceptance: "/adaptive-learning/subjective-answer-acceptance",
-  familyMonitor: (id = ":id") => `/adaptive-learning/family-monitor/${id}`,
-  teacherQuestionQuality: "/adaptive-learning/teacher/question-quality",
+  studentEntry: (studentId = ":studentId") =>
+    `/adaptive-learning/student/${studentId}`,
+  knowledgeLearning: (knowledgePointId = ":knowledgePointId") =>
+    `/adaptive-learning/knowledge/${knowledgePointId}/learn`,
+  lesson: (lessonId = ":lessonId") => `/adaptive-learning/lesson/${lessonId}`,
+  preAssessment: "/adaptive-learning/session/pre-assessment",
+  preResult: "/adaptive-learning/session/pre-result",
+  learning: "/adaptive-learning/session/learning",
+  checkIn: "/adaptive-learning/session/check-in",
+  remediation: "/adaptive-learning/session/remediation",
+  postAssessment: "/adaptive-learning/session/post-assessment",
+  knowledgeCheckpoint: "/adaptive-learning/session/knowledge-checkpoint",
+  complete: "/adaptive-learning/session/complete",
+  subjectiveAnswerAcceptance: "/adaptive-learning/acceptance/subjective-answer",
+  familyMonitor: (shareToken = ":shareToken") =>
+    `/adaptive-learning/family/${shareToken}`,
   teacherClasses: "/adaptive-learning/teacher/classes",
-  teacherClassStudentHome: (periodId = ":periodId", studentId = ":studentId") =>
-    `/adaptive-learning/teacher/periods/${periodId}/students/${studentId}/home`,
-  teacherClassStudents: (periodId = ":periodId") =>
-    `/adaptive-learning/teacher/periods/${periodId}/students`,
+  teacherClassStudents: (classId = ":classId") =>
+    `/adaptive-learning/teacher/classes/${classId}/students`,
+  teacherClassStudentHome: (classId = ":classId", studentId = ":studentId") =>
+    `/adaptive-learning/teacher/classes/${classId}/students/${studentId}/home`,
 };

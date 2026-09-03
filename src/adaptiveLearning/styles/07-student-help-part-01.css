@@ -1,0 +1,67 @@
+.teacher-help-error > button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 8px;
+  color: currentcolor;
+  background: transparent;
+}
+
+.teacher-help-error > button:hover {
+  background: var(--classroom-feedback-danger-border);
+}
+
+.teacher-help-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.teacher-help-mask {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: 0;
+  background: rgba(1, 17, 61, 0.42);
+  backdrop-filter: blur(4px);
+}
+
+.teacher-help-modal > form {
+  width: min(480px, 100%);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 24px 64px rgba(1, 17, 61, 0.18);
+}
+
+.teacher-help-modal header {
+  padding: 20px 20px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.teacher-help-modal h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.teacher-help-modal header p {
+  margin: 5px 0 0;
+  color: var(--helper);
+  font-size: 13px;
+  line-height: 1.5;
+}

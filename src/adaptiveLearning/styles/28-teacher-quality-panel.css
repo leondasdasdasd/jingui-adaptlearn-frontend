@@ -1,0 +1,270 @@
+/* ==========================================================================
+   Embedded Question Quality Inspection Component
+   ========================================================================== */
+.lesson-quality-panel {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lesson-quality-kpi-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.lesson-quality-kpi-card {
+  padding: 16px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.lesson-quality-kpi-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+
+.lesson-quality-kpi-icon.blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.lesson-quality-kpi-icon.green {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.lesson-quality-kpi-icon.amber {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.lesson-quality-kpi-icon.purple {
+  background: #faf5ff;
+  color: #7c3aed;
+}
+
+.lesson-quality-kpi-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lesson-quality-kpi-info span {
+  font-size: 12px;
+  color: var(--helper);
+  font-weight: 500;
+}
+
+.lesson-quality-kpi-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.lesson-quality-filter-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.lesson-quality-filter-btn {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 150ms ease;
+}
+
+.lesson-quality-filter-btn:hover {
+  background: #f1f5f9;
+  color: var(--text);
+}
+
+.lesson-quality-filter-btn.active {
+  border-color: var(--primary);
+  background: var(--brand-soft);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.lesson-quality-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+}
+
+.quality-item-card {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 160ms ease;
+}
+
+.quality-item-card:hover {
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  border-color: #cbd5e1;
+}
+
+.quality-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quality-item-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.quality-module-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.quality-status-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.quality-status-badge.pass {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.quality-status-badge.warn {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.quality-status-badge.review {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.quality-stem-preview {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+  max-height: 4.8em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.quality-indicators-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.quality-indicator-tag {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.quality-indicator-tag.ok {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.quality-indicator-tag.issue {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.quality-actions-footer {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.quality-actions-footer button {
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Batch curriculum button styling */
+.curriculum-start-class-top-btn {
+  height: 38px !important;
+  padding: 0 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.28) !important;
+  transition: all 180ms ease !important;
+}
+
+.curriculum-start-class-top-btn:hover {
+  background: linear-gradient(135deg, #4338ca 0%, #2563eb 100%) !important;
+  transform: translateY(-1px) !important;
+}
+
+.batch-start-class-btn {
+  height: 32px !important;
+  padding: 0 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  background: #4f46e5 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  transition: all 150ms ease !important;
+}
+
+.batch-start-class-btn:hover {
+  background: #4338ca !important;
+}

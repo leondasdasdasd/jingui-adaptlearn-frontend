@@ -1,0 +1,299 @@
+.field-error {
+  margin: 7px 0 0;
+  color: var(--error);
+  font-size: 13px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.quiz-action {
+  min-height: 76px;
+  padding: 12px clamp(12px, 1.5vw, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  position: fixed;
+  z-index: 30;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 -4px 16px rgba(1, 17, 61, 0.06);
+  backdrop-filter: blur(12px);
+}
+
+.quiz-action-start {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quiz-action-start > span {
+  color: var(--helper);
+  font-size: 13px;
+}
+
+.quiz-action-secondary {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quiz-action-secondary .secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.correction-reading-card {
+  margin-top: 16px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  border: 1px solid var(--color-feedback-card-border);
+  border-radius: var(--radius-card);
+  background: var(--color-feedback-card-bg);
+  box-shadow: var(--shadow-card);
+}
+
+.correction-reading-icon,
+.question-idle-support-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 40px;
+  border-radius: var(--radius-control);
+  color: var(--color-primary-600);
+  background: var(--color-primary-50);
+}
+
+.correction-reading-card h2 {
+  margin: 0;
+  color: var(--color-text-emphasis);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.correction-reading-card p {
+  margin: 6px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.625;
+}
+
+.correction-reading-reminder {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--color-primary-200);
+  border-radius: var(--radius-control);
+  color: var(--color-text-secondary);
+  background: var(--color-primary-50);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.correction-reading-reminder svg {
+  flex: 0 0 auto;
+  color: var(--color-primary-600);
+}
+
+.question-idle-support {
+  width: min(760px, calc(100vw - 32px));
+  min-height: 88px;
+  padding: 16px 52px 16px 16px;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  position: fixed;
+  z-index: 31;
+  left: 50%;
+  bottom: 88px;
+  transform: translateX(-50%);
+  border: 1px solid var(--color-primary-200);
+  border-radius: var(--radius-card);
+  color: var(--color-text-emphasis);
+  background: var(--color-feedback-card-bg);
+  box-shadow: var(--shadow-panel);
+}
+
+.question-idle-support-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.question-idle-support-copy strong {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.question-idle-support-copy span {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.question-idle-support-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.question-idle-support-actions button {
+  min-height: 36px;
+  white-space: nowrap;
+}
+
+.question-idle-support-close {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: 0;
+  border-radius: var(--radius-control);
+  color: var(--color-text-muted);
+  background: transparent;
+}
+
+.question-idle-support-close:hover {
+  color: var(--color-primary-600);
+  background: var(--color-primary-50);
+}
+
+.drawing-board-mode {
+  justify-self: center;
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--page);
+}
+
+.drawing-board-mode button {
+  height: 34px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  color: var(--helper);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.drawing-board-mode button + button {
+  border-left: 1px solid var(--border);
+}
+
+.drawing-board-mode button:hover {
+  color: var(--classroom-primary);
+  background: var(--classroom-primary-soft);
+}
+
+.drawing-board-mode button[aria-pressed="true"] {
+  color: var(--classroom-primary);
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(1, 17, 61, 0.1);
+}
+
+.drawing-board-mode button:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 0;
+  box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.24);
+}
+
+.drawing-board-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drawing-board-header-actions .icon-button {
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  opacity: 1;
+}
+
+.drawing-board-header-actions .icon-button:disabled {
+  color: var(--weak);
+  background: var(--disabled);
+}
+
+.drawing-board-body {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.drawing-board-canvas-wrap {
+  min-height: 0;
+  padding: 0;
+  flex: 1;
+  background: var(--page);
+}
+
+.drawing-board-canvas-wrap > section {
+  border: 0;
+  border-radius: 0;
+}
+
+.drawing-board-loading {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--weak);
+  background: #fff;
+}
+
+.drawing-board-error {
+  min-height: 40px;
+  margin: 0;
+  padding: 9px 16px;
+  flex: 0 0 auto;
+  border-top: 1px solid var(--classroom-feedback-danger-border);
+  color: var(--classroom-feedback-danger-fg);
+  background: var(--classroom-feedback-danger-bg);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.drawing-board-spinner {
+  animation: teacher-spin 1s linear infinite;
+}

@@ -1,0 +1,87 @@
+.teacher-help-modal > form > label > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.teacher-help-modal > form > label > span > b {
+  margin-left: auto;
+  color: var(--helper);
+  font-size: 12px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.teacher-help-modal label small {
+  color: var(--helper);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.teacher-help-modal textarea {
+  min-height: 72px;
+  max-height: 160px;
+  padding: 10px 12px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  background: #fff;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.teacher-help-modal textarea::placeholder {
+  color: var(--helper);
+}
+
+.teacher-help-modal textarea:focus {
+  outline: 0;
+  border-color: var(--classroom-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.22);
+}
+
+.teacher-help-modal-error {
+  margin: 0 20px 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--classroom-feedback-danger-border);
+  border-radius: 8px;
+  color: var(--classroom-feedback-danger-fg);
+  background: var(--classroom-feedback-danger-bg);
+  font-size: 12px;
+}
+
+.teacher-help-modal footer {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  background: #fafbfd;
+}
+
+.teacher-help-modal footer .primary-button {
+  background: var(--classroom-primary);
+}
+
+.teacher-help-modal footer .primary-button:hover:not(:disabled) {
+  background: var(--classroom-primary-hover);
+}
+
+.attention-card-note {
+  margin: 0 12px 10px 44px;
+  padding: 8px 10px;
+  border-left: 2px solid var(--classroom-feedback-info-border);
+  color: var(--text-secondary);
+  background: var(--classroom-feedback-info-bg);
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.main-content.compact:has(.knowledge-checkpoint-wrap),
+.main-content.compact:has(.knowledge-question-detail) {
+  padding-top: 12px;
+  padding-bottom: 88px;
+}

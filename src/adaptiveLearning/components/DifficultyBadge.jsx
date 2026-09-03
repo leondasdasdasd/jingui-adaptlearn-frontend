@@ -1,26 +1,53 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-export default function DifficultyBadge({ difficulty = "MEDIUM" }) {
-  const map = {
-    EASY: { label: "简单", color: "#10b981", bg: "#ecfdf5" },
-    MEDIUM: { label: "中等", color: "#f59e0b", bg: "#fffbeb" },
-    HARD: { label: "较难", color: "#ef4444", bg: "#fef2f2" },
-  };
-  const config = map[difficulty] || map.MEDIUM;
+import {
+  difficultyBadgeClassName,
+  difficultyBadgeTagText,
+  difficultyStarCount,
+  difficultyStarsCopy,
+} from "../shared/presentation/difficultyPresentation";
+import { Star } from "./Icons";
 
+/**
+ *
+ * @param root0
+ * @param root0.difficulty
+ * @param root0.variant
+ */
+export default function DifficultyBadge({ difficulty, variant = "tag" }) {
+  if (variant === "stars") {
+    const filledStars = difficultyStarCount(difficulty);
+    const starCopy = difficultyStarsCopy(filledStars);
+    return (
+      <span
+        className="difficulty-stars"
+        aria-label={starCopy.ariaLabel}
+        title={starCopy.title}
+      >
+        <span className="difficulty-stars-icons" aria-hidden="true">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <Star
+              className={star <= filledStars ? "filled" : "empty"}
+              key={star}
+              size={15}
+            />
+          ))}
+        </span>
+      </span>
+    );
+  }
   return (
     <span
-      style={{
-        display: "inline-block",
-        padding: "2px 8px",
-        borderRadius: "4px",
-        fontSize: "12px",
-        fontWeight: "500",
-        color: config.color,
-        backgroundColor: config.bg,
-      }}
+      className={`difficulty-badge ${difficultyBadgeClassName(difficulty)}`}
     >
-      {config.label}
+      {difficultyBadgeTagText(difficulty)}
     </span>
   );
 }
+
+DifficultyBadge.propTypes = {
+  difficulty: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    .isRequired,
+  variant: PropTypes.oneOf(["stars", "tag"]),
+};

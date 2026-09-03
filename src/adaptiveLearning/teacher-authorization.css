@@ -1,0 +1,27 @@
+.teacher-authorization-boundary {
+  min-height: 100vh;
+  padding: var(--space-6);
+  display: grid;
+  place-items: center;
+  color: var(--color-text-default);
+  background: var(--color-surface-workspace);
+}
+
+.teacher-authorization-boundary .visual-state-panel {
+  width: min(560px, 100%);
+}
+
+.teacher-authorization-boundary .visual-state-action .teacher-primary {
+  min-width: 148px;
+}
+
+@media (max-width: 767px) {
+  .teacher-authorization-boundary {
+    padding: var(--space-4);
+  }
+
+  .teacher-authorization-boundary .visual-state-panel {
+    min-height: 200px;
+    padding: var(--space-6) var(--space-4);
+  }
+}

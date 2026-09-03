@@ -1,0 +1,102 @@
+@media (max-width: 560px) {
+  .quiz-wrap {
+    padding-bottom: 148px;
+  }
+
+  .pre-assessment-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .pre-assessment-meta > div {
+    width: 100%;
+  }
+
+  .question-card-heading {
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .question-heading-actions {
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .question-work-tools {
+    gap: 6px;
+  }
+
+  .question-work-tool {
+    padding-inline: 10px;
+  }
+
+  .formula-targeting-hint {
+    margin-top: -6px;
+    text-align: left;
+  }
+
+  .question-card-identity {
+    gap: 10px;
+  }
+
+  .question-number-badge {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 7px;
+    font-size: 14px;
+  }
+
+  .question-card-identity > div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .question-card-identity strong {
+    font-size: 15px;
+  }
+
+  .question-card-identity > div > span {
+    min-height: 20px;
+    padding: 0;
+    background: transparent;
+  }
+
+  .difficulty-stars {
+    gap: 5px;
+  }
+
+  .difficulty-stars-icons {
+    gap: 1px;
+  }
+
+  .difficulty-stars-icons svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .difficulty-stars > span:last-child {
+    display: none;
+  }
+
+  .question-card h1 {
+    margin-bottom: 20px;
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .option-row {
+    min-height: 56px;
+    padding: 8px 12px;
+  }
+
+  .grading-summary {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+}

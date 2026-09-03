@@ -1,0 +1,56 @@
+.teacher-question-platform-preview,
+.teacher-question-platform-preview > * {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0;
+}
+
+.teacher-question-analysis {
+  margin-top: 10px;
+  padding: 10px 12px;
+  display: block;
+  border: 1px solid var(--classroom-feedback-info-border);
+  border-radius: var(--classroom-radius-control);
+  color: var(--text-secondary);
+  background: var(--classroom-feedback-info-bg);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.teacher-question-analysis b {
+  color: var(--classroom-feedback-info-fg);
+  font-weight: 500;
+}
+
+.teacher-question-preview-wrap
+  .teacher-question-platform-preview
+  > div
+  > section
+  > div
+  > ol:first-child {
+  display: grid;
+  gap: 8px;
+}
+
+.question-option-columns-1 {
+  --question-option-columns: 1;
+}
+
+.question-option-columns-2 {
+  --question-option-columns: 2;
+}
+
+.question-option-columns-3 {
+  --question-option-columns: 3;
+}
+
+.question-option-columns-4 {
+  --question-option-columns: 4;
+}
+
+.option-list[class*="question-option-columns-"],
+.question-review-reference-options[class*="question-option-columns-"],
+.student-home-attempt-options[class*="question-option-columns-"] {
+  grid-template-columns: repeat(var(--question-option-columns), minmax(0, 1fr));
+  align-items: stretch;
+}

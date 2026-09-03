@@ -54,7 +54,8 @@ function normalizeChoiceId(question, value) {
   const raw = normalizeAnswerText(value);
   const options = Array.isArray(question?.options) ? question.options : [];
   const getOptId = (opt) => opt?.id || opt?.key || opt?.value || opt?.code;
-  const getOptText = (opt) => opt?.text || opt?.label || opt?.content || opt?.title;
+  const getOptText = (opt) =>
+    opt?.text || opt?.label || opt?.content || opt?.title;
 
   const direct = options.find(
     (option) => normalizeAnswerText(getOptId(option)) === raw,
@@ -66,7 +67,8 @@ function normalizeChoiceId(question, value) {
     const withoutMarker = text.replace(/^[a-e][).:、]?/, "");
     return text === raw || withoutMarker === raw;
   });
-  if (byText) return normalizeAnswerText(getOptId(byText) || getOptText(byText));
+  if (byText)
+    return normalizeAnswerText(getOptId(byText) || getOptText(byText));
 
   const ordinal = raw.match(/(?:option|choice|item|answer)[_-]?(\d+)$/);
   if (ordinal) {

@@ -1,0 +1,184 @@
+.student-detail-warnings > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.student-detail-warnings span {
+  min-height: 24px;
+  padding: 0 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 4px;
+  color: #8b2f2f;
+  background: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+}
+
+.student-detail-tabs {
+  width: fit-content;
+  margin: 14px 0 10px;
+  padding: 3px;
+  display: inline-flex;
+  gap: 5px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--disabled);
+}
+
+.student-detail-tabs button {
+  height: 34px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 5px;
+  color: var(--text-secondary);
+  background: transparent;
+  font-size: 12px;
+}
+
+.student-detail-tabs button.active {
+  color: var(--primary);
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(1, 17, 61, 0.09);
+}
+
+.student-detail-tabs button span {
+  min-width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  color: var(--helper);
+  background: var(--disabled);
+  font-size: 12px;
+}
+
+.student-full-record-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 12px;
+}
+
+.student-learning-timeline,
+.student-learning-overview,
+.student-question-page,
+.student-dialogue-page {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: #fff;
+}
+
+.student-learning-timeline > header,
+.student-question-page > header,
+.student-dialogue-page > header {
+  min-height: 54px;
+  padding: 9px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.student-learning-timeline h2,
+.student-learning-overview h2,
+.student-question-page h2,
+.student-dialogue-page h2 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.student-learning-timeline header p,
+.student-question-page header p,
+.student-dialogue-page header p {
+  margin: 3px 0 0;
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.student-learning-timeline header > span,
+.student-dialogue-page header > strong {
+  color: var(--primary);
+  font-size: 12px;
+}
+
+.student-learning-timeline > div {
+  padding: 8px 16px 18px;
+}
+
+.student-learning-timeline article {
+  min-height: 86px;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  position: relative;
+}
+
+.student-learning-timeline article:not(:last-child)::after {
+  width: 1px;
+  position: absolute;
+  left: 13px;
+  top: 30px;
+  bottom: 0;
+  content: "";
+  background: var(--color-primary-200);
+}
+
+.timeline-node {
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+  border: 1px solid var(--color-primary-200);
+  border-radius: 50%;
+  color: var(--primary);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.student-learning-timeline article > div {
+  padding: 3px 0 12px;
+}
+
+.student-learning-timeline article > div > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.student-learning-timeline article strong {
+  font-size: 13px;
+}
+
+.student-learning-timeline article time {
+  color: var(--helper);
+  font-size: 12px;
+}
+
+.student-learning-timeline article p {
+  margin: 5px 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.student-learning-timeline article small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--primary);
+  font-size: 12px;
+}
+
+.student-learning-overview {
+  padding: 16px;
+}
+
+.student-learning-overview h2 {
+  margin-bottom: 12px;
+}

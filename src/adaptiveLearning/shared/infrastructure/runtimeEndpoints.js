@@ -1,7 +1,8 @@
-export function classroomApiUrl(path = "") {
-  return path;
-}
+import { createRuntimeEndpoints } from "./runtimeEndpointFactory.js";
 
-export function adaptiveApiUrl(path = "") {
-  return path;
-}
+const runtimeEnv = import.meta.env || {};
+
+const runtimeEndpoints = createRuntimeEndpoints(runtimeEnv);
+
+export const adaptiveApiUrl = runtimeEndpoints.adaptiveApiUrl;
+export const classroomApiUrl = runtimeEndpoints.classroomApiUrl;

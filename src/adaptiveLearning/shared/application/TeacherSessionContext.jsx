@@ -1,20 +1,35 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext } from "react";
+import PropTypes from "prop-types";
 
-const TeacherSessionContext = createContext({
-  teacher: { id: "teacher-1", name: "张老师" },
-  currentPeriod: null,
-  setCurrentPeriod: () => {},
-});
+const TeacherSessionContext = createContext(null);
 
-export function TeacherSessionProvider({ children }) {
-  const [currentPeriod, setCurrentPeriod] = useState({ id: "period-1", name: "初一(1)班" });
+/**
+ *
+ * @param root0
+ * @param root0.session
+ * @param root0.children
+ */
+export function TeacherSessionProvider({ session, children }) {
   return (
-    <TeacherSessionContext.Provider value={{ teacher: { id: "teacher-1", name: "张老师" }, currentPeriod, setCurrentPeriod }}>
+    <TeacherSessionContext.Provider value={session}>
       {children}
     </TeacherSessionContext.Provider>
   );
 }
 
+TeacherSessionProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+  session: PropTypes.shape({
+    displayName: PropTypes.string,
+    subjectFingerprint: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+/**
+ *
+ */
 export function useTeacherSession() {
-  return useContext(TeacherSessionContext);
+  const session = useContext(TeacherSessionContext);
+  if (!session) throw new Error("TeacherSessionProvider is required");
+  return session;
 }

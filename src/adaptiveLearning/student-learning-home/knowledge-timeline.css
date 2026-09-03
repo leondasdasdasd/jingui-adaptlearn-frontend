@@ -1,0 +1,319 @@
+/* stylelint-disable selector-class-pattern -- 状态类名来自既有业务枚举。 */
+
+/* --- 纵向知识点学习脉络与掌握度演变轴 --- */
+.kp-v-timeline-card {
+  margin-top: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.kp-v-timeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 16px;
+}
+
+.kp-v-header-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kp-v-header-icon-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.kp-v-header-title h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.kp-v-header-title p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.kp-v-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.kp-v-all-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.kp-v-all-btn.active {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+/* 纵向轴线与节点 */
+.kp-v-timeline-axis {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 6px;
+}
+
+.kp-v-connector-line {
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 21px;
+  width: 2px;
+  background: #e2e8f0;
+  z-index: 0;
+}
+
+.kp-v-timeline-node {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.kp-v-node-left {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2px;
+}
+
+.kp-v-step-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.kp-v-step-badge.active,
+.kp-v-timeline-node:hover .kp-v-step-badge {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+}
+
+.kp-v-node-card {
+  flex: 1;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 12px 14px;
+  transition: all 0.2s ease;
+}
+
+.kp-v-node-card:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
+}
+
+.kp-v-node-card.active {
+  border-color: #3b82f6;
+  background: #f8fafc;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12);
+}
+
+.kp-v-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.kp-v-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kp-v-title-row .kp-icon {
+  color: #2563eb;
+}
+
+.kp-title-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.kp-question-count-badge {
+  font-size: 11px;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.kp-status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.kp-status-badge.excellent {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.kp-status-badge.good {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.kp-status-badge.needs_reinforcement {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+/* 掌握度变化双条图 */
+.kp-v-mastery-comparison {
+  margin: 6px 0 8px;
+  background: #f8fafc;
+  border-radius: 6px;
+  padding: 6px 10px;
+  border: 1px solid #f1f5f9;
+}
+
+.mastery-labels-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.label-pre {
+  color: #64748b;
+}
+
+.label-arrow {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.label-post {
+  color: #2563eb;
+}
+
+.mastery-dual-track {
+  display: flex;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.seg-pre {
+  height: 100%;
+  background: #94a3b8;
+  border-top-left-radius: 999px;
+  border-bottom-left-radius: 999px;
+}
+
+.seg-post {
+  height: 100%;
+  background: #2563eb;
+}
+
+.kp-v-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.kp-v-card-footer .dot {
+  color: #cbd5e1;
+}
+
+.kp-v-card-footer strong {
+  color: #0f172a;
+}
+
+.selected-hint {
+  color: #2563eb;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+.attempt-kp-mastery-tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: #2563eb;
+  background: #ffffff;
+  padding: 0 4px;
+  border-radius: 3px;
+  border: 1px solid #bfdbfe;
+  margin-left: 2px;
+}
+
+/* Banner 支持双掌握度显示 */
+.kp-banner-mastery {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.kp-banner-mastery .m-pre {
+  color: #64748b;
+}
+
+.kp-banner-mastery .m-arrow {
+  color: #94a3b8;
+}
+
+.kp-banner-mastery .m-post {
+  color: #2563eb;
+}

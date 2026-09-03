@@ -1,7 +1,15 @@
 /* eslint-disable complexity, sonarjs/cognitive-complexity -- 视图只表达既有题目、反馈和干预状态。 */
 
 import React, { useState } from "react";
-import { AlertCircle, BookOpenCheck, Lightbulb, RotateCw, Sigma, Sparkles, X } from "lucide-react";
+import {
+  AlertCircle,
+  BookOpenCheck,
+  Lightbulb,
+  RotateCw,
+  Sigma,
+  Sparkles,
+  X,
+} from "lucide-react";
 import PropTypes from "prop-types";
 
 import { trans } from "../../../utils/i18n";

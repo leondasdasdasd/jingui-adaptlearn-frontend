@@ -1,0 +1,246 @@
+/* stylelint-disable selector-class-pattern -- 状态类名来自既有业务枚举。 */
+
+/* ==========================================================================
+   双色对比掌握度进度条组件 (MasteryDualProgressBar)
+   ========================================================================== */
+.mastery-dual-bar-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  min-width: 140px;
+}
+
+.mastery-dual-bar-block.lg {
+  min-width: 200px;
+}
+
+.mastery-dual-bar-block.md {
+  min-width: 160px;
+}
+
+.mastery-dual-bar-block.sm {
+  min-width: 150px;
+}
+
+.mastery-dual-bar-block.xs {
+  min-width: 120px;
+}
+
+.dual-bar-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.mastery-dual-bar-block.lg .dual-bar-labels {
+  font-size: 14px;
+}
+
+.mastery-dual-bar-block.xs .dual-bar-labels {
+  font-size: 12px;
+}
+
+.val-pre {
+  color: #64748b;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.val-arrow {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.val-post {
+  color: #0f172a;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.val-gain {
+  display: none !important;
+}
+
+.dual-bar-track {
+  width: 100%;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.mastery-dual-bar-block.lg .dual-bar-track {
+  height: 8px;
+}
+
+.mastery-dual-bar-block.xs .dual-bar-track {
+  height: 5px;
+}
+
+.bar-seg-pre {
+  height: 100%;
+  background: #94a3b8;
+  transition: width 0.3s ease;
+}
+
+.bar-seg-gain {
+  height: 100%;
+  background: linear-gradient(90deg, #16a34a 0%, #22c55e 100%);
+  transition: width 0.3s ease;
+}
+
+.metric-info.wide {
+  width: 100%;
+}
+
+.dual-bar-box {
+  align-items: flex-start !important;
+}
+
+.td-mastery-dual {
+  width: 200px;
+}
+
+.metric-row.bar-row {
+  margin-bottom: 2px;
+}
+
+.kp-students-detail-panel {
+  padding: 20px 24px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.kp-detail-subhead h4 {
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.kp-student-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.kp-student-item-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.kp-student-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: #cbd5e1;
+}
+
+.st-card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.st-card-top .st-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #3b82f6;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.st-name-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.st-name-wrap strong {
+  font-size: 14px;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.st-status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.st-status-badge.excellent {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.st-status-badge.good {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.st-status-badge.needs_reinforcement {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.st-card-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #475569;
+  padding-top: 8px;
+  border-top: 1px dashed #f1f5f9;
+}
+
+.metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.metric-row .post-num {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.mini-gain {
+  font-size: 12px;
+  font-weight: 700;
+  color: #16a34a;
+  margin-left: 4px;
+}
+
+@media (max-width: 900px) {
+  .report-overview-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .report-overview-cards {
+    grid-template-columns: 1fr;
+  }
+}

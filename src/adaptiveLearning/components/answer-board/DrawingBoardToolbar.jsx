@@ -90,6 +90,10 @@ const ANNOTATION_TOOLS = [
 const clamp = (value, minimum, maximum) =>
   Math.min(Math.max(value, minimum), maximum);
 
+/**
+ *
+ * @param event
+ */
 function closeOwningMenu(event) {
   event.currentTarget
     .closest("[data-drawing-board-menu]")
@@ -98,6 +102,17 @@ function closeOwningMenu(event) {
     );
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.label
+ * @param root0.Icon
+ * @param root0.active
+ * @param root0.disabled
+ * @param root0.onClick
+ * @param root0.className
+ * @param root0.children
+ */
 function ToolbarButton({
   label,
   Icon,
@@ -123,6 +138,18 @@ function ToolbarButton({
   );
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.label
+ * @param root0.Icon
+ * @param root0.active
+ * @param root0.disabled
+ * @param root0.triggerContent
+ * @param root0.className
+ * @param root0.menuClassName
+ * @param root0.children
+ */
 function ToolbarMenu({
   label,
   Icon,
@@ -140,7 +167,7 @@ function ToolbarMenu({
   const [position, setPosition] = useState({ left: 8, top: 8, maxHeight: 380 });
   const portalHost =
     getAdaptivePortalHost() ||
-    (typeof document !== "undefined" ? document.body : null);
+    (typeof document === "undefined" ? null : document.body);
 
   const updatePosition = () => {
     if (!triggerRef.current || !menuRef.current) return;
@@ -255,6 +282,17 @@ function ToolbarMenu({
   );
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.label
+ * @param root0.active
+ * @param root0.disabled
+ * @param root0.onClick
+ * @param root0.Icon
+ * @param root0.children
+ * @param root0.className
+ */
 function MenuOption({
   label,
   active,
@@ -283,6 +321,39 @@ function MenuOption({
   );
 }
 
+/**
+ *
+ * @param root0
+ * @param root0.activeTool
+ * @param root0.activeShape
+ * @param root0.color
+ * @param root0.opacity
+ * @param root0.fill
+ * @param root0.dash
+ * @param root0.size
+ * @param root0.zoom
+ * @param root0.disabled
+ * @param root0.canUndo
+ * @param root0.canRedo
+ * @param root0.canDelete
+ * @param root0.canDuplicate
+ * @param root0.onToolChange
+ * @param root0.onShapeChange
+ * @param root0.onColorChange
+ * @param root0.onOpacityChange
+ * @param root0.onFillChange
+ * @param root0.onDashChange
+ * @param root0.onSizeChange
+ * @param root0.onUndo
+ * @param root0.onRedo
+ * @param root0.onDelete
+ * @param root0.onDuplicate
+ * @param root0.onZoomOut
+ * @param root0.onZoomReset
+ * @param root0.onZoomIn
+ * @param root0.showHistory
+ * @param root0.className
+ */
 export default function DrawingBoardToolbar({
   activeTool = "draw",
   activeShape = "",
@@ -330,11 +401,14 @@ export default function DrawingBoardToolbar({
   const activeAnnotation = ANNOTATION_TOOLS.find(
     (item) => item.id === activeTool,
   );
-  const isShapesOrInsertActive = Boolean(activeGeometricShape || activeAnnotation);
+  const isShapesOrInsertActive = Boolean(
+    activeGeometricShape || activeAnnotation,
+  );
   const isMoreActive = activeTool === "hand";
 
   // Dynamic icon for Shapes & Insert trigger
-  const ShapeTriggerIcon = activeGeometricShape?.Icon || activeAnnotation?.Icon || Shapes;
+  const ShapeTriggerIcon =
+    activeGeometricShape?.Icon || activeAnnotation?.Icon || Shapes;
 
   return (
     <div
@@ -347,7 +421,11 @@ export default function DrawingBoardToolbar({
           {/* Group 1: Optional History (Undo / Redo) */}
           {showHistory ? (
             <>
-              <div className={styles.group} role="group" aria-label="撤销与重做">
+              <div
+                className={styles.group}
+                role="group"
+                aria-label="撤销与重做"
+              >
                 <ToolbarButton
                   label="撤销 (Ctrl+Z)"
                   Icon={Undo2}
@@ -420,7 +498,9 @@ export default function DrawingBoardToolbar({
                   <span className={styles.sizeIndicator}>
                     <span
                       className={styles.sizeDot}
-                      style={{ height: Math.min(10, Math.max(3, selectedSize.px || 2)) }}
+                      style={{
+                        height: Math.min(10, Math.max(3, selectedSize.px || 2)),
+                      }}
                     />
                   </span>
                 </span>
@@ -429,7 +509,9 @@ export default function DrawingBoardToolbar({
             >
               <div className={styles.menuHeader}>
                 <span className={styles.menuTitle}>笔触与色彩</span>
-                <span className={styles.menuSubtitle}>自定义画笔、线条和填充样式</span>
+                <span className={styles.menuSubtitle}>
+                  自定义画笔、线条和填充样式
+                </span>
               </div>
 
               {/* Color Palette */}
@@ -438,7 +520,11 @@ export default function DrawingBoardToolbar({
                   <Palette size={13} />
                   <span>画笔颜色</span>
                 </div>
-                <div className={styles.colorPaletteGrid} role="group" aria-label="颜色选择">
+                <div
+                  className={styles.colorPaletteGrid}
+                  role="group"
+                  aria-label="颜色选择"
+                >
                   {DRAWING_BOARD_COLORS.map((item) => (
                     <button
                       key={item.id}
@@ -467,7 +553,11 @@ export default function DrawingBoardToolbar({
                 <div className={styles.sectionHeading}>
                   <span>线条粗细</span>
                 </div>
-                <div className={styles.segmented} role="group" aria-label="粗细选择">
+                <div
+                  className={styles.segmented}
+                  role="group"
+                  aria-label="粗细选择"
+                >
                   {DRAWING_BOARD_SIZES.map((item) => (
                     <button
                       key={item.id}
@@ -492,7 +582,11 @@ export default function DrawingBoardToolbar({
                 <div className={styles.sectionHeading}>
                   <span>线条类型</span>
                 </div>
-                <div className={styles.segmented} role="group" aria-label="线条类型">
+                <div
+                  className={styles.segmented}
+                  role="group"
+                  aria-label="线条类型"
+                >
                   {DRAWING_BOARD_DASHES.map((item) => (
                     <button
                       key={item.id}
@@ -502,7 +596,9 @@ export default function DrawingBoardToolbar({
                       disabled={disabled}
                       onClick={() => onDashChange?.(item.id)}
                     >
-                      <span className={`${styles.dashLine} ${styles[`dash_${item.id}`]}`} />
+                      <span
+                        className={`${styles.dashLine} ${styles[`dash_${item.id}`]}`}
+                      />
                       <span>{item.label}</span>
                     </button>
                   ))}
@@ -514,7 +610,11 @@ export default function DrawingBoardToolbar({
                 <div className={styles.sectionHeading}>
                   <span>图形填充</span>
                 </div>
-                <div className={styles.segmented} role="group" aria-label="填充模式">
+                <div
+                  className={styles.segmented}
+                  role="group"
+                  aria-label="填充模式"
+                >
                   {DRAWING_BOARD_FILLS.map((item) => (
                     <button
                       key={item.id}
@@ -524,7 +624,9 @@ export default function DrawingBoardToolbar({
                       disabled={disabled}
                       onClick={() => onFillChange?.(item.id)}
                     >
-                      <span className={`${styles.fillPreviewBox} ${styles[`fill_${item.id}`]}`} />
+                      <span
+                        className={`${styles.fillPreviewBox} ${styles[`fill_${item.id}`]}`}
+                      />
                       <span>{item.label}</span>
                     </button>
                   ))}
@@ -537,7 +639,11 @@ export default function DrawingBoardToolbar({
                   <span>画笔透明度</span>
                   <span className={styles.opacityValue}>{opacity}%</span>
                 </div>
-                <div className={styles.segmented} role="group" aria-label="透明度">
+                <div
+                  className={styles.segmented}
+                  role="group"
+                  aria-label="透明度"
+                >
                   {DRAWING_BOARD_OPACITIES.map((val) => (
                     <button
                       key={val}
@@ -568,12 +674,18 @@ export default function DrawingBoardToolbar({
             >
               <div className={styles.menuHeader}>
                 <span className={styles.menuTitle}>图形与标注</span>
-                <span className={styles.menuSubtitle}>选择几何图形或插入文本素材</span>
+                <span className={styles.menuSubtitle}>
+                  选择几何图形或插入文本素材
+                </span>
               </div>
 
               {/* Shapes Section */}
               <div className={styles.menuSubHeader}>几何图形</div>
-              <div className={styles.shapeGrid} role="group" aria-label="几何图形列表">
+              <div
+                className={styles.shapeGrid}
+                role="group"
+                aria-label="几何图形列表"
+              >
                 {GEOMETRIC_SHAPES.map(({ id, label, Icon }) => (
                   <MenuOption
                     key={id}
@@ -592,8 +704,14 @@ export default function DrawingBoardToolbar({
               </div>
 
               {/* Annotation & Text Section */}
-              <div className={styles.menuSubHeader} style={{ marginTop: 12 }}>文字与素材</div>
-              <div className={styles.annotationList} role="group" aria-label="标注与媒体工具">
+              <div className={styles.menuSubHeader} style={{ marginTop: 12 }}>
+                文字与素材
+              </div>
+              <div
+                className={styles.annotationList}
+                role="group"
+                aria-label="标注与媒体工具"
+              >
                 {ANNOTATION_TOOLS.map(({ id, label, Icon, desc }) => (
                   <MenuOption
                     key={id}
@@ -625,11 +743,17 @@ export default function DrawingBoardToolbar({
             >
               <div className={styles.menuHeader}>
                 <span className={styles.menuTitle}>更多工具</span>
-                <span className={styles.menuSubtitle}>画布拖拽、编辑操作与缩放视图</span>
+                <span className={styles.menuSubtitle}>
+                  画布拖拽、编辑操作与缩放视图
+                </span>
               </div>
 
               {/* Canvas & Selection Operations */}
-              <div className={styles.moreActionList} role="group" aria-label="辅助编辑">
+              <div
+                className={styles.moreActionList}
+                role="group"
+                aria-label="辅助编辑"
+              >
                 <MenuOption
                   label="拖拽移动画布"
                   Icon={Hand}
@@ -672,7 +796,9 @@ export default function DrawingBoardToolbar({
               </div>
 
               {/* Zoom Controls inside More */}
-              <div className={styles.menuSubHeader} style={{ marginTop: 12 }}>画布缩放</div>
+              <div className={styles.menuSubHeader} style={{ marginTop: 12 }}>
+                画布缩放
+              </div>
               <div className={styles.zoomControlRow}>
                 <button
                   type="button"
@@ -712,4 +838,3 @@ export default function DrawingBoardToolbar({
     </div>
   );
 }
-

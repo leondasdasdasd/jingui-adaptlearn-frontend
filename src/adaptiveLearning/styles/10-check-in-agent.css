@@ -1,0 +1,115 @@
+.message-speech-button {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  color: var(--primary);
+  background: #fff;
+}
+
+.message-speech-button:hover,
+.message-speech-button.playing {
+  border-color: var(--primary);
+  background: var(--brand-soft);
+}
+
+.message-speech-button:disabled {
+  color: var(--weak);
+  background: var(--disabled);
+  cursor: wait;
+}
+
+.check-in-agent-bottom {
+  padding: 16px var(--space-page-x) 24px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), #fff 20%);
+}
+
+.check-in-agent-composer {
+  min-height: 118px;
+  padding: 14px 14px 10px;
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: #fff;
+  box-shadow: 0 8px 30px rgba(1, 17, 61, 0.08);
+}
+
+.check-in-agent-composer:focus-within {
+  border-color: var(--primary);
+}
+
+.check-in-agent-composer textarea {
+  width: 100%;
+  min-height: 54px;
+  max-height: 120px;
+  padding: 0 2px;
+  border: 0;
+  outline: 0;
+  resize: none;
+  color: var(--text);
+  background: transparent;
+  font: inherit;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.check-in-agent-composer textarea::placeholder {
+  color: var(--weak);
+}
+
+.check-in-agent-composer textarea:disabled {
+  color: var(--helper);
+}
+
+.check-in-agent-composer-tools {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.check-in-agent-voice {
+  height: 32px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  color: var(--primary);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.check-in-agent-voice:hover {
+  border-color: var(--color-primary-200);
+  background: var(--brand-soft);
+}
+
+.check-in-agent-voice.recording {
+  color: #fff;
+  border-color: var(--error);
+  background: var(--error);
+  animation: voice-pulse 1.4s ease-in-out infinite;
+}
+
+.check-in-agent-send {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  color: #fff;
+  background: var(--primary);
+}
+
+.check-in-agent-send:hover:not(:disabled) {
+  background: var(--primary-hover);
+}

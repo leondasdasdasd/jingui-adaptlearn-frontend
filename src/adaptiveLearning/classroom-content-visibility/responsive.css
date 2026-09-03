@@ -1,0 +1,147 @@
+@media (max-width: 1024px) {
+  .classroom-plan-selector {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(260px, 1fr) auto;
+  }
+
+  .classroom-plan-selector > aside {
+    border-top: 1px solid var(--classroom-border);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .teacher-page-body:has(> .classroom-plan-create) {
+    height: calc(100dvh - 64px);
+  }
+
+  .live-classroom-create .classroom-create-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .student-detail-tabs {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .student-detail-tabs button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .classroom-plan-list > header,
+  .classroom-plan-create > header,
+  .classroom-plan-confirm > header,
+  .classroom-plan-review > header {
+    min-height: 64px;
+    padding: 10px 14px;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .classroom-plan-list header > div,
+  .classroom-plan-create header > div,
+  .classroom-plan-confirm header > div,
+  .classroom-plan-review header > div {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .classroom-plan-chapter-toggle {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .classroom-plan-chapter-lessons {
+    padding-left: 12px;
+  }
+
+  .classroom-plan-chapter-lessons::before {
+    left: 12px;
+  }
+
+  .classroom-plan-lesson {
+    grid-template-columns: 24px minmax(0, 1fr) 44px;
+  }
+
+  .classroom-plan-create > footer,
+  .classroom-plan-confirm > footer,
+  .classroom-plan-review > footer {
+    padding: 10px 14px;
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .classroom-plan-create > footer button,
+  .classroom-plan-confirm > footer button,
+  .classroom-plan-review > footer button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .classroom-plan-title {
+    padding: 14px;
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .classroom-plan-knowledge {
+    padding: 10px 14px;
+    grid-template-columns: 1fr;
+  }
+
+  .classroom-plan-policy {
+    margin: 0 14px 12px;
+  }
+
+  .classroom-plan-policy-row {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .classroom-plan-policy-row:not(.stacked) {
+    align-items: flex-start;
+  }
+
+  .classroom-plan-segmented {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .classroom-plan-confirm-check,
+  .classroom-plan-generating {
+    margin: 0 14px 12px;
+  }
+
+  .classroom-content-outline {
+    margin: 12px 14px;
+  }
+
+  .classroom-plan-table-detail {
+    padding: 12px 14px;
+  }
+
+  .classroom-plan-table-detail .classroom-content-outline {
+    margin: 0;
+  }
+
+  .classroom-content-outline > header {
+    padding: 10px 14px;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .classroom-content-mainline {
+    grid-template-columns: 1fr;
+  }
+
+  .classroom-content-confirm {
+    margin: 0 14px 12px;
+  }
+}

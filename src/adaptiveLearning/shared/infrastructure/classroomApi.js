@@ -1,12 +1,3 @@
-import {
-  getMockPublishedLessonVersion,
-  getMockPublishedLessonSummaries,
-  getMockLearningPeriods,
-  startMockStudentSession,
-  getMockStudentSessionContent,
-  getMockSessionSnapshot,
-  putMockSessionSnapshot,
-} from "../../mock/mockDataService.js";
 import { classroomApiUrl } from "./runtimeEndpoints.js";
 
 /**
@@ -127,14 +118,10 @@ export function getLessonVersions(lessonId, options = {}) {
  *
  * @param lessonId
  */
-export async function getPublishedLessonVersion(lessonId) {
-  try {
-    return await request(
-      `/api/v1/student/textbook-lessons/${encodeURIComponent(lessonId)}/content-version`,
-    );
-  } catch (error) {
-    return getMockPublishedLessonVersion(lessonId);
-  }
+export function getPublishedLessonVersion(lessonId) {
+  return request(
+    `/api/v1/student/textbook-lessons/${encodeURIComponent(lessonId)}/content-version`,
+  );
 }
 
 /**
@@ -142,17 +129,13 @@ export async function getPublishedLessonVersion(lessonId) {
  * @param lessonIds
  * @param options
  */
-export async function getPublishedLessonVersions(lessonIds, options = {}) {
-  try {
-    const params = new URLSearchParams();
-    for (const lessonId of lessonIds) params.append("lessonIds", lessonId);
-    return await request(
-      `/api/v1/student/textbook-lessons/content-versions?${params.toString()}`,
-      options,
-    );
-  } catch (error) {
-    return getMockPublishedLessonSummaries(lessonIds);
-  }
+export function getPublishedLessonVersions(lessonIds, options = {}) {
+  const params = new URLSearchParams();
+  for (const lessonId of lessonIds) params.append("lessonIds", lessonId);
+  return request(
+    `/api/v1/student/textbook-lessons/content-versions?${params.toString()}`,
+    options,
+  );
 }
 
 // Student-facing directory projection. The classroom service may return an
@@ -163,15 +146,11 @@ export async function getPublishedLessonVersions(lessonIds, options = {}) {
  * @param accessToken
  * @param options
  */
-export async function getStudentLearningPeriods(accessToken, options = {}) {
+export function getStudentLearningPeriods(accessToken, options = {}) {
   const path = "/api/v1/student/learning-periods";
-  try {
-    return accessToken
-      ? await studentRequest(path, accessToken, options)
-      : await request(path, options);
-  } catch (error) {
-    return getMockLearningPeriods();
-  }
+  return accessToken
+    ? studentRequest(path, accessToken, options)
+    : request(path, options);
 }
 
 /**
@@ -188,21 +167,20 @@ export function getClassStudentIdentity(accessToken, options = {}) {
  * @param textbookLessonId
  * @param accessToken
  * @param options
+ * @param options.learningMode
+ * @param options.requestOptions
  */
-export async function createSelfStudySession(
+export function createSelfStudySession(
   textbookLessonId,
   accessToken,
   options = {},
 ) {
-  try {
-    return await studentRequest("/api/v1/student/self-study-sessions", accessToken, {
-      ...options,
-      method: "POST",
-      body: JSON.stringify({ textbookLessonId }),
-    });
-  } catch (error) {
-    return startMockStudentSession(textbookLessonId, accessToken);
-  }
+  const { learningMode = "ASSESSMENT_FIRST", requestOptions = {} } = options;
+  return studentRequest("/api/v1/student/self-study-sessions", accessToken, {
+    ...requestOptions,
+    method: "POST",
+    body: JSON.stringify({ textbookLessonId, learningMode }),
+  });
 }
 
 /**
@@ -304,16 +282,12 @@ export function completeLearningPeriod(periodId) {
  * @param periodId
  * @param accessToken
  */
-export async function startStudentSession(periodId, accessToken) {
-  try {
-    return await studentRequest(
-      `/api/v1/learning-periods/${encodeURIComponent(periodId)}/student-session`,
-      accessToken,
-      { method: "POST" },
-    );
-  } catch (error) {
-    return startMockStudentSession(periodId, accessToken);
-  }
+export function startStudentSession(periodId, accessToken) {
+  return studentRequest(
+    `/api/v1/learning-periods/${encodeURIComponent(periodId)}/student-session`,
+    accessToken,
+    { method: "POST" },
+  );
 }
 
 /**
@@ -321,15 +295,11 @@ export async function startStudentSession(periodId, accessToken) {
  * @param sessionId
  * @param accessToken
  */
-export async function getStudentSessionContent(sessionId, accessToken) {
-  try {
-    return await studentRequest(
-      `/api/v1/student-sessions/${encodeURIComponent(sessionId)}/content`,
-      accessToken,
-    );
-  } catch (error) {
-    return getMockStudentSessionContent(sessionId);
-  }
+export function getStudentSessionContent(sessionId, accessToken) {
+  return studentRequest(
+    `/api/v1/student-sessions/${encodeURIComponent(sessionId)}/content`,
+    accessToken,
+  );
 }
 
 /**
@@ -362,20 +332,16 @@ export function getStudentSessionAnswers(sessionId, accessToken) {
  * @param accessToken
  * @param options
  */
-export async function getStudentSessionSnapshot(
+export function getStudentSessionSnapshot(
   sessionId,
   accessToken,
   options = {},
 ) {
-  try {
-    return await studentRequest(
-      `/api/v1/student-sessions/${encodeURIComponent(sessionId)}/snapshot`,
-      accessToken,
-      options,
-    );
-  } catch (error) {
-    return getMockSessionSnapshot(sessionId);
-  }
+  return studentRequest(
+    `/api/v1/student-sessions/${encodeURIComponent(sessionId)}/snapshot`,
+    accessToken,
+    options,
+  );
 }
 
 /**
@@ -385,25 +351,21 @@ export async function getStudentSessionSnapshot(
  * @param payload
  * @param options
  */
-export async function putStudentSessionSnapshot(
+export function putStudentSessionSnapshot(
   sessionId,
   accessToken,
   payload,
   options = {},
 ) {
-  try {
-    return await studentRequest(
-      `/api/v1/student-sessions/${encodeURIComponent(sessionId)}/snapshot`,
-      accessToken,
-      {
-        ...options,
-        method: "PUT",
-        body: JSON.stringify(payload),
-      },
-    );
-  } catch (error) {
-    return putMockSessionSnapshot(sessionId, payload);
-  }
+  return studentRequest(
+    `/api/v1/student-sessions/${encodeURIComponent(sessionId)}/snapshot`,
+    accessToken,
+    {
+      ...options,
+      method: "PUT",
+      body: JSON.stringify(payload),
+    },
+  );
 }
 
 /**

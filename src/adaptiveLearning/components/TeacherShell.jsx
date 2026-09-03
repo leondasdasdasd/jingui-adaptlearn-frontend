@@ -12,7 +12,8 @@ import {
 } from "lucide-react";
 
 import { trans } from "../../utils/i18n";
-import { NavLink, useParams } from "../routing";
+import { NavLink, useNavigate, useParams } from "../routing";
+import { routes } from "../routes/routePaths";
 import { useTeacherSession } from "../shared/application/TeacherSessionContext";
 import { questionTestLogoutUrl } from "../shared/infrastructure/teacherAuthorization";
 import { rememberCurrentPeriod } from "../teacher/data/classroomApiRepository";
@@ -41,6 +42,7 @@ export default function TeacherShell({
   hideGlobalHeader = false,
 }) {
   const { periodId } = useParams();
+  const navigate = useNavigate();
   const session = useTeacherSession();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [startClassOpen, setStartClassOpen] = useState(false);
@@ -244,11 +246,16 @@ export default function TeacherShell({
                     role="menuitem"
                     onClick={() => {
                       setUserMenuOpen(false);
-                      window.location.hash = "#/adaptive-learning/today";
+                      navigate(routes.directory);
                     }}
                   >
                     <UserRound size={15} />
-                    <span>切换至学生端</span>
+                    <span>
+                      {trans(
+                        "adaptiveLearning.teacher.switchToStudent",
+                        "切换至学生端",
+                      )}
+                    </span>
                   </button>
                   <button
                     type="button"
