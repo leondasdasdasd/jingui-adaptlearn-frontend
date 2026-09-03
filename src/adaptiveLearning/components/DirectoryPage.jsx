@@ -14,9 +14,27 @@ import AppShell from "./AppShell";
 import ChapterNavigator from "./directory/ChapterNavigator";
 import CourseSwitcher from "./directory/CourseSwitcher";
 import LessonWorkspace from "./directory/LessonWorkspace";
+import UnitAssessmentWorkspace from "./directory/UnitAssessmentWorkspace";
 import LearningModeIcon from "./LearningModeIcon";
 
 import "../styles/directory-modern.css";
+
+/**
+ * 构建单元测试虚拟课时结构
+ * @param chapter
+ */
+export function createUnitAssessmentSection(chapter) {
+  if (!chapter) return null;
+  const kps = (chapter.sections || []).flatMap((s) => s.knowledgePoints || []);
+  return {
+    id: `unit-assessment-${chapter.id}`,
+    isUnitAssessment: true,
+    chapterId: chapter.id,
+    title: `${chapter.title} · 单元测试`,
+    index: "单元测试",
+    knowledgePoints: kps,
+  };
+}
 
 /**
  * 现代自适应学习首页
@@ -26,12 +44,16 @@ import "../styles/directory-modern.css";
  * @param root0.onContinue
  * @param root0.onOpenKnowledgeMap
  * @param root0.onStart
+ * @param root0.onStartUnitAssessment
  * @param root0.onLearnKnowledge
  * @param root0.onSelectCourse
  * @param root0.localExperience
  * @param root0.busy
  * @param root0.knowledgeProfile
  * @param root0.onStartNewLesson
+ * @param root0.initialLearningMode
+ * @param root0.onLearningModeChange
+ * @param root0.onOpenModePage
  */
 export default function DirectoryPage({
   course,
@@ -39,6 +61,7 @@ export default function DirectoryPage({
   onContinue,
   onOpenKnowledgeMap,
   onStart,
+  onStartUnitAssessment,
   onLearnKnowledge,
   onSelectCourse,
   localExperience = false,
@@ -81,27 +104,57 @@ export default function DirectoryPage({
     return null;
   }, [course.chapters, progress?.lessonId]);
 
-  const [selectedSection, setSelectedSection] = useState(
-    () => progressLocation?.section || course.chapters[0]?.sections[0] || null,
-  );
+  const [selectedSection, setSelectedSection] = useState(() => {
+    if (progressLocation?.section) return progressLocation.section;
+    const initialMode =
+      initialLearningMode ||
+      readPreferredLearningMode() ||
+      DEFAULT_CLASSROOM_LEARNING_MODE;
+    if (initialMode === "REMEDIATION") {
+      return createUnitAssessmentSection(course.chapters[0]);
+    }
+    return course.chapters[0]?.sections[0] || null;
+  });
 
   // 课程或活动会话变化时统一定位；恢复进度优先于课程首课。
   useEffect(() => {
-    setSelectedSection(
-      progressLocation?.section || course.chapters[0]?.sections[0] || null,
-    );
-  }, [course.chapters, course.id, progressLocation]);
+    if (progressLocation?.section) {
+      setSelectedSection(progressLocation.section);
+      return;
+    }
+    if (learningMode === "REMEDIATION") {
+      setSelectedSection((prev) => {
+        if (prev?.isUnitAssessment) return prev;
+        return createUnitAssessmentSection(course.chapters[0]);
+      });
+      return;
+    }
+    setSelectedSection((prev) => {
+      if (prev && !prev.isUnitAssessment) return prev;
+      return course.chapters[0]?.sections[0] || null;
+    });
+  }, [course.chapters, course.id, learningMode, progressLocation]);
 
-  const selectedChapter = useMemo(
-    () =>
+  const selectedChapter = useMemo(() => {
+    if (selectedSection?.chapterId) {
+      const ch = course.chapters.find(
+        (chapter) => chapter.id === selectedSection.chapterId,
+      );
+      if (ch) return ch;
+    }
+    return (
       course.chapters.find((chapter) =>
         chapter.sections.some((section) => section.id === selectedSection?.id),
-      ) || course.chapters[0],
-    [course.chapters, selectedSection],
-  );
+      ) || course.chapters[0]
+    );
+  }, [course.chapters, selectedSection]);
 
   const chooseSection = (_chapter, section) => {
     setSelectedSection(section);
+  };
+
+  const chooseUnitAssessment = (chapter) => {
+    setSelectedSection(createUnitAssessmentSection(chapter));
   };
 
   // 学习模式只作用于当前选中的课时，其他课时的历史进度不能锁住新入口。
@@ -184,10 +237,25 @@ export default function DirectoryPage({
             course={course}
             selectedSection={selectedSection}
             onChooseSection={chooseSection}
+            onChooseUnitAssessment={chooseUnitAssessment}
+            learningMode={learningMode}
           />
 
-          {/* 右侧：课时自适应工作台 */}
-          {selectedSection ? (
+          {/* 右侧：课时自适应工作台 或 单元测试专属工作台 */}
+          {selectedSection?.isUnitAssessment ? (
+            <UnitAssessmentWorkspace
+              course={course}
+              courseName={course.name}
+              chapter={selectedChapter}
+              knowledgeProfile={knowledgeProfile}
+              busy={busy}
+              learningMode={learningMode}
+              onStart={onStart}
+              onStartUnitAssessment={onStartUnitAssessment}
+              onChooseSection={chooseSection}
+              onOpenKnowledgeMap={onOpenKnowledgeMap}
+            />
+          ) : selectedSection ? (
             <LessonWorkspace
               course={course}
               courseName={course.name}

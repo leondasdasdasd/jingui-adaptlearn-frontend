@@ -122,4 +122,89 @@ describe("DirectoryPage learning mode entry", () => {
     expect(screen.queryByText("这次想怎么学？")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "继续学习" })).toBeVisible();
   });
+
+  it("prioritizes unit assessment page in remediation mode instead of first lesson", () => {
+    render(
+      <DirectoryPage
+        {...actions}
+        course={course}
+        progress={null}
+        initialLearningMode="REMEDIATION"
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: /有理数 · 单元测试$/ }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole("heading", { level: 1, name: "正数和负数" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("知识地图")).toBeVisible();
+  });
+
+  it("renders the unit assessment directory node in the left sidebar and allows switching to it", () => {
+    const onStartUnitAssessment = vi.fn();
+    render(
+      <DirectoryPage
+        {...actions}
+        course={course}
+        progress={null}
+        initialLearningMode="NEW_LESSON"
+        onStartUnitAssessment={onStartUnitAssessment}
+      />,
+    );
+
+    // Initial is lesson-1
+    expect(screen.getByRole("heading", { name: "正数和负数" })).toBeVisible();
+
+    // Click left sidebar unit assessment button
+    const unitNavBtn = screen.getByRole("button", { name: /有理数 单元测试/ });
+    expect(unitNavBtn).toBeVisible();
+    fireEvent.click(unitNavBtn);
+
+    // Now switched to unit assessment page
+    expect(
+      screen.getByRole("heading", { name: /有理数 · 单元测试$/ }),
+    ).toBeVisible();
+
+    // Click start unit assessment
+    fireEvent.click(screen.getByRole("button", { name: "开始单元测试" }));
+    expect(onStartUnitAssessment).toHaveBeenCalledWith(chapter);
+  });
+
+  it("places the unit assessment button as the first item in unit assessment / remediation mode", () => {
+    const { container } = render(
+      <DirectoryPage
+        {...actions}
+        course={course}
+        progress={null}
+        initialLearningMode="REMEDIATION"
+      />,
+    );
+
+    const wrapper = container.querySelector(".section-items-wrapper");
+    expect(wrapper).toBeTruthy();
+    const firstChild = wrapper.firstElementChild;
+    expect(firstChild).toHaveClass("modern-unit-assessment-nav-btn");
+    expect(firstChild).toHaveClass("position-first");
+    expect(firstChild).toHaveTextContent("单元测试");
+  });
+
+  it("places the unit assessment button as the last item in normal mode", () => {
+    const { container } = render(
+      <DirectoryPage
+        {...actions}
+        course={course}
+        progress={null}
+        initialLearningMode="NEW_LESSON"
+      />,
+    );
+
+    const wrapper = container.querySelector(".section-items-wrapper");
+    expect(wrapper).toBeTruthy();
+    const lastChild = wrapper.lastElementChild;
+    expect(lastChild).toHaveClass("modern-unit-assessment-nav-btn");
+    expect(lastChild).toHaveClass("position-last");
+    expect(lastChild).toHaveTextContent("单元测试");
+  });
 });

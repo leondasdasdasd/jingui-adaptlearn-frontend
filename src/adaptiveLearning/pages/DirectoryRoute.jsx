@@ -807,6 +807,27 @@ export default function DirectoryRoute() {
             )
           }
           onStart={start}
+          onStartUnitAssessment={(chapter) => {
+            const allKps = (chapter.sections || []).flatMap(
+              (s) => s.knowledgePoints || [],
+            );
+            start(
+              {
+                chapter,
+                isUnitAssessment: true,
+                section: {
+                  id: `unit-assessment-${chapter.id}`,
+                  isUnitAssessment: true,
+                  chapterId: chapter.id,
+                  title: `${chapter.title} · 单元测试`,
+                  index: "单元测试",
+                  knowledgePoints: allKps,
+                },
+                knowledgePoints: allKps,
+              },
+              { entryMode: "assessment_first" },
+            );
+          }}
           onStartNewLesson={(selection) =>
             start(selection, { entryMode: "new_lesson" })
           }

@@ -82,19 +82,24 @@ export default function CourseSwitcher({ currentCourse, onSelectCourse }) {
     { label: "下册", value: "下册" },
   ];
 
+  const subjectsList = [
+    { id: "math", name: "数学", enabled: true },
+    { id: "science", name: "科学", enabled: true },
+    { id: "physics", name: "物理", enabled: true },
+    { id: "others", name: "其他学科", enabled: false, tag: "敬请期待" },
+  ];
+
   const handleConfirmSwitch = (
     grade = tempGrade,
     term = tempTerm,
     subject = tempSubject,
   ) => {
-    if (subject !== "数学") {
-      return;
-    }
     const targetGrade = `${grade}${term}`;
+    const publisher = subject === "物理" ? "人教版" : "浙教版";
     const matched = findCourse({
-      subject: "数学",
+      subject,
       grade: targetGrade,
-      publisher: "浙教版",
+      publisher,
     });
 
     if (matched) {
@@ -206,22 +211,37 @@ export default function CourseSwitcher({ currentCourse, onSelectCourse }) {
                   <span>学科选择</span>
                 </div>
                 <div className="switcher-chips-grid subjects-grid">
-                  <button
-                    type="button"
-                    className="switcher-chip-btn selected"
-                    onClick={() => setTempSubject("数学")}
-                  >
-                    <span>数学</span>
-                    <Check size={14} className="chip-check-icon" />
-                  </button>
-                  <button
-                    type="button"
-                    disabled
-                    className="switcher-chip-btn disabled"
-                  >
-                    <span>其他学科</span>
-                    <span className="chip-tag-muted">敬请期待</span>
-                  </button>
+                  {subjectsList.map((sub) => {
+                    const isSelected = tempSubject === sub.name;
+                    if (!sub.enabled) {
+                      return (
+                        <button
+                          key={sub.id}
+                          type="button"
+                          disabled
+                          className="switcher-chip-btn disabled"
+                        >
+                          <span>{sub.name}</span>
+                          <span className="chip-tag-muted">
+                            {sub.tag || "敬请期待"}
+                          </span>
+                        </button>
+                      );
+                    }
+                    return (
+                      <button
+                        key={sub.id}
+                        type="button"
+                        className={`switcher-chip-btn ${isSelected ? "selected" : ""}`}
+                        onClick={() => setTempSubject(sub.name)}
+                      >
+                        <span>{sub.name}</span>
+                        {isSelected && (
+                          <Check size={14} className="chip-check-icon" />
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 

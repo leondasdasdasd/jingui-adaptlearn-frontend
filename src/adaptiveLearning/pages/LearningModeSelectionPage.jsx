@@ -1,23 +1,16 @@
 import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import {
-  ArrowLeft,
   ArrowRight,
-  BookOpen,
   Check,
-  Clock,
-  Layers3,
-  ScanSearch,
-  Sparkles,
-  Zap,
-  Target,
-  Award,
-  Video,
+  BookOpen,
   Edit3,
-  Star,
+  Award,
+  CheckCheck,
+  FastForward,
   Search,
-  ShieldCheck,
-  CheckCircle2,
+  FileText,
+  Sparkles,
 } from "lucide-react";
 
 import BrandLogo from "../components/BrandLogo";
@@ -33,27 +26,101 @@ import { useNavigate, useSearchParams } from "../routing";
 
 import "../styles/learning-mode-selection-page.css";
 
-const STEP_ICONS = {
-  video: Video,
-  edit: Edit3,
-  star: Star,
-  zap: Zap,
-  skip: Zap,
-  award: Award,
-  search: Search,
-  target: Target,
-  shield: ShieldCheck,
+/**
+ * 专为 AI 自适应学习机重绘的纯净矢量模式图标（替代传统火箭、靶子等陈旧符号）
+ */
+function NewLessonIcon({ size = 28, className = "" }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      {/* 展开的知识卷页与渐进通关阶梯 */}
+      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1-2.5-2.5z" />
+      <path d="M8 7h6" />
+      <path d="M8 11h4" />
+      <path d="M12 17l2.5-2.5 2.5 2.5" />
+      <path d="M14.5 14.5v4" />
+    </svg>
+  );
+}
+
+function FoundationIcon({ size = 28, className = "" }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      {/* 知识基石层叠与智能跳关快速推进 */}
+      <path d="M3 7l9-4 9 4-9 4-9-4z" />
+      <path d="M3 12l9 4 9-4" />
+      <path d="M3 17l9 4 9-4" />
+      <path d="M15 9.5l3 2-3 2" />
+    </svg>
+  );
+}
+
+function RemediationIcon({ size = 28, className = "" }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      {/* 单元智能诊断取景与精准聚焦点阵 */}
+      <path d="M3 7V4a1 1 0 0 1 1-1h3" />
+      <path d="M17 3h3a1 1 0 0 1 1 1v3" />
+      <path d="M21 17v3a1 1 0 0 1-1 1h-3" />
+      <path d="M7 21H4a1 1 0 0 1-1-1v-3" />
+      <circle cx="12" cy="12" r="3.5" />
+      <path d="M12 4.5v2" />
+      <path d="M12 17.5v2" />
+      <path d="M4.5 12h2" />
+      <path d="M17.5 12h2" />
+    </svg>
+  );
+}
+
+const MODE_CUSTOM_ICONS = {
+  "new-lesson": NewLessonIcon,
+  foundation: FoundationIcon,
+  remediation: RemediationIcon,
 };
 
-const MODE_ICONS = {
-  "book-open": BookOpen,
-  layers: Layers3,
-  "scan-search": ScanSearch,
+const STEP_ICONS = {
+  concept: BookOpen,
+  practice: Edit3,
+  milestone: Award,
+  check: Check,
+  skip: FastForward,
+  mastery: CheckCheck,
+  diagnostic: FileText,
+  locate: Search,
+  "target-mastery": Sparkles,
 };
 
 /**
- * 学习机风格的自选学习模式页面。
- * 设计目标：低幼友好、大色块、大圆角、实体按键触感、直观易懂，杜绝套餐对比感。
+ * 现代简约风格的 AI 自适应学习机模式选择主页面。
  */
 export default function LearningModeSelectionPage({
   onSelectMode,
@@ -97,26 +164,12 @@ export default function LearningModeSelectionPage({
     navigate(`${routes.directory}?mode=${selectedMode}&selected=1`);
   };
 
-  const handleBackToDirectory = () => {
-    navigate(routes.directory);
-  };
-
   return (
     <div className="learning-pad-page-root" id="learning-mode-selection-page">
-      {/* 顶部导航 */}
+      {/* 顶部极简导航栏 */}
       <header className="pad-navbar">
         <div className="pad-nav-left">
           <BrandLogo />
-          <div className="pad-nav-divider" />
-          <button
-            type="button"
-            className="pad-back-btn"
-            onClick={handleBackToDirectory}
-            aria-label="返回学习目录"
-          >
-            <ArrowLeft size={18} />
-            <span>返回课时目录</span>
-          </button>
         </div>
 
         <div className="pad-nav-right">
@@ -125,7 +178,7 @@ export default function LearningModeSelectionPage({
               {(studentIdentity?.studentName || "学").slice(0, 1)}
             </span>
             <span className="pad-student-name">
-              {studentIdentity?.studentName || "自主学习空间"}
+              {studentIdentity?.studentName || "AI 自适应学习空间"}
             </span>
             {studentIdentity?.className && (
               <span className="pad-student-class">· {studentIdentity.className}</span>
@@ -136,21 +189,7 @@ export default function LearningModeSelectionPage({
 
       {/* 主体画布 */}
       <main className="pad-container">
-        {/* 亲和可爱的引导区 */}
-        <section className="pad-hero">
-          <div className="pad-eyebrow">
-            <Sparkles size={16} className="text-amber-500" />
-            <span>学习机专属定制 · 选好就能开学</span>
-          </div>
-          <h1 className="pad-headline">
-            今天想怎么学？🎒
-          </h1>
-          <p className="pad-subtitle">
-            选一个最适合你的学习方式，点一下卡片就能开始通关！
-          </p>
-        </section>
-
-        {/* 学习机三大模式大卡片 */}
+        {/* 三大自适应学习模式卡片 */}
         <section
           className="pad-cards-row"
           role="radiogroup"
@@ -158,7 +197,8 @@ export default function LearningModeSelectionPage({
         >
           {DETAILED_MODE_CONFIGS.map((mode) => {
             const isSelected = selectedMode === mode.id;
-            const ModeIcon = MODE_ICONS[mode.iconName] || BookOpen;
+            const ModeIcon =
+              MODE_CUSTOM_ICONS[mode.iconName] || NewLessonIcon;
 
             return (
               <div
@@ -168,7 +208,7 @@ export default function LearningModeSelectionPage({
                   "--theme-color": mode.accentColor,
                   "--theme-bg": mode.accentBg,
                   "--theme-border": mode.accentBorder,
-                  "--theme-glow": mode.cardGlow || "rgba(59,130,246,0.15)",
+                  "--theme-glow": mode.cardGlow || "rgba(37,99,235,0.08)",
                 }}
                 role="radio"
                 aria-checked={isSelected}
@@ -181,7 +221,7 @@ export default function LearningModeSelectionPage({
                   }
                 }}
               >
-                {/* 顶部推荐徽章与选中对勾 */}
+                {/* 顶部标签与选中状态 */}
                 <div className="pad-card-topbar">
                   <span className="pad-recommend-badge">
                     {mode.kidRecommendBadge || mode.tag}
@@ -190,17 +230,14 @@ export default function LearningModeSelectionPage({
                     className={`pad-check-circle ${isSelected ? "checked" : ""}`}
                     aria-hidden="true"
                   >
-                    {isSelected ? <Check size={16} strokeWidth={3} /> : null}
+                    {isSelected ? <Check size={15} strokeWidth={2.5} /> : null}
                   </div>
                 </div>
 
-                {/* 模式大图标与标题 */}
+                {/* 模式重绘矢量图标与标题 */}
                 <div className="pad-card-main-header">
                   <div className="pad-card-avatar">
-                    <span className="pad-avatar-emoji">{mode.kidEmoji || "✨"}</span>
-                    <div className="pad-avatar-icon-small">
-                      <ModeIcon size={18} />
-                    </div>
+                    <ModeIcon size={26} />
                   </div>
                   <div className="pad-card-title-group">
                     <h2 className="pad-card-title">{mode.kidTitle || mode.title}</h2>
@@ -208,24 +245,21 @@ export default function LearningModeSelectionPage({
                   </div>
                 </div>
 
-                {/* 大白话说明（给孩子看的简明一句话） */}
-                <div className="pad-card-speech">
+                {/* 模式核心说明 */}
+                <div className="pad-card-desc-box">
                   <p>{mode.kidDescription || mode.summary}</p>
                 </div>
 
-                {/* 学习机3步闯关小地图 */}
+                {/* 进阶 3 步走微流程 */}
                 <div className="pad-card-journey">
-                  <div className="pad-journey-title">
-                    <span>闯关 3 步走</span>
-                  </div>
                   <div className="pad-journey-steps">
                     {(mode.kidPath || []).map((step, idx) => {
-                      const StepIcon = STEP_ICONS[step.icon] || Star;
+                      const StepIcon = STEP_ICONS[step.icon] || Check;
                       return (
                         <React.Fragment key={idx}>
                           <div className="pad-journey-step-item">
                             <div className="pad-journey-step-circle">
-                              <StepIcon size={14} />
+                              <StepIcon size={13} strokeWidth={2.2} />
                             </div>
                             <span className="pad-journey-step-label">
                               {step.label}
@@ -235,7 +269,9 @@ export default function LearningModeSelectionPage({
                             </span>
                           </div>
                           {idx < (mode.kidPath || []).length - 1 && (
-                            <div className="pad-journey-arrow">➔</div>
+                            <div className="pad-journey-arrow" aria-hidden="true">
+                              →
+                            </div>
                           )}
                         </React.Fragment>
                       );
@@ -243,19 +279,8 @@ export default function LearningModeSelectionPage({
                   </div>
                 </div>
 
-                {/* 底部信息标签与选择按钮 */}
+                {/* 底部选择操作按钮（已彻底去除时间限制与相关表达行） */}
                 <div className="pad-card-bottom">
-                  <div className="pad-card-meta-chips">
-                    <span className="pad-meta-chip">
-                      <Clock size={13} />
-                      {mode.estimatedDuration}
-                    </span>
-                    <span className="pad-meta-chip">
-                      <Zap size={13} />
-                      {mode.preAssessmentLabel}
-                    </span>
-                  </div>
-
                   <button
                     type="button"
                     className={`pad-select-btn ${isSelected ? "selected" : ""}`}
@@ -264,69 +289,29 @@ export default function LearningModeSelectionPage({
                       handleCardClick(mode.id);
                     }}
                   >
-                    {isSelected ? "已选这个模式 ✓" : "点击选择此模式"}
+                    {isSelected ? "已选定此模式 ✓" : "选择此模式"}
                   </button>
                 </div>
               </div>
             );
           })}
         </section>
-
-        {/* 学习机贴心伴学提示 */}
-        <section className="pad-helper-tip" aria-label="学习机伴学建议">
-          <div className="pad-helper-bubble">
-            <span className="pad-helper-emoji">💡</span>
-            <div className="pad-helper-text">
-              <strong>选模式小贴士：</strong>
-              如果是今天刚学的新章节，推荐选绿色【
-              <strong className="text-emerald-600">学新课</strong>
-              】；想快速写作业并跳过学会的内容，选蓝色【
-              <strong className="text-blue-600">打基础</strong>
-              】；单元复习和考前冲刺，选橙色【
-              <strong className="text-amber-600">查缺补漏</strong>
-              】！
-            </div>
-          </div>
-        </section>
       </main>
 
-      {/* 底部大按钮固定控制栏 */}
+      {/* 底部固定控制栏 */}
       <footer className="pad-footer-bar">
         <div className="pad-footer-content">
-          <div className="pad-footer-info">
-            <span className="pad-footer-chosen-icon">
-              {activeConfig.kidEmoji || "🎯"}
-            </span>
-            <div className="pad-footer-chosen-text">
-              <div className="pad-footer-chosen-title">
-                已选择：<strong>{activeConfig.kidTitle || activeConfig.title}</strong>
-              </div>
-              <div className="pad-footer-chosen-desc">
-                {activeConfig.kidMotto || activeConfig.summary}
-              </div>
-            </div>
-          </div>
-
-          <div className="pad-footer-actions">
-            <button
-              type="button"
-              className="pad-footer-back"
-              onClick={handleBackToDirectory}
-            >
-              返回课程目录
-            </button>
-            <button
-              type="button"
-              className="pad-footer-start-btn"
-              style={{
-                background: activeConfig.accentColor,
-              }}
-              onClick={handleConfirm}
-            >
-              <span>{activeConfig.ctaText || "选好了，开启学习！"}</span>
-              <ArrowRight size={20} strokeWidth={2.5} />
-            </button>
-          </div>
+          <button
+            type="button"
+            className="pad-footer-start-btn"
+            style={{
+              background: activeConfig.accentColor,
+            }}
+            onClick={handleConfirm}
+          >
+            <span>{activeConfig.ctaText || "选好了，开启学习！"}</span>
+            <ArrowRight size={18} strokeWidth={2.5} />
+          </button>
         </div>
       </footer>
     </div>
@@ -337,4 +322,5 @@ LearningModeSelectionPage.propTypes = {
   currentCourse: PropTypes.object,
   onSelectMode: PropTypes.func,
 };
+
 

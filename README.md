@@ -13,6 +13,7 @@
 ## 本地运行
 
 ```bash
+nvm use
 npm ci
 npm start
 ```
@@ -23,7 +24,7 @@ npm start
 
 > 当前使用模拟课堂与测评数据 / Mock classroom and assessment data are active.
 
-`npm run dev` 与 `npm start` 等价。项目不依赖 NVM；AI Studio 或其他云端编辑器直接使用满足 `package.json` 约束的 Node.js（22.22.2 及以上的 22.x、24.15.0 及以上的 24.x，或 26+），执行 `npm ci` 后再运行 `npm start`。依赖版本以 `package-lock.json` 为准，避免每次重建时发生漂移。
+`npm run dev` 与 `npm start` 等价。AI Studio 或其他云端编辑器应使用 `npm start`，并使用仓库中的 `.nvmrc` 与 `package-lock.json` 安装，避免每次重建时依赖版本漂移。
 
 需要连接真实接口时，在本地 `.env` 中设置 `VITE_ENABLE_ADAPTIVE_MOCKS=false` 后再启动。不要把包含密钥或 Cookie 的 `.env` 提交到仓库。
 

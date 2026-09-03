@@ -33,14 +33,35 @@
         }
 
         window.addEventListener('error', function (event) {
+          var isScriptTag = Boolean(
+            event.target &&
+            event.target.nodeType === 1 &&
+            event.target.tagName &&
+            event.target.tagName.toUpperCase() === 'SCRIPT'
+          );
+          var hasErrorMessage = Boolean(event.message || event.error);
+
+          if (!isScriptTag && !hasErrorMessage) {
+            return;
+          }
+
+          var msg = (event.message || (event.error && event.error.message) || '') + '';
+          if (/websocket|ws:\/\/|wss:\/\//i.test(msg)) {
+            return;
+          }
           showBootstrapFailure(event.error || event.message || 'Resource loading failed');
         }, true);
         window.addEventListener('unhandledrejection', function (event) {
+          var reason = event.reason || '';
+          var reasonMsg = (typeof reason === 'string' ? reason : (reason && reason.message) || '') + '';
+          if (/websocket|ws:\/\/|wss:\/\//i.test(reasonMsg)) {
+            return;
+          }
           showBootstrapFailure(event.reason || 'App initialization failed');
         });
         window.setTimeout(function () {
           showBootstrapFailure('App initialization timed out');
-        }, 15000);
+        }, 30000);
       })();
     </script>
     <script type="module" src="/src/main.jsx"></script>

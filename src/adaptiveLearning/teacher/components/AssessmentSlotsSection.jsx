@@ -1,11 +1,8 @@
-import React, { useMemo, useState } from "react";
-import { ListChecks, ListFilter } from "lucide-react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import { trans } from "../../../utils/i18n";
-import { projectAssessmentKnowledgeCoverage } from "../presentation/assessmentKnowledgeCoverage";
 import { projectAssessmentSlots } from "../presentation/assessmentPresentation";
-import AssessmentKnowledgeCoverageQuery from "./AssessmentKnowledgeCoverageQuery";
 import AssessmentSlotErrorBanner from "./AssessmentSlotErrorBanner";
 import AssessmentSlotList from "./AssessmentSlotList";
 import AssessmentSlotToolbar from "./AssessmentSlotToolbar";
@@ -62,12 +59,10 @@ export default function AssessmentSlotsSection({
   onCreateQuestion,
   onGenerateQuestion,
   onOpenMatrixCell,
-  countEmptySlotsAsPlanned = false,
 }) {
   const [matrixMissingErrorVisible, setMatrixMissingErrorVisible] =
     useState(false);
   const [expansionMode, setExpansionMode] = useState("default");
-  const [workspaceView, setWorkspaceView] = useState("slots");
   const slotView = projectAssessmentSlots({
     hasMatrix,
     questionSlots,
@@ -85,15 +80,6 @@ export default function AssessmentSlotsSection({
     setMatrixMissingErrorVisible,
     onGenerateQuestions,
   );
-  const coverageRows = useMemo(
-    () =>
-      projectAssessmentKnowledgeCoverage({
-        knowledgePoints,
-        slots: slotView.slots,
-        countEmptySlotsAsPlanned,
-      }),
-    [countEmptySlotsAsPlanned, knowledgePoints, slotView.slots],
-  );
 
   return (
     <section
@@ -104,90 +90,49 @@ export default function AssessmentSlotsSection({
         "题目插槽",
       )}
     >
-      {knowledgePoints.length > 1 && (
-        <div
-          className="assessment-slot-view-switch"
-          role="tablist"
-          aria-label={trans(
-            "adaptiveLearning.assessment.slotViewMode",
-            "插槽查看方式",
-          )}
-        >
-          <button
-            className="assessment-slot-view-option"
-            type="button"
-            role="tab"
-            aria-selected={workspaceView === "slots"}
-            onClick={() => setWorkspaceView("slots")}
-          >
-            <ListChecks size={15} />
-            {trans("adaptiveLearning.assessment.slotView", "插槽视图")}
-          </button>
-          <button
-            className="assessment-slot-view-option"
-            type="button"
-            role="tab"
-            aria-selected={workspaceView === "coverage"}
-            onClick={() => setWorkspaceView("coverage")}
-          >
-            <ListFilter size={15} />
+      <AssessmentSlotToolbar
+        slotView={slotView}
+        generationDisabled={generationDisabled}
+        onGenerateSlots={handleGenerateSlots}
+        onGenerateQuestions={handleGenerateQuestions}
+        onStopQuestions={onStopQuestions}
+      />
+      <AssessmentSlotErrorBanner
+        visible={matrixMissingErrorVisible}
+        onClose={() => setMatrixMissingErrorVisible(false)}
+      />
+      {slotView.slots.length > 0 && (
+        <div className="assessment-slot-expansion-actions">
+          <button type="button" onClick={() => setExpansionMode("all")}>
             {trans(
-              "adaptiveLearning.assessment.queryKnowledgeCoverage",
-              "知识点覆盖查询",
+              "adaptiveLearning.assessment.expandAllSlots",
+              "全部展开",
+            )}
+          </button>
+          <button type="button" onClick={() => setExpansionMode("none")}>
+            {trans(
+              "adaptiveLearning.assessment.collapseAllSlots",
+              "全部收起",
             )}
           </button>
         </div>
       )}
-      {workspaceView === "coverage" && (
-        <AssessmentKnowledgeCoverageQuery rows={coverageRows} />
-      )}
-      {workspaceView === "slots" && (
-        <>
-          <AssessmentSlotToolbar
-            slotView={slotView}
-            generationDisabled={generationDisabled}
-            onGenerateSlots={handleGenerateSlots}
-            onGenerateQuestions={handleGenerateQuestions}
-            onStopQuestions={onStopQuestions}
-          />
-          <AssessmentSlotErrorBanner
-            visible={matrixMissingErrorVisible}
-            onClose={() => setMatrixMissingErrorVisible(false)}
-          />
-          {slotView.slots.length > 0 && (
-            <div className="assessment-slot-expansion-actions">
-              <button type="button" onClick={() => setExpansionMode("all")}>
-                {trans(
-                  "adaptiveLearning.assessment.expandAllSlots",
-                  "全部展开",
-                )}
-              </button>
-              <button type="button" onClick={() => setExpansionMode("none")}>
-                {trans(
-                  "adaptiveLearning.assessment.collapseAllSlots",
-                  "全部收起",
-                )}
-              </button>
-            </div>
-          )}
-          <AssessmentSlotList
-            slots={slotView.slots}
-            expansionMode={expansionMode}
-            disabled={generationDisabled}
-            onSelectQuestion={onSelectQuestion}
-            onCreateQuestion={onCreateQuestion}
-            onGenerateQuestion={onGenerateQuestion}
-            onRemoveQuestion={onRemoveQuestion}
-            onOpenMatrixCell={onOpenMatrixCell}
-          />
-          <AssessmentUnassignedQuestions
-            questions={unassignedQuestions}
-            slots={slotView.slots}
-            disabled={generationDisabled}
-            onAssign={onAssignQuestion}
-          />
-        </>
-      )}
+      <AssessmentSlotList
+        slots={slotView.slots}
+        expansionMode={expansionMode}
+        disabled={generationDisabled}
+        onSelectQuestion={onSelectQuestion}
+        onCreateQuestion={onCreateQuestion}
+        onGenerateQuestion={onGenerateQuestion}
+        onRemoveQuestion={onRemoveQuestion}
+        onOpenMatrixCell={onOpenMatrixCell}
+      />
+      <AssessmentUnassignedQuestions
+        questions={unassignedQuestions}
+        slots={slotView.slots}
+        disabled={generationDisabled}
+        onAssign={onAssignQuestion}
+      />
     </section>
   );
 }

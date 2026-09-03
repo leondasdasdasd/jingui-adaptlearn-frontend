@@ -13,6 +13,10 @@ try {
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
+  const bootstrapState = document.getElementById("app-bootstrap-state");
+  if (bootstrapState) {
+    bootstrapState.remove();
+  }
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>

@@ -23,33 +23,119 @@ export function projectUnitAssessmentEntry(chapter) {
  */
 export function projectUnitAssessmentContent(content) {
   const matrixCellById = new Map(
-    content.matrixCells.map((item) => [String(item.matrixCellId), item]),
+    (content.matrixCells || []).map((item) => [
+      String(item.matrixCellId),
+      item,
+    ]),
   );
-  const knowledgePoints = content.knowledgePoints.map((item) => ({
+  const knowledgePoints = (content.knowledgePoints || []).map((item) => ({
     id: String(item.id),
     name: String(item.name),
   }));
+
+  const rawMatrix = content.matrix || {
+    assessmentPolicyId: "math-assessment-matrix-v1",
+    policyVersion: "math-assessment-matrix-v1",
+    scopeId: String(content.chapterId || "unit"),
+    knowledgePointId: String(content.chapterId || "unit"),
+    knowledgePointIds: knowledgePoints.map((kp) => kp.id),
+    targetStatement: `全面考查${content.chapterTitle || "本单元"}的核心数学概念理解、多步程序推理与综合建模能力，达成90%掌握率要求。`,
+    rationale:
+      "单元认知评估矩阵跨课时覆盖核心表征、计算与推理、情境建模与探究迁移，作为单元综合测试插槽生成基准。",
+    reviewStatus: "APPROVED",
+    generationSource: "AI_GENERATED",
+    cells: content.matrixCells || [],
+  };
+
+  const domainIds = new Set(["CR", "PJ", "M", "SF"]);
+  const applicableCells = (rawMatrix.cells || [])
+    .filter((cell) => domainIds.has(cell.domain))
+    .map((cell) => ({
+      cellId: cell.matrixCellId,
+      assessmentPolicyId:
+        rawMatrix.assessmentPolicyId || "math-assessment-matrix-v1",
+      domain: cell.domain,
+      level: cell.targetLevel,
+      role: cell.role || "CORE",
+      observableBehavior: cell.observableBehavior || "",
+      evidenceCriteria: cell.evidenceCriteria || [],
+      variationRequirements: cell.variationRequirements || [],
+      commonMisconceptions: cell.commonMisconceptions || [],
+      recommendedQuestionTypes: cell.recommendedQuestionTypes || [],
+      requiredSlotCount: cell.minimumIndependentEvidence || 1,
+      questions: [],
+    }));
+
+  const projectedMatrix = {
+    assessmentPolicyId:
+      rawMatrix.assessmentPolicyId || "math-assessment-matrix-v1",
+    knowledgePointIds:
+      rawMatrix.knowledgePointIds || knowledgePoints.map((kp) => kp.id),
+    knowledgePointId:
+      rawMatrix.knowledgePointId || String(content.chapterId || "unit"),
+    targetStatement: rawMatrix.targetStatement,
+    rationale: rawMatrix.rationale,
+    reviewStatus: rawMatrix.reviewStatus || "APPROVED",
+    generationSource: rawMatrix.generationSource || "AI_GENERATED",
+    cells: applicableCells,
+    applicableCellCount: applicableCells.length,
+    coreCellCount: applicableCells.filter((c) => c.role === "CORE").length,
+    evidenceSatisfiedCellCount: 0,
+  };
+
+  const questionSlots = (content.questionSlots || []).map((slot) => {
+    const primaryKnowledgePointIds = Array.isArray(slot.primaryKnowledgePointIds)
+      ? slot.primaryKnowledgePointIds.map(String)
+      : slot.primaryKnowledgePointId
+        ? [String(slot.primaryKnowledgePointId)]
+        : [];
+    const secondaryKnowledgePointIds = Array.isArray(
+      slot.secondaryKnowledgePointIds,
+    )
+      ? slot.secondaryKnowledgePointIds.map(String)
+      : [];
+    const knowledgePointIds = Array.isArray(slot.knowledgePointIds)
+      ? slot.knowledgePointIds.map(String)
+      : [
+          ...new Set([
+            ...primaryKnowledgePointIds,
+            ...secondaryKnowledgePointIds,
+          ]),
+        ];
+
+    return {
+      id: String(slot.id),
+      matrixCellId: String(slot.matrixCellId),
+      matrixCode:
+        matrixCellById.get(String(slot.matrixCellId))?.matrixCellCode ||
+        slot.matrixCellCode ||
+        "-",
+      knowledgePointIds,
+      primaryKnowledgePointIds,
+      primaryKnowledgePointId:
+        primaryKnowledgePointIds[0] ||
+        String(slot.primaryKnowledgePointId || ""),
+      secondaryKnowledgePointIds,
+      questionType: String(slot.questionType),
+      difficulty: String(slot.difficulty),
+      questions: slot.questions || [],
+    };
+  });
+
   return {
+    chapterId: String(content.chapterId || ""),
+    chapterTitle: String(content.chapterTitle || ""),
     knowledgePointCount: knowledgePoints.length,
-    plannedQuestionCount: content.questionSlots.length,
+    plannedQuestionCount: questionSlots.length,
     knowledgePoints,
     assessment: {
-      hasMatrix: content.matrixCells.length > 0,
-      questionSlots: content.questionSlots.map((slot) => ({
-        id: String(slot.id),
-        matrixCellId: String(slot.matrixCellId),
-        matrixCode:
-          matrixCellById.get(String(slot.matrixCellId))?.matrixCellCode || "-",
-        knowledgePointIds: [
-          String(slot.primaryKnowledgePointId),
-          ...slot.secondaryKnowledgePointIds.map(String),
-        ],
-        primaryKnowledgePointId: String(slot.primaryKnowledgePointId),
-        secondaryKnowledgePointIds: slot.secondaryKnowledgePointIds.map(String),
-        questionType: String(slot.questionType),
-        difficulty: String(slot.difficulty),
-        questions: [],
-      })),
+      scopeId: String(content.chapterId || "unit"),
+      hasMatrix: (content.matrixCells || []).length > 0,
+      matrix: projectedMatrix,
+      isGeneratingMatrix: false,
+      isBusy: false,
+      slots: questionSlots,
+      questionSlots,
       slotGeneration: {
         states: [],
         isPlanning: false,

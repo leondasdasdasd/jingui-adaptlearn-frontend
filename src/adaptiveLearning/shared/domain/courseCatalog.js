@@ -1,9 +1,11 @@
+import { ALL_PHYSICS_COURSES } from "./courseCatalog/physicsCourses.js";
 import {
   bnupGrade7Up,
   ecnuGrade7Up,
   pepGrade7Up,
   sukehGrade7Up,
 } from "./courseCatalog/publisherCourses.js";
+import { ALL_SCIENCE_COURSES } from "./courseCatalog/scienceCourses.js";
 import { zhejiangGrade7Up } from "./courseCatalog/zhejiangGrade7Up.js";
 import {
   zhejiangGrade7Down,
@@ -32,6 +34,8 @@ export const ALL_COURSES = [
   bnupGrade7Up,
   sukehGrade7Up,
   ecnuGrade7Up,
+  ...ALL_SCIENCE_COURSES,
+  ...ALL_PHYSICS_COURSES,
 ];
 
 // 默认标准课程 (浙教版 七年级上册)
@@ -62,7 +66,7 @@ export function findCourse({
   const publisherMatched = ALL_COURSES.find(
     (item) =>
       (item.publisher === publisher || item.publisherKey === publisher) &&
-      item.subject === subject,
+      (item.subject === subject || item.subject.includes(subject)),
   );
   if (publisherMatched) return publisherMatched;
 
@@ -70,9 +74,15 @@ export function findCourse({
   const gradeMatched = ALL_COURSES.find(
     (item) =>
       (item.grade === grade || item.gradeKey === grade) &&
-      item.subject === subject,
+      (item.subject === subject || item.subject.includes(subject)),
   );
   if (gradeMatched) return gradeMatched;
+
+  // Fallback by subject
+  const subjectMatched = ALL_COURSES.find(
+    (item) => item.subject === subject || item.subject.includes(subject),
+  );
+  if (subjectMatched) return subjectMatched;
 
   return course;
 }
@@ -129,6 +139,24 @@ function lessonWithCatalogContext(lesson, chapter, catalogCourse) {
 export function findLessonById(lessonId) {
   for (const c of ALL_COURSES) {
     for (const chapter of c.chapters || []) {
+      if (lessonId && lessonId.startsWith("unit-assessment-")) {
+        const chapterId = lessonId.replace("unit-assessment-", "");
+        if (chapter.id === chapterId) {
+          const allKps = (chapter.sections || []).flatMap(
+            (s) => s.knowledgePoints || [],
+          );
+          return lessonWithCatalogContext(
+            {
+              id: lessonId,
+              title: `${chapter.title} · 单元测试`,
+              index: "单元测试",
+              knowledgePoints: allKps,
+            },
+            chapter,
+            c,
+          );
+        }
+      }
       for (const s of chapter.sections || []) {
         if (s.id === lessonId) {
           return lessonWithCatalogContext(s, chapter, c);

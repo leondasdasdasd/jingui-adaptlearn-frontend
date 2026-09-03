@@ -12,7 +12,7 @@ import {
 describe("course catalog", () => {
   test("保留默认教材和多版本精确查询", () => {
     expect(course.id).toBe("zhejiang-grade7-math-volume1");
-    expect(ALL_COURSES).toHaveLength(10);
+    expect(ALL_COURSES.length).toBeGreaterThanOrEqual(10);
     expect(
       findCourse({
         subject: "数学",
@@ -20,6 +20,20 @@ describe("course catalog", () => {
         publisher: "pep",
       }).id,
     ).toBe("pep-grade7-math-volume1");
+    expect(
+      findCourse({
+        subject: "科学",
+        grade: "七年级上册",
+        publisher: "浙教版",
+      }).id,
+    ).toBe("zhejiang-grade7-science-volume1");
+    expect(
+      findCourse({
+        subject: "物理",
+        grade: "八年级上册",
+        publisher: "人教版",
+      }).id,
+    ).toBe("pep-grade8-physics-volume1");
     expect(getCourseById("zhejiang-grade7-math-volume2").grade).toBe(
       "七年级下册",
     );

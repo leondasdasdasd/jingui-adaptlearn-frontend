@@ -524,7 +524,7 @@ export default function QuizPageView({ viewModel }) {
                 确认要退出练习吗？
               </h3>
               <p className="exit-confirm-desc">
-                当前练习进度已为你自动保存。坚持完成本轮练习，能更快巩固掌握知识点哦！
+                坚持完成本轮练习，能更快巩固掌握知识点哦！
               </p>
               <div className="exit-confirm-btn-group">
                 <button

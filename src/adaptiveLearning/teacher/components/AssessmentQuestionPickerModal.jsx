@@ -242,17 +242,8 @@ export default function AssessmentQuestionPickerModal({
         <header>
           <div>
             <h2 id="assessment-picker-title">
-              {trans(
-                "adaptiveLearning.assessment.selectRealQuestions",
-                "选择真实题目",
-              )}
+              {trans("adaptiveLearning.assessment.addQuestion", "添加题目")}
             </h2>
-            <p>
-              {trans(
-                "adaptiveLearning.assessment.questionSnapshotNotice",
-                "导入后保存内容快照，源题更新不会改变已发布课时",
-              )}
-            </p>
           </div>
           <button
             type="button"

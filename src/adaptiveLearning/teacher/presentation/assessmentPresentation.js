@@ -99,30 +99,30 @@ function projectSlotKnowledgePoints(slot, knowledgePointById) {
   const knowledgePointIds = Array.isArray(slot.knowledgePointIds)
     ? slot.knowledgePointIds.map(String)
     : [];
-  const primaryKnowledgePointId = String(
-    slot.primaryKnowledgePointId || knowledgePointIds[0] || "",
-  );
+  const primaryKnowledgePointIds = Array.isArray(slot.primaryKnowledgePointIds)
+    ? slot.primaryKnowledgePointIds.map(String)
+    : slot.primaryKnowledgePointId
+      ? [String(slot.primaryKnowledgePointId)]
+      : knowledgePointIds.slice(0, 1);
+  const primaryIdSet = new Set(primaryKnowledgePointIds);
   const secondaryKnowledgePointIds = Array.isArray(
     slot.secondaryKnowledgePointIds,
   )
     ? slot.secondaryKnowledgePointIds.map(String)
-    : knowledgePointIds.filter((id) => id !== primaryKnowledgePointId);
-  const primaryBadge = primaryKnowledgePointId
-    ? {
-        id: primaryKnowledgePointId,
-        label:
-          knowledgePointById.get(primaryKnowledgePointId)?.name ||
-          primaryKnowledgePointId,
-        role: "primary",
-      }
-    : null;
+    : knowledgePointIds.filter((id) => !primaryIdSet.has(id));
+  const primaryBadges = primaryKnowledgePointIds.map((id) => ({
+    id,
+    label: knowledgePointById.get(id)?.name || id,
+    role: "primary",
+  }));
   const secondaryBadges = secondaryKnowledgePointIds.map((id) => ({
     id,
     label: knowledgePointById.get(id)?.name || id,
     role: "secondary",
   }));
   return {
-    primaryBadge,
+    primaryBadges,
+    primaryBadge: primaryBadges[0] || null,
     secondaryBadges,
   };
 }
@@ -147,7 +147,7 @@ function projectAssessmentSlot(
     translate,
     SLOT_STATUS_DEFINITIONS.get(status),
   );
-  const { primaryBadge, secondaryBadges } = projectSlotKnowledgePoints(
+  const { primaryBadges, secondaryBadges } = projectSlotKnowledgePoints(
     slot,
     knowledgePointById,
   );
@@ -166,7 +166,9 @@ function projectAssessmentSlot(
     questionType,
     difficulty,
     difficultyLabel,
-    knowledgePointBadges: [primaryBadge, ...secondaryBadges].filter(Boolean),
+    knowledgePointBadges: [...primaryBadges, ...secondaryBadges].filter(
+      Boolean,
+    ),
     status,
     statusLabel,
     questionTypeLabel,

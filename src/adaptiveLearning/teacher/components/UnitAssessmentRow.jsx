@@ -1,8 +1,11 @@
 import React from "react";
-import { ChevronRight, Layers3 } from "lucide-react";
+import { CheckCircle2, ChevronRight, CircleDashed, Layers3 } from "lucide-react";
 import PropTypes from "prop-types";
 
-import { curriculumText } from "../presentation/curriculumPresentation";
+import {
+  curriculumContentStatus,
+  curriculumText,
+} from "../presentation/curriculumPresentation";
 
 /**
  * 章节末尾的单元测试内容入口，不参与课时批量生成与课堂启动。
@@ -11,6 +14,10 @@ import { curriculumText } from "../presentation/curriculumPresentation";
  * @param root0.onOpen
  */
 export default function UnitAssessmentRow({ entry, onOpen }) {
+  const contentStatus = entry.status || "published";
+  const contentMeta = curriculumContentStatus(contentStatus);
+  const versionNumber = entry.publishedVersionNumber || 1;
+
   return (
     <article className="batch-unit-row" role="listitem">
       <span className="batch-unit-icon" aria-hidden="true">
@@ -30,11 +37,24 @@ export default function UnitAssessmentRow({ entry, onOpen }) {
             )}
           </small>
         </span>
-        <span className="batch-unit-action">
-          {curriculumText("editUnitAssessment", "编辑单元测试内容")}
-          <ChevronRight size={14} />
-        </span>
       </button>
+      <span className={`batch-content-status ${contentMeta.tone}`}>
+        {contentStatus === "published" ? (
+          <CheckCircle2 size={14} />
+        ) : (
+          <CircleDashed size={14} />
+        )}
+        {contentMeta.label}
+      </span>
+      <span className="batch-version">
+        {versionNumber ? `V${versionNumber}` : "—"}
+      </span>
+      <div className="batch-row-actions">
+        <button className="batch-review-link" type="button" onClick={onOpen}>
+          <span>{curriculumText("editContent", "编辑内容")}</span>
+          <ChevronRight size={14} />
+        </button>
+      </div>
     </article>
   );
 }
@@ -44,6 +64,8 @@ UnitAssessmentRow.propTypes = {
     chapterId: PropTypes.string.isRequired,
     lessonCount: PropTypes.number.isRequired,
     knowledgePointCount: PropTypes.number.isRequired,
+    status: PropTypes.string,
+    publishedVersionNumber: PropTypes.number,
   }).isRequired,
   onOpen: PropTypes.func.isRequired,
 };

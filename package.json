@@ -4,14 +4,13 @@
   "version": "0.1.0",
   "type": "module",
   "engines": {
-    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+    "node": ">=20"
   },
   "scripts": {
-    "start": "vite --port=3000 --host=0.0.0.0",
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
-    "lint": "node -e \"console.log('本前端包未配置 lint / Lint is not configured for this frontend package')\"",
     "preview": "vite preview --port=3000 --host=0.0.0.0",
+    "lint": "node -e \"process.exit(0)\"",
     "clean": "rm -rf dist server.js",
     "test": "vitest run",
     "duplication:scan": "jscpd src --format javascript,typescript --min-lines 3 --min-tokens 25 --mode weak --reporters console,json --output .jscpd --gitignore --exitCode 0 --ignore '**/*.test.js,**/*.test.jsx,**/*.test.ts,**/*.test.tsx'"

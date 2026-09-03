@@ -4,8 +4,11 @@ import {
   ChevronDown,
   ChevronRight,
   Clock3,
+  Layers3,
   Search,
 } from "lucide-react";
+
+import { CLASSROOM_LEARNING_MODE } from "../../shared/domain/classroomLearningMode";
 
 /**
  * 章节目录导航侧边栏
@@ -13,13 +16,21 @@ import {
  * @param root0.course
  * @param root0.selectedSection
  * @param root0.onChooseSection
+ * @param root0.onChooseUnitAssessment
+ * @param root0.learningMode
  */
 export default function ChapterNavigator({
   course,
   selectedSection,
   onChooseSection,
+  onChooseUnitAssessment,
+  learningMode,
 }) {
   const [keyword, setKeyword] = useState("");
+
+  const isUnitFirst =
+    learningMode === CLASSROOM_LEARNING_MODE.REMEDIATION ||
+    learningMode === "REMEDIATION";
 
   // 默认让所有章节保持展开状态，用户可随时独立折叠/展开任意章节
   const [expandedIds, setExpandedIds] = useState(() => {
@@ -42,6 +53,9 @@ export default function ChapterNavigator({
   const filteredChapters = useMemo(() => {
     if (!keyword.trim()) return course.chapters;
     const lower = keyword.trim().toLowerCase();
+    const matchesGeneralAssessment =
+      "单元测试".includes(lower) || "测验".includes(lower) || "诊断".includes(lower);
+
     return course.chapters
       .map((chapter) => {
         const matchedSections = chapter.sections.filter(
@@ -54,7 +68,8 @@ export default function ChapterNavigator({
         );
         if (
           chapter.title.toLowerCase().includes(lower) ||
-          matchedSections.length > 0
+          matchedSections.length > 0 ||
+          matchesGeneralAssessment
         ) {
           return {
             ...chapter,
@@ -88,6 +103,66 @@ export default function ChapterNavigator({
           filteredChapters.map((chapter, idx) => {
             const isExpanded =
               expandedIds.has(chapter.id) || Boolean(keyword.trim());
+            const isUnitSelected = Boolean(
+              selectedSection?.isUnitAssessment &&
+                (selectedSection.chapterId === chapter.id ||
+                  selectedSection.id === `unit-assessment-${chapter.id}`),
+            );
+            const chapterKpCount = new Set(
+              (chapter.sections || []).flatMap((sec) =>
+                (sec.knowledgePoints || []).map((kp) => kp.id),
+              ),
+            ).size;
+
+            const handleSelectUnitAssessment = () => {
+              if (onChooseUnitAssessment) {
+                onChooseUnitAssessment(chapter);
+              } else if (onChooseSection) {
+                onChooseSection(chapter, {
+                  id: `unit-assessment-${chapter.id}`,
+                  isUnitAssessment: true,
+                  chapterId: chapter.id,
+                  title: `${chapter.title} · 单元测试`,
+                  index: "单元测试",
+                  knowledgePoints: chapter.sections.flatMap(
+                    (s) => s.knowledgePoints || [],
+                  ),
+                });
+              }
+            };
+
+            const renderUnitAssessmentBtn = (
+              <button
+                type="button"
+                key={`unit-assessment-${chapter.id}`}
+                className={`modern-unit-assessment-nav-btn ${isUnitSelected ? "active" : ""} ${isUnitFirst ? "position-first" : "position-last"}`}
+                onClick={handleSelectUnitAssessment}
+                aria-label={`${chapter.title} 单元测试`}
+              >
+                <div className="unit-nav-btn-left">
+                  <span className="unit-nav-icon-badge">
+                    <Layers3 size={14} />
+                  </span>
+                  <div className="unit-nav-text-col">
+                    <span className="unit-nav-title">单元测试</span>
+                    <span className="unit-nav-desc">
+                      {chapter.sections.length} 课时 · {chapterKpCount} 考点
+                    </span>
+                  </div>
+                </div>
+                <div className="unit-nav-btn-right">
+                  {isUnitSelected ? (
+                    <ChevronRight
+                      size={15}
+                      className="text-purple-600 font-bold"
+                    />
+                  ) : (
+                    <span className="unit-nav-badge">诊断</span>
+                  )}
+                </div>
+              </button>
+            );
+
             return (
               <div
                 className={`modern-chapter-card ${isExpanded ? "expanded" : "collapsed"}`}
@@ -122,8 +197,13 @@ export default function ChapterNavigator({
 
                 {isExpanded && (
                   <div className="section-items-wrapper">
+                    {/* 单元测试模式（查缺补漏）下，单元测试排在第一个；普通模式排在最后一个 */}
+                    {isUnitFirst && renderUnitAssessmentBtn}
+
                     {chapter.sections.map((section) => {
-                      const isSelected = selectedSection?.id === section.id;
+                      const isSelected =
+                        !selectedSection?.isUnitAssessment &&
+                        selectedSection?.id === section.id;
                       return (
                         <button
                           type="button"
@@ -152,6 +232,8 @@ export default function ChapterNavigator({
                         </button>
                       );
                     })}
+
+                    {!isUnitFirst && renderUnitAssessmentBtn}
                   </div>
                 )}
               </div>

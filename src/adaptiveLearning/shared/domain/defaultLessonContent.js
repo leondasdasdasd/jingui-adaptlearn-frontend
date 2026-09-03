@@ -55,6 +55,9 @@ function createQuestion({
   id,
   purpose = "pre",
   kpId,
+  kpIds,
+  primaryKpIds,
+  secondaryKpIds = [],
   type = "single_choice",
   difficulty = 1,
   stem,
@@ -71,6 +74,14 @@ function createQuestion({
       : normPurpose === "review"
         ? "review"
         : "diagnostic";
+  const primaryList = primaryKpIds || (kpId ? [kpId] : []);
+  const allIds = kpIds || [...new Set([...primaryList, ...secondaryKpIds])];
+  const primaryId = primaryList[0] || kpId || allIds[0];
+  const weights = {};
+  for (const id_ of allIds) {
+    weights[id_] = primaryList.includes(id_) ? 1 : 0.5;
+  }
+
   return {
     id,
     purpose:
@@ -100,10 +111,12 @@ function createQuestion({
           (type === "short_answer"
             ? shortAnswerRubrics["rubric-generic-explanation"]
             : []),
-    knowledgePointIds: [kpId],
-    primaryKnowledgePointId: kpId,
-    knowledgeObjectiveIds: [kpId],
-    knowledgePointWeights: { [kpId]: 1 },
+    knowledgePointIds: allIds,
+    primaryKnowledgePointIds: primaryList,
+    primaryKnowledgePointId: primaryId,
+    secondaryKnowledgePointIds: secondaryKpIds,
+    knowledgeObjectiveIds: allIds,
+    knowledgePointWeights: weights,
   };
 }
 
@@ -987,10 +1000,15 @@ function createAssessmentQuestionSlots(lessonId, knowledgePoints) {
       },
     ];
   }
+  const allKpIds = knowledgePoints.map((kp) => kp.id);
   slots.composite = [
     {
       id: `composite:slot:1`,
       knowledgePointId: "composite",
+      primaryKnowledgePointIds: allKpIds.slice(0, 2),
+      primaryKnowledgePointId: allKpIds[0] || "composite",
+      secondaryKnowledgePointIds: allKpIds.slice(2),
+      knowledgePointIds: allKpIds,
       matrixCellId: "composite:CR:B",
       difficulty: "D2",
       adaptiveRole: "standard",
@@ -998,6 +1016,36 @@ function createAssessmentQuestionSlots(lessonId, knowledgePoints) {
       taskCategory: "concept_or_calculation",
       assessmentFocus: "综合分析整课知识点的内在联系",
       contextTheme: "综合迁移情境",
+    },
+    {
+      id: `composite:slot:2`,
+      knowledgePointId: "composite",
+      primaryKnowledgePointIds: allKpIds.length > 2 ? [allKpIds[0], allKpIds[2]] : allKpIds,
+      primaryKnowledgePointId: allKpIds[0] || "composite",
+      secondaryKnowledgePointIds: allKpIds.filter((id) => id !== allKpIds[0] && id !== allKpIds[2]),
+      knowledgePointIds: allKpIds,
+      matrixCellId: "composite:M:C",
+      difficulty: "D3",
+      adaptiveRole: "standard",
+      questionType: "single_choice",
+      taskCategory: "application",
+      assessmentFocus: "跨知识点综合建模与应用",
+      contextTheme: "多知识点融合情境",
+    },
+    {
+      id: `composite:slot:3`,
+      knowledgePointId: "composite",
+      primaryKnowledgePointIds: [allKpIds[1] || allKpIds[0] || "composite"],
+      primaryKnowledgePointId: allKpIds[1] || allKpIds[0] || "composite",
+      secondaryKnowledgePointIds: allKpIds.filter((id, i) => i !== 1),
+      knowledgePointIds: allKpIds,
+      matrixCellId: "composite:PJ:C",
+      difficulty: "D3",
+      adaptiveRole: "standard",
+      questionType: "short_answer",
+      taskCategory: "reasoning",
+      assessmentFocus: "多步程序推理与综合应用",
+      contextTheme: "综合推理情境",
     },
   ];
   return slots;

@@ -252,38 +252,4 @@ describe("AssessmentSlotsSection", () => {
     expect(screen.getByText("第一道单选题")).toBeInTheDocument();
     expect(screen.getByText("第二道单选题")).toBeInTheDocument();
   });
-
-  test("switches composite slots to one shared knowledge coverage view", () => {
-    render(
-      <AssessmentSlotsSection
-        hasMatrix={true}
-        knowledgePoints={[
-          { id: "kp-1", name: "有理数" },
-          { id: "kp-2", name: "数轴" },
-        ]}
-        questionSlots={[
-          {
-            id: "slot-1",
-            matrixCellId: "unit:CR:B",
-            matrixCode: "CR · B",
-            primaryKnowledgePointId: "kp-1",
-            secondaryKnowledgePointIds: ["kp-2"],
-            knowledgePointIds: ["kp-1", "kp-2"],
-            questionType: "single_choice",
-            difficulty: "D3",
-            questions: [{ id: "q-1", type: "single_choice" }],
-          },
-        ]}
-      />,
-    );
-
-    expect(screen.getByText("主知识点 · 有理数")).toBeInTheDocument();
-    expect(screen.getByText("次知识点 · 数轴")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("tab", { name: "知识点覆盖" }));
-    expect(screen.queryByText("按插槽新增题目")).not.toBeInTheDocument();
-    expect(screen.getByRole("columnheader", { name: "3★" })).toBeVisible();
-    expect(screen.getByText("有理数")).toBeVisible();
-    fireEvent.click(screen.getByRole("tab", { name: "插槽视图" }));
-    expect(screen.getByText("按插槽新增题目")).toBeInTheDocument();
-  });
 });

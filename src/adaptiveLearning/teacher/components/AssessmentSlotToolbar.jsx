@@ -23,14 +23,8 @@ export default function AssessmentSlotToolbar({
 }) {
   return (
     <header className="assessment-slot-toolbar">
-      <div>
-        <strong>
-          {trans("adaptiveLearning.assessment.questionSlots", "题目插槽")}
-        </strong>
-        <span>{slotView.summary}</span>
-      </div>
+      <AssessmentSlotCounts slotView={slotView} />
       <div className="assessment-slot-toolbar-actions">
-        <AssessmentSlotCounts slotView={slotView} />
         <AssessmentSlotActions
           slotView={slotView}
           generationDisabled={generationDisabled}

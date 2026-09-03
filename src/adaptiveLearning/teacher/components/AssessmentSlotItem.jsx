@@ -48,62 +48,69 @@ export default function AssessmentSlotItem({
   return (
     <article className={`assessment-slot-item ${slot.status}`}>
       <header className="assessment-slot-item-header">
-        <button
-          type="button"
-          className="assessment-slot-expand"
-          aria-expanded={expanded}
-          aria-controls={`assessment-slot-panel-${slot.id}`}
-          onClick={() => setExpanded((current) => !current)}
-        >
-          {expanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
-          <strong>{slot.questionTypeLabel}</strong>
-        </button>
-        <div className="assessment-slot-header-meta">
+        <div className="assessment-slot-header-main">
           <button
             type="button"
-            className="assessment-slot-matrix-code"
-            onClick={() => onOpenMatrixCell?.(slot.matrixCellId)}
-            aria-label={trans(
-              "adaptiveLearning.assessment.openMatrixSlot",
-              "查看矩阵格 {$code} 的要求",
-              { code: slot.matrixCode },
-            )}
+            className="assessment-slot-expand"
+            aria-expanded={expanded}
+            aria-controls={`assessment-slot-panel-${slot.id}`}
+            onClick={() => setExpanded((current) => !current)}
+            aria-label={
+              slot.questionTypeLabel ||
+              trans("adaptiveLearning.assessment.toggleSlot", "展开/收起插槽")
+            }
           >
-            {slot.matrixCode}
+            {expanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
           </button>
-          <span>{slot.difficultyLabel}</span>
-          <span>
+          {slot.knowledgePointBadges && slot.knowledgePointBadges.length > 0 ? (
+            <div className="assessment-slot-knowledge-points">
+              {slot.knowledgePointBadges.map((item) => (
+                <span
+                  className={`assessment-kp-badge ${item.role}`}
+                  key={`${item.role}-${item.id}`}
+                >
+                  <span className={`assessment-kp-role-mark ${item.role}`}>
+                    {item.role === "primary"
+                      ? trans(
+                          "adaptiveLearning.assessment.primaryRoleShort",
+                          "主",
+                        )
+                      : trans(
+                          "adaptiveLearning.assessment.secondaryRoleShort",
+                          "次",
+                        )}
+                  </span>
+                  <span className="assessment-kp-label">{item.label}</span>
+                </span>
+              ))}
+            </div>
+          ) : (
+            <strong className="assessment-slot-fallback-label">
+              {slot.questionTypeLabel}
+            </strong>
+          )}
+        </div>
+        <div className="assessment-slot-header-meta">
+          <span className="assessment-slot-type-label">
+            {slot.questionTypeLabel}
+          </span>
+          <span className="assessment-slot-difficulty">
+            {slot.difficultyLabel}
+          </span>
+          <span className="assessment-slot-question-count">
             {trans(
               "adaptiveLearning.assessment.boundQuestionCount",
               "{$count} 题",
               { count: slot.questionCount },
             )}
           </span>
-          <span className={`assessment-slot-status ${slot.status}`}>
-            {slot.statusLabel}
-          </span>
+          {["running", "failed"].includes(slot.status) && (
+            <span className={`assessment-slot-status ${slot.status}`}>
+              {slot.statusLabel}
+            </span>
+          )}
         </div>
       </header>
-
-      {slot.knowledgePointBadges.length > 0 && (
-        <div className="assessment-slot-knowledge-points">
-          {slot.knowledgePointBadges.map((item) => (
-            <span className={item.role} key={`${item.role}-${item.id}`}>
-              {item.role === "primary"
-                ? trans(
-                    "adaptiveLearning.assessment.primaryKnowledgePoint",
-                    "主知识点 · {$name}",
-                    { name: item.label },
-                  )
-                : trans(
-                    "adaptiveLearning.assessment.secondaryKnowledgePoint",
-                    "次知识点 · {$name}",
-                    { name: item.label },
-                  )}
-            </span>
-          ))}
-        </div>
-      )}
 
       {expanded && (
         <div

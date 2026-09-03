@@ -142,10 +142,10 @@
   max-width: 82rem;
   width: 100%;
   margin: 0 auto;
-  padding: 2.25rem 2rem 7.5rem;
+  padding: 3rem 2rem 7.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  justify-content: center;
   position: relative;
   z-index: 1;
 }
@@ -193,49 +193,48 @@
   margin: 0;
 }
 
-/* 学习机三大模式大卡片 (核心网格) */
+/* /* 学习机三大模式大卡片 (核心网格) */
 .pad-cards-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.75rem;
+  gap: 1.5rem;
   align-items: stretch;
 }
 
-/* 学习机平板大卡片 */
+/* 简约现代的平板模式大卡片 (去除笨重3D按键投影与厚边框) */
 .pad-mode-card {
   background: #ffffff;
-  border: 3px solid #e2e8f0;
-  border-radius: 1.75rem; /* 28px 超大圆角 */
-  padding: 1.75rem 1.5rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 1.25rem;
+  padding: 1.6rem 1.4rem;
   display: flex;
   flex-direction: column;
-  gap: 1.35rem;
+  gap: 1.25rem;
   cursor: pointer;
   position: relative;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   text-align: left;
   user-select: none;
-  /* 学习机平板按键厚度感 */
-  box-shadow: 0 8px 0 #cbd5e1, 0 16px 24px -6px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
 }
 
 .pad-mode-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--theme-border, #93c5fd);
-  box-shadow: 0 12px 0 #94a3b8, 0 22px 30px -8px var(--theme-glow);
+  transform: translateY(-3px);
+  border-color: var(--theme-border, #cbd5e1);
+  box-shadow: 0 10px 24px -4px var(--theme-glow, rgba(15, 23, 42, 0.06));
 }
 
 /* 处于选中激活态 */
 .pad-mode-card.is-active {
   border-color: var(--theme-color, #2563eb);
-  background: linear-gradient(180deg, #ffffff 0%, var(--theme-bg, #eff6ff) 100%);
+  background: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 10px 0 var(--theme-color, #2563eb), 0 24px 36px -6px var(--theme-glow);
+  box-shadow: 0 12px 28px -6px var(--theme-glow, rgba(37, 99, 235, 0.12)),
+    0 0 0 1px var(--theme-color, #2563eb);
 }
 
 .pad-mode-card:active {
-  transform: translateY(4px);
-  box-shadow: 0 4px 0 var(--theme-color, #2563eb), 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+  transform: translateY(0);
 }
 
 /* 卡片顶部条：推荐小徽章 + 选中状态圈 */
@@ -249,148 +248,115 @@
 .pad-recommend-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.35rem 0.85rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 9999px;
-  font-size: 0.8125rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   background: var(--theme-bg, #eff6ff);
   color: var(--theme-color, #2563eb);
-  border: 1.5px solid var(--theme-border, #bfdbfe);
+  border: 1px solid var(--theme-border, #bfdbfe);
 }
 
 .pad-check-circle {
-  width: 2rem;
-  height: 2rem;
+  width: 1.75rem;
+  height: 1.75rem;
   border-radius: 50%;
-  border: 2.5px solid #cbd5e1;
+  border: 1.5px solid #cbd5e1;
   background: #ffffff;
   display: grid;
   place-items: center;
   color: #ffffff;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 .pad-check-circle.checked {
   border-color: var(--theme-color, #2563eb);
   background: var(--theme-color, #2563eb);
-  transform: scale(1.1);
-  box-shadow: 0 4px 10px var(--theme-glow);
+  transform: scale(1.05);
 }
 
 /* 模式大图标与标题组 */
 .pad-card-main-header {
   display: flex;
   align-items: center;
-  gap: 1.15rem;
+  gap: 1rem;
 }
 
 .pad-card-avatar {
-  width: 4.25rem;
-  height: 4.25rem;
-  border-radius: 1.25rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 0.875rem;
   background: var(--theme-bg, #eff6ff);
-  border: 2px solid var(--theme-border, #bfdbfe);
+  border: 1px solid var(--theme-border, #bfdbfe);
   display: grid;
   place-items: center;
-  position: relative;
+  color: var(--theme-color, #2563eb);
   flex-shrink: 0;
-  box-shadow: 0 6px 14px -4px var(--theme-glow);
   transition: transform 0.2s ease;
 }
 
 .pad-mode-card:hover .pad-card-avatar {
-  transform: scale(1.08) rotate(-3deg);
-}
-
-.pad-avatar-emoji {
-  font-size: 2.15rem;
-  line-height: 1;
-}
-
-.pad-avatar-icon-small {
-  position: absolute;
-  bottom: -4px;
-  right: -4px;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 1.5px solid var(--theme-border, #bfdbfe);
-  display: grid;
-  place-items: center;
-  color: var(--theme-color, #2563eb);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transform: scale(1.04);
 }
 
 .pad-card-title-group {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.15rem;
 }
 
 .pad-card-title {
-  font-size: 1.6rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: #0f172a;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .pad-card-motto {
-  font-size: 0.875rem;
-  font-weight: 700;
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: var(--theme-color, #2563eb);
   margin: 0;
 }
 
-/* 大白话对话气泡说明 */
-.pad-card-speech {
-  background: rgba(255, 255, 255, 0.95);
-  border: 2px solid #e2e8f0;
-  border-radius: 1rem;
+/* 核心说明区（替代原先厚重对话气泡） */
+.pad-card-desc-box {
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 0.75rem;
   padding: 0.85rem 1rem;
-  position: relative;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  min-height: 4.5rem;
+  display: flex;
+  align-items: center;
 }
 
-.pad-mode-card.is-active .pad-card-speech {
-  background: #ffffff;
+.pad-mode-card.is-active .pad-card-desc-box {
+  background: var(--theme-bg, #eff6ff);
   border-color: var(--theme-border, #bfdbfe);
 }
 
-.pad-card-speech p {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  line-height: 1.55;
+.pad-card-desc-box p {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.6;
   color: #334155;
   margin: 0;
 }
 
-/* 学习机3步闯关小地图 */
+/* 进阶 3 步走微流程（轻量微型点阵轴线） */
 .pad-card-journey {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  background: rgba(248, 250, 252, 0.8);
-  border: 1.5px dashed #cbd5e1;
-  border-radius: 1.15rem;
-  padding: 0.85rem 0.85rem 0.95rem;
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.5rem;
 }
 
 .pad-mode-card.is-active .pad-card-journey {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: var(--theme-border, #bfdbfe);
-}
-
-.pad-journey-title {
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding-left: 0.25rem;
+  border-color: #e2e8f0;
 }
 
 .pad-journey-steps {
@@ -406,24 +372,22 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.35rem;
+  gap: 0.25rem;
 }
 
 .pad-journey-step-circle {
-  width: 2rem;
-  height: 2rem;
+  width: 1.75rem;
+  height: 1.75rem;
   border-radius: 50%;
-  background: #ffffff;
-  border: 2px solid var(--theme-border, #cbd5e1);
+  background: var(--theme-bg, #eff6ff);
+  border: 1px solid var(--theme-border, #cbd5e1);
   display: grid;
   place-items: center;
   color: var(--theme-color, #2563eb);
-  font-weight: 700;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
 }
 
 .pad-journey-step-label {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: #1e293b;
   white-space: nowrap;
@@ -437,55 +401,29 @@
 }
 
 .pad-journey-arrow {
-  color: #94a3b8;
+  color: #cbd5e1;
   font-size: 0.875rem;
-  font-weight: 700;
-  padding-bottom: 1.25rem;
+  font-weight: 600;
+  padding-bottom: 1.15rem;
 }
 
-/* 卡片底部操作与元信息 */
+/* 卡片底部操作 */
 .pad-card-bottom {
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-}
-
-.pad-card-meta-chips {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.pad-meta-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #64748b;
-  background: #f1f5f9;
-  padding: 0.3rem 0.65rem;
-  border-radius: 9999px;
-}
-
-.pad-mode-card.is-active .pad-meta-chip {
-  background: #ffffff;
-  color: #475569;
-  border: 1px solid #e2e8f0;
 }
 
 .pad-select-btn {
   width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: 0.9375rem;
-  font-weight: 700;
-  border-radius: 1rem;
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
   cursor: pointer;
   transition: all 0.15s ease;
   text-align: center;
-  border: 2px solid #e2e8f0;
+  border: 1.5px solid #e2e8f0;
   background: #f8fafc;
   color: #475569;
 }
@@ -500,55 +438,21 @@
   background: var(--theme-color, #2563eb);
   border-color: var(--theme-color, #2563eb);
   color: #ffffff;
-  box-shadow: 0 4px 12px var(--theme-glow);
+  box-shadow: 0 4px 12px -2px var(--theme-glow, rgba(37, 99, 235, 0.2));
 }
 
-/* 伴学小贴士气泡 (替换掉难看的对比大表格) */
-.pad-helper-tip {
-  max-width: 54rem;
-  margin: 0.5rem auto 0;
-  width: 100%;
-}
-
-.pad-helper-bubble {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  background: #ffffff;
-  border: 2.5px solid #fed7aa;
-  border-radius: 1.5rem;
-  padding: 1rem 1.5rem;
-  box-shadow: 0 6px 16px -2px rgba(251, 146, 60, 0.12);
-}
-
-.pad-helper-emoji {
-  font-size: 2rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.pad-helper-text {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: #475569;
-}
-
-.pad-helper-text strong {
-  color: #0f172a;
-}
-
-/* 底部大按钮固定控制栏 (学习机平板底部操作栏) */
+/* 底部大按钮固定控制栏 (简约轻透设计) */
 .pad-footer-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 2px solid #e2e8f0;
-  padding: 1rem 2rem;
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid #e2e8f0;
+  padding: 0.85rem 2rem;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
   z-index: 40;
 }
 
@@ -557,93 +461,35 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
+  justify-content: flex-end;
 }
 
-.pad-footer-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.pad-footer-chosen-icon {
-  font-size: 2.25rem;
-  line-height: 1;
-}
-
-.pad-footer-chosen-text {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.pad-footer-chosen-title {
-  font-size: 1.0625rem;
-  color: #334155;
-}
-
-.pad-footer-chosen-title strong {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: #0f172a;
-}
-
-.pad-footer-chosen-desc {
-  font-size: 0.875rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.pad-footer-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.pad-footer-back {
-  padding: 0.85rem 1.4rem;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #64748b;
-  background: transparent;
-  border: 2px solid #e2e8f0;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.pad-footer-back:hover {
-  background: #f8fafc;
-  color: #0f172a;
-  border-color: #cbd5e1;
-}
-
-/* 超大圆润的学习机“开始”主按钮 */
 .pad-footer-start-btn {
+  margin-left: auto;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.625rem;
-  padding: 0.95rem 2.25rem;
-  font-size: 1.125rem;
-  font-weight: 800;
+  padding: 0.85rem 3rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
   color: #ffffff;
   border: none;
   border-radius: 9999px;
   cursor: pointer;
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.2), 0 4px 0 rgba(0, 0, 0, 0.15);
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.15);
 }
 
 .pad-footer-start-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   filter: brightness(1.05);
-  box-shadow: 0 12px 26px -4px rgba(0, 0, 0, 0.25), 0 6px 0 rgba(0, 0, 0, 0.18);
+  box-shadow: 0 6px 18px -2px rgba(0, 0, 0, 0.2);
 }
 
 .pad-footer-start-btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.15);
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.15);
 }
 
 /* 响应式断点适配 */
@@ -669,22 +515,12 @@
   }
 
   .pad-footer-content {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-  }
-
-  .pad-footer-info {
     justify-content: center;
-    text-align: center;
-  }
-
-  .pad-footer-actions {
-    flex-direction: column;
   }
 
   .pad-footer-start-btn {
     width: 100%;
     justify-content: center;
+    padding: 0.85rem 1.5rem;
   }
 }

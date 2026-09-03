@@ -28,7 +28,18 @@ export default function AssessmentSlotList({ slots, ...actions }) {
       {groups.map((group) => (
         <section className="assessment-slot-cell-group" key={group.id}>
           <header className="assessment-slot-cell-group-header">
-            <strong>{group.matrixCode}</strong>
+            <button
+              type="button"
+              className="assessment-slot-group-matrix-code"
+              onClick={() => actions.onOpenMatrixCell?.(group.id)}
+              aria-label={trans(
+                "adaptiveLearning.assessment.openMatrixSlot",
+                "查看矩阵格 {$code} 的要求",
+                { code: group.matrixCode },
+              )}
+            >
+              <strong>{group.matrixCode}</strong>
+            </button>
             <span>
               {trans(
                 "adaptiveLearning.assessment.typeSlotCount",
