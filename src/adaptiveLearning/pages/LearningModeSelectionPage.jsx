@@ -4,14 +4,20 @@ import {
   ArrowLeft,
   ArrowRight,
   BookOpen,
-  CheckCircle2,
+  Check,
   Clock,
-  HelpCircle,
   Layers3,
   ScanSearch,
   Sparkles,
+  Zap,
   Target,
-  GraduationCap,
+  Award,
+  Video,
+  Edit3,
+  Star,
+  Search,
+  ShieldCheck,
+  CheckCircle2,
 } from "lucide-react";
 
 import BrandLogo from "../components/BrandLogo";
@@ -27,15 +33,27 @@ import { useNavigate, useSearchParams } from "../routing";
 
 import "../styles/learning-mode-selection-page.css";
 
-const ICON_COMPONENTS = {
+const STEP_ICONS = {
+  video: Video,
+  edit: Edit3,
+  star: Star,
+  zap: Zap,
+  skip: Zap,
+  award: Award,
+  search: Search,
+  target: Target,
+  shield: ShieldCheck,
+};
+
+const MODE_ICONS = {
   "book-open": BookOpen,
   layers: Layers3,
   "scan-search": ScanSearch,
 };
 
 /**
- * 独立的自适应学习模式选择页面。
- * 在进入具体自适应学习前，帮助学生根据个人目标（上新课 / 打基础 / 查缺补漏）自选适配路径。
+ * 学习机风格的自选学习模式页面。
+ * 设计目标：低幼友好、大色块、大圆角、实体按键触感、直观易懂，杜绝套餐对比感。
  */
 export default function LearningModeSelectionPage({
   onSelectMode,
@@ -76,7 +94,6 @@ export default function LearningModeSelectionPage({
       onSelectMode(selectedMode);
       return;
     }
-    // 带有选定模式参数重定向到学习目录/工作台
     navigate(`${routes.directory}?mode=${selectedMode}&selected=1`);
   };
 
@@ -85,68 +102,73 @@ export default function LearningModeSelectionPage({
   };
 
   return (
-    <div className="learning-mode-page-root" id="learning-mode-selection-page">
-      {/* 顶部导航栏 */}
-      <header className="mode-page-navbar">
-        <div className="mode-page-nav-left">
+    <div className="learning-pad-page-root" id="learning-mode-selection-page">
+      {/* 顶部导航 */}
+      <header className="pad-navbar">
+        <div className="pad-nav-left">
           <BrandLogo />
-          <div className="mode-page-nav-divider" />
+          <div className="pad-nav-divider" />
           <button
             type="button"
-            className="mode-page-back-btn"
+            className="pad-back-btn"
             onClick={handleBackToDirectory}
             aria-label="返回学习目录"
           >
-            <ArrowLeft size={16} />
-            <span>返回学习目录</span>
+            <ArrowLeft size={18} />
+            <span>返回课时目录</span>
           </button>
         </div>
 
-        <div className="mode-page-nav-right">
-          <div className="mode-page-student-badge">
-            <span className="mode-page-student-avatar">
+        <div className="pad-nav-right">
+          <div className="pad-student-capsule">
+            <span className="pad-student-avatar">
               {(studentIdentity?.studentName || "学").slice(0, 1)}
             </span>
-            <span>{studentIdentity?.studentName || "自主学习空间"}</span>
+            <span className="pad-student-name">
+              {studentIdentity?.studentName || "自主学习空间"}
+            </span>
             {studentIdentity?.className && (
-              <span className="text-slate-400">· {studentIdentity.className}</span>
+              <span className="pad-student-class">· {studentIdentity.className}</span>
             )}
           </div>
         </div>
       </header>
 
-      {/* 主体容器 */}
-      <main className="mode-page-container">
-        {/* 顶部引导说明 */}
-        <section className="mode-page-hero">
-          <div className="mode-page-eyebrow">
-            <Sparkles size={14} />
-            <span>自适应学习路径定制</span>
+      {/* 主体画布 */}
+      <main className="pad-container">
+        {/* 亲和可爱的引导区 */}
+        <section className="pad-hero">
+          <div className="pad-eyebrow">
+            <Sparkles size={16} className="text-amber-500" />
+            <span>学习机专属定制 · 选好就能开学</span>
           </div>
-          <h1 className="mode-page-headline">这次想怎么学？</h1>
-          <p className="mode-page-description">
-            云谷自适应引擎提供三种差异化的学习链路与练习密度。请根据你今天的学习目的自由选择，进入后系统将为你自动生成专属任务。
+          <h1 className="pad-headline">
+            今天想怎么学？🎒
+          </h1>
+          <p className="pad-subtitle">
+            选一个最适合你的学习方式，点一下卡片就能开始通关！
           </p>
         </section>
 
-        {/* 三个模式卡片网格 */}
+        {/* 学习机三大模式大卡片 */}
         <section
-          className="mode-cards-grid"
+          className="pad-cards-row"
           role="radiogroup"
           aria-label="选择学习模式"
         >
           {DETAILED_MODE_CONFIGS.map((mode) => {
             const isSelected = selectedMode === mode.id;
-            const Icon = ICON_COMPONENTS[mode.iconName] || BookOpen;
+            const ModeIcon = MODE_ICONS[mode.iconName] || BookOpen;
 
             return (
               <div
                 key={mode.id}
-                className={`mode-card ${isSelected ? "is-selected" : ""}`}
+                className={`pad-mode-card ${isSelected ? "is-active" : ""}`}
                 style={{
-                  "--card-accent": mode.accentColor,
-                  "--card-soft-bg": mode.accentBg,
-                  "--card-border-subtle": mode.accentBorder,
+                  "--theme-color": mode.accentColor,
+                  "--theme-bg": mode.accentBg,
+                  "--theme-border": mode.accentBorder,
+                  "--theme-glow": mode.cardGlow || "rgba(59,130,246,0.15)",
                 }}
                 role="radio"
                 aria-checked={isSelected}
@@ -159,168 +181,152 @@ export default function LearningModeSelectionPage({
                   }
                 }}
               >
-                {/* 卡片顶部：图标与选中指示器 */}
-                <div className="mode-card-header">
+                {/* 顶部推荐徽章与选中对勾 */}
+                <div className="pad-card-topbar">
+                  <span className="pad-recommend-badge">
+                    {mode.kidRecommendBadge || mode.tag}
+                  </span>
                   <div
-                    className="mode-card-icon-wrapper"
-                    style={{
-                      background: mode.accentBg,
-                      color: mode.accentColor,
-                      border: `1px solid ${mode.accentBorder}`,
-                    }}
+                    className={`pad-check-circle ${isSelected ? "checked" : ""}`}
+                    aria-hidden="true"
                   >
-                    <Icon size={24} />
-                  </div>
-                  <div className="mode-card-radio" aria-hidden="true">
-                    {isSelected && <div className="mode-card-radio-inner" />}
+                    {isSelected ? <Check size={16} strokeWidth={3} /> : null}
                   </div>
                 </div>
 
-                {/* 卡片主体：标题、标签与概述 */}
-                <div className="mode-card-body">
-                  <div className="mode-card-title-row">
-                    <h2 className="mode-card-title">{mode.title}</h2>
-                    <span
-                      className="mode-card-badge"
-                      style={{
-                        background: mode.badgeBg,
-                        color: mode.badgeFg,
-                      }}
-                    >
-                      {mode.tag}
-                    </span>
+                {/* 模式大图标与标题 */}
+                <div className="pad-card-main-header">
+                  <div className="pad-card-avatar">
+                    <span className="pad-avatar-emoji">{mode.kidEmoji || "✨"}</span>
+                    <div className="pad-avatar-icon-small">
+                      <ModeIcon size={18} />
+                    </div>
                   </div>
-                  <p className="mode-card-summary">{mode.summary}</p>
+                  <div className="pad-card-title-group">
+                    <h2 className="pad-card-title">{mode.kidTitle || mode.title}</h2>
+                    <p className="pad-card-motto">{mode.kidMotto || mode.tag}</p>
+                  </div>
+                </div>
 
-                  <div className="mode-card-meta-pills">
-                    <span className="mode-card-meta-pill">
-                      <Clock size={12} />
+                {/* 大白话说明（给孩子看的简明一句话） */}
+                <div className="pad-card-speech">
+                  <p>{mode.kidDescription || mode.summary}</p>
+                </div>
+
+                {/* 学习机3步闯关小地图 */}
+                <div className="pad-card-journey">
+                  <div className="pad-journey-title">
+                    <span>闯关 3 步走</span>
+                  </div>
+                  <div className="pad-journey-steps">
+                    {(mode.kidPath || []).map((step, idx) => {
+                      const StepIcon = STEP_ICONS[step.icon] || Star;
+                      return (
+                        <React.Fragment key={idx}>
+                          <div className="pad-journey-step-item">
+                            <div className="pad-journey-step-circle">
+                              <StepIcon size={14} />
+                            </div>
+                            <span className="pad-journey-step-label">
+                              {step.label}
+                            </span>
+                            <span className="pad-journey-step-desc">
+                              {step.desc}
+                            </span>
+                          </div>
+                          {idx < (mode.kidPath || []).length - 1 && (
+                            <div className="pad-journey-arrow">➔</div>
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 底部信息标签与选择按钮 */}
+                <div className="pad-card-bottom">
+                  <div className="pad-card-meta-chips">
+                    <span className="pad-meta-chip">
+                      <Clock size={13} />
                       {mode.estimatedDuration}
                     </span>
-                    <span className="mode-card-meta-pill">
-                      <Target size={12} />
+                    <span className="pad-meta-chip">
+                      <Zap size={13} />
                       {mode.preAssessmentLabel}
                     </span>
                   </div>
-                </div>
 
-                {/* 卡片流程：Pipeline 步骤分解 */}
-                <div className="mode-card-pipeline">
-                  <span className="mode-pipeline-title">学习流程安排</span>
-                  {mode.steps.map((step) => (
-                    <div key={step.index} className="mode-pipeline-step">
-                      <span className="mode-pipeline-index">{step.index}</span>
-                      <div className="mode-pipeline-info">
-                        <span className="mode-pipeline-step-name">
-                          {step.title}
-                        </span>
-                        <span className="mode-pipeline-step-desc">
-                          {step.description}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* 适合场景说明 */}
-                <div className="mode-card-suitable">
-                  <strong>适用：</strong>
-                  {mode.suitableFor}
-                </div>
-
-                {/* 核心亮点 */}
-                <div className="mode-card-highlights">
-                  {mode.highlights.map((highlight, idx) => (
-                    <div key={idx} className="mode-highlight-item">
-                      <CheckCircle2 size={13} className="mode-highlight-icon" />
-                      <span>{highlight}</span>
-                    </div>
-                  ))}
+                  <button
+                    type="button"
+                    className={`pad-select-btn ${isSelected ? "selected" : ""}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCardClick(mode.id);
+                    }}
+                  >
+                    {isSelected ? "已选这个模式 ✓" : "点击选择此模式"}
+                  </button>
                 </div>
               </div>
             );
           })}
         </section>
 
-        {/* 模式对比矩阵 */}
-        <section className="mode-comparison-section" aria-label="模式对比">
-          <div className="mode-comparison-header">
-            <h3 className="mode-comparison-title">三种模式功能对照</h3>
-            <span className="text-xs text-slate-400">随时可在学习主页切换</span>
-          </div>
-          <div className="mode-comparison-table-wrapper">
-            <table className="mode-comparison-table">
-              <thead>
-                <tr>
-                  <th style={{ width: "20%" }}>对比维度</th>
-                  <th style={{ width: "26%" }}>📖 上新课</th>
-                  <th style={{ width: "27%" }}>📚 打基础</th>
-                  <th style={{ width: "27%" }}>🎯 查缺补漏</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="font-semibold text-slate-700">课前摸底前测</td>
-                  <td className="text-emerald-700 font-medium">❌ 免除前测，直接学</td>
-                  <td className="text-blue-700 font-medium">✅ 包含 5-8 题摸底测</td>
-                  <td className="text-amber-700 font-medium">✅ 单元全卷综合测试</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold text-slate-700">自适应策略</td>
-                  <td>循序概念推导 + 随堂例题</td>
-                  <td>跳关已掌握，专注攻关薄弱层</td>
-                  <td>定位考点死角，变式题靶向刷透</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold text-slate-700">建议学习场景</td>
-                  <td>新知首学 / 课前预习</td>
-                  <td>课后巩固 / 循序过关</td>
-                  <td>单元复习 / 考前冲刺</td>
-                </tr>
-                <tr>
-                  <td className="font-semibold text-slate-700">预期学习时长</td>
-                  <td>20 ~ 30 分钟</td>
-                  <td>15 ~ 25 分钟</td>
-                  <td>30 ~ 45 分钟</td>
-                </tr>
-              </tbody>
-            </table>
+        {/* 学习机贴心伴学提示 */}
+        <section className="pad-helper-tip" aria-label="学习机伴学建议">
+          <div className="pad-helper-bubble">
+            <span className="pad-helper-emoji">💡</span>
+            <div className="pad-helper-text">
+              <strong>选模式小贴士：</strong>
+              如果是今天刚学的新章节，推荐选绿色【
+              <strong className="text-emerald-600">学新课</strong>
+              】；想快速写作业并跳过学会的内容，选蓝色【
+              <strong className="text-blue-600">打基础</strong>
+              】；单元复习和考前冲刺，选橙色【
+              <strong className="text-amber-600">查缺补漏</strong>
+              】！
+            </div>
           </div>
         </section>
       </main>
 
-      {/* 底部固定操作条 */}
-      <footer className="mode-page-footer-dock">
-        <div className="mode-footer-left">
-          <div
-            className="mode-footer-active-badge"
-            style={{
-              background: activeConfig.accentBg,
-              color: activeConfig.accentColor,
-              border: `1px solid ${activeConfig.accentBorder}`,
-            }}
-          >
-            <span>当前选择：{activeConfig.title}</span>
+      {/* 底部大按钮固定控制栏 */}
+      <footer className="pad-footer-bar">
+        <div className="pad-footer-content">
+          <div className="pad-footer-info">
+            <span className="pad-footer-chosen-icon">
+              {activeConfig.kidEmoji || "🎯"}
+            </span>
+            <div className="pad-footer-chosen-text">
+              <div className="pad-footer-chosen-title">
+                已选择：<strong>{activeConfig.kidTitle || activeConfig.title}</strong>
+              </div>
+              <div className="pad-footer-chosen-desc">
+                {activeConfig.kidMotto || activeConfig.summary}
+              </div>
+            </div>
           </div>
-          <span className="mode-footer-summary">{activeConfig.summary}</span>
-        </div>
 
-        <div className="mode-footer-right">
-          <button
-            type="button"
-            className="mode-footer-cancel-btn"
-            onClick={handleBackToDirectory}
-          >
-            稍后再选
-          </button>
-          <button
-            type="button"
-            className="mode-footer-confirm-btn"
-            onClick={handleConfirm}
-          >
-            <span>{activeConfig.ctaText}</span>
-            <ArrowRight size={18} />
-          </button>
+          <div className="pad-footer-actions">
+            <button
+              type="button"
+              className="pad-footer-back"
+              onClick={handleBackToDirectory}
+            >
+              返回课程目录
+            </button>
+            <button
+              type="button"
+              className="pad-footer-start-btn"
+              style={{
+                background: activeConfig.accentColor,
+              }}
+              onClick={handleConfirm}
+            >
+              <span>{activeConfig.ctaText || "选好了，开启学习！"}</span>
+              <ArrowRight size={20} strokeWidth={2.5} />
+            </button>
+          </div>
         </div>
       </footer>
     </div>
@@ -331,3 +337,4 @@ LearningModeSelectionPage.propTypes = {
   currentCourse: PropTypes.object,
   onSelectMode: PropTypes.func,
 };
+

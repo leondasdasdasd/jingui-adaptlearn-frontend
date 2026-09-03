@@ -246,7 +246,7 @@ export default function TeacherShell({
                     role="menuitem"
                     onClick={() => {
                       setUserMenuOpen(false);
-                      navigate(routes.directory);
+                      navigate(routes.modeSelection);
                     }}
                   >
                     <UserRound size={15} />

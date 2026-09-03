@@ -6,7 +6,12 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import DirectoryPage from "./DirectoryPage";
 
 vi.mock("./AppShell", () => ({
-  default: ({ children }) => <main>{children}</main>,
+  default: ({ children, actions }) => (
+    <div>
+      <header>{actions}</header>
+      <main>{children}</main>
+    </div>
+  ),
 }));
 
 const section = {
@@ -49,11 +54,12 @@ describe("DirectoryPage learning mode entry", () => {
     vi.clearAllMocks();
   });
 
-  it("shows mode selection only before starting a learning session", () => {
+  it("displays the current learning mode at the top and removes the mode section header", () => {
     const view = render(
       <DirectoryPage {...actions} course={course} progress={null} />,
     );
-    expect(screen.getByText("这次想怎么学？")).toBeVisible();
+    expect(screen.getByRole("button", { name: /上新课模式/ })).toBeVisible();
+    expect(screen.queryByText("这次想怎么学？")).not.toBeInTheDocument();
 
     view.rerender(
       <DirectoryPage
@@ -68,12 +74,19 @@ describe("DirectoryPage learning mode entry", () => {
     );
     expect(screen.queryByText("这次想怎么学？")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "继续学习" })).toBeVisible();
+    expect(screen.getByRole("button", { name: /上新课模式/ })).toBeVisible();
   });
 
   it("announces the real empty state when a unit test is unavailable", () => {
-    render(<DirectoryPage {...actions} course={course} progress={null} />);
+    render(
+      <DirectoryPage
+        {...actions}
+        course={course}
+        progress={null}
+        initialLearningMode="REMEDIATION"
+      />,
+    );
 
-    fireEvent.click(screen.getByRole("button", { name: "查缺补漏" }));
     fireEvent.click(screen.getByRole("button", { name: "开始单元测试" }));
 
     expect(screen.getByRole("status")).toHaveTextContent(
@@ -81,21 +94,19 @@ describe("DirectoryPage learning mode entry", () => {
     );
   });
 
-  it("offers mode selection after switching away from the active lesson", () => {
+  it("calls onOpenModePage when the top mode button is clicked", () => {
+    const onOpenModePage = vi.fn();
     render(
       <DirectoryPage
         {...actions}
         course={course}
-        progress={{ lessonId: "lesson-1", actionLabel: "继续学习", items: [] }}
+        progress={null}
+        onOpenModePage={onOpenModePage}
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: /1\.2.*数轴/ }));
-
-    expect(screen.getByText("这次想怎么学？")).toBeVisible();
-    expect(
-      screen.queryByRole("button", { name: "继续学习" }),
-    ).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /上新课模式/ }));
+    expect(onOpenModePage).toHaveBeenCalledWith("NEW_LESSON");
   });
 
   it("restores an active session on a lesson other than the first", () => {

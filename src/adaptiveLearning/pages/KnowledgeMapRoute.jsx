@@ -748,6 +748,22 @@ export default function KnowledgeMapRoute() {
                                             : {},
                                       });
 
+                                    const matrixTotalCells = Math.max(
+                                      1,
+                                      Number.isFinite(matrixStats.total)
+                                        ? matrixStats.total
+                                        : 5,
+                                    );
+                                    const matrixLightedCells = Math.min(
+                                      matrixTotalCells,
+                                      Math.max(
+                                        0,
+                                        Number.isFinite(matrixStats.lighted)
+                                          ? matrixStats.lighted
+                                          : 0,
+                                      ),
+                                    );
+
                                     return (
                                       <div
                                         key={knowledgePoint.id}
@@ -761,6 +777,30 @@ export default function KnowledgeMapRoute() {
                                           >
                                             {knowledgePoint.name}
                                           </h4>
+                                          <div className="km-point-top-actions">
+                                            <button
+                                              type="button"
+                                              className="km-point-matrix-icon-btn"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                setMatrixModalState({
+                                                  isOpen: true,
+                                                  mode: "knowledgePoint",
+                                                  lesson,
+                                                  knowledgePoint,
+                                                });
+                                              }}
+                                              title={knowledgeMapText(
+                                                "knowledgeMatrixTitle",
+                                                "查看该知识点的认知考核矩阵与点亮情况",
+                                              )}
+                                              aria-label={knowledgeMapText(
+                                                "knowledgeMatrix",
+                                                "认知矩阵",
+                                              )}
+                                            >
+                                              <Grid3X3 size={13} />
+                                            </button>
                                           <span
                                             className={`km-point-status-indicator ${meta.tone}`}
                                             title={meta.label}
@@ -768,6 +808,7 @@ export default function KnowledgeMapRoute() {
                                             <IconComponent size={12} />
                                             <span>{meta.label}</span>
                                           </span>
+                                          </div>
                                         </div>
 
                                         {/* 卡片中部：掌握度来源标签（若存在） */}
@@ -829,7 +870,7 @@ export default function KnowledgeMapRoute() {
                                               </span>
                                             </div>
 
-                                            {/* 指标2：矩阵点亮数量与总量 */}
+                                            {/* 指标2：矩阵分格点亮数量与总量 */}
                                             <div
                                               className="km-metric-item"
                                               title={knowledgeMapText(
@@ -848,13 +889,31 @@ export default function KnowledgeMapRoute() {
                                                   "矩阵点亮",
                                                 )}
                                               </span>
-                                              <div className="km-metric-track">
-                                                <div
-                                                  className="km-metric-fill matrix"
-                                                  style={{
-                                                    width: `${matrixStats.rate}%`,
-                                                  }}
-                                                />
+                                              <div
+                                                className="km-matrix-cells-track"
+                                                role="progressbar"
+                                                aria-valuenow={matrixLightedCells}
+                                                aria-valuemax={matrixTotalCells}
+                                              >
+                                                {Array.from({
+                                                  length: matrixTotalCells,
+                                                }).map((_, cellIdx) => {
+                                                  const isLit =
+                                                    cellIdx < matrixLightedCells;
+                                                  return (
+                                                    <span
+                                                      key={cellIdx}
+                                                      className={`km-matrix-cell ${
+                                                        isLit ? "lit" : "unlit"
+                                                      }`}
+                                                      title={
+                                                        isLit
+                                                          ? `第 ${cellIdx + 1} 格已点亮`
+                                                          : `第 ${cellIdx + 1} 格未点亮`
+                                                      }
+                                                    />
+                                                  );
+                                                })}
                                               </div>
                                               <span className="km-metric-val matrix-highlight">
                                                 <strong>

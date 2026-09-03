@@ -776,6 +776,35 @@
   flex: 1;
 }
 
+.km-point-top-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.km-point-matrix-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 5px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.km-point-matrix-icon-btn:hover {
+  background: #eff6ff;
+  color: #2563eb;
+  border-color: #bfdbfe;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.12);
+}
+
 .km-point-status-indicator {
   display: inline-flex;
   align-items: center;
@@ -844,44 +873,49 @@
 /* Card Bottom: Dual Metrics Layout (Mastery Rate + Matrix Lighted Count/Total) */
 .km-point-card-bottom-dual {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 8px;
   padding-top: 8px;
-  margin-top: 2px;
+  margin-top: 3px;
   border-top: 1px solid #f1f5f9;
+  width: 100%;
 }
 
 .km-point-dual-metrics {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 7px;
   flex: 1;
+  width: 100%;
   min-width: 0;
 }
 
 .km-metric-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  gap: 10px;
   font-size: 11px;
+  width: 100%;
 }
 
 .km-metric-lbl {
-  width: 44px;
-  font-size: 10.5px;
+  width: 46px;
+  font-size: 11px;
   font-weight: 600;
   color: #64748b;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .km-metric-track {
-  width: 48px;
-  height: 4.5px;
+  flex: 1;
+  min-width: 0;
+  height: 6px;
   border-radius: 999px;
   background: #e2e8f0;
   overflow: hidden;
-  flex-shrink: 0;
 }
 
 .km-metric-fill {
@@ -906,12 +940,41 @@
   background: linear-gradient(90deg, #10b981 0%, #059669 100%);
 }
 
+/* 一格一格的分格矩阵点亮效果 */
+.km-matrix-cells-track {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  height: 6px;
+}
+
+.km-matrix-cell {
+  flex: 1;
+  height: 100%;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+}
+
+.km-matrix-cell.unlit {
+  background: #e2e8f0;
+}
+
+.km-matrix-cell.lit {
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 0 4px rgba(16, 185, 129, 0.4);
+}
+
 .km-metric-val {
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: #334155;
   white-space: nowrap;
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 38px;
 }
 
 .km-metric-val.matrix-highlight strong {

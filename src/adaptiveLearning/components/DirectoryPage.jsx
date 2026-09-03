@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Sparkles } from "lucide-react";
 
 import { trans } from "../../utils/i18n";
 import { DEFAULT_CLASSROOM_LEARNING_MODE } from "../shared/domain/classroomLearningMode";
@@ -6,11 +7,14 @@ import {
   readPreferredLearningMode,
   savePreferredLearningMode,
 } from "../student/data/studentLearningModePreference";
+import { resolveStudentLearningModePresentation } from "../student/presentation/studentLearningModePresentation";
+import { routes } from "../routes/routePaths";
+import { useNavigate } from "../routing";
 import AppShell from "./AppShell";
 import ChapterNavigator from "./directory/ChapterNavigator";
 import CourseSwitcher from "./directory/CourseSwitcher";
 import LessonWorkspace from "./directory/LessonWorkspace";
-import StudentLearningModeSelector from "./StudentLearningModeSelector";
+import LearningModeIcon from "./LearningModeIcon";
 
 import "../styles/directory-modern.css";
 
@@ -124,15 +128,49 @@ export default function DirectoryPage({
     ).length;
   }, [progress]);
 
+  const activeMode = resolveStudentLearningModePresentation(learningMode);
+  const navigate = useNavigate();
+
+  const handleOpenModePage = () => {
+    if (onOpenModePage) {
+      onOpenModePage(learningMode);
+      return;
+    }
+    navigate(`${routes.modeSelection}?mode=${learningMode}`);
+  };
+
   return (
     <AppShell
       title={trans("adaptiveLearning.directory.title", "智能自适应学习")}
       shellClassName="directory-app-shell"
       actions={
-        <CourseSwitcher
-          currentCourse={course}
-          onSelectCourse={onSelectCourse}
-        />
+        <div className="directory-header-actions">
+          <button
+            type="button"
+            className="directory-learning-mode-badge-btn"
+            onClick={handleOpenModePage}
+            title={trans(
+              "adaptiveLearning.learningMode.switchTooltip",
+              "当前模式：{$mode}模式（点击切换学习模式）",
+              { mode: activeMode.label },
+            )}
+            aria-label={trans(
+              "adaptiveLearning.learningMode.currentAria",
+              "当前学习模式：{$mode}模式，点击切换",
+              { mode: activeMode.label },
+            )}
+          >
+            <LearningModeIcon name={activeMode.icon} size={14} />
+            <span className="directory-learning-mode-badge-name">
+              {activeMode.label}模式
+            </span>
+            <Sparkles size={12} className="directory-learning-mode-badge-sparkle" />
+          </button>
+          <CourseSwitcher
+            currentCourse={course}
+            onSelectCourse={onSelectCourse}
+          />
+        </div>
       }
     >
       <div
@@ -140,13 +178,6 @@ export default function DirectoryPage({
         aria-busy={busy}
         inert={busy || undefined}
       >
-        {!currentLessonProgress && (
-          <StudentLearningModeSelector
-            value={learningMode}
-            onChange={handleLearningModeChange}
-            onOpenModePage={onOpenModePage}
-          />
-        )}
         <div className="modern-directory-layout">
           {/* 左侧：章节课时导航 */}
           <ChapterNavigator

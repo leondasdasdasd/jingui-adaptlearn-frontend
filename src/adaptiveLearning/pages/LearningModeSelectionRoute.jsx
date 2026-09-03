@@ -2,6 +2,7 @@ import React from "react";
 import LearningModeSelectionPage from "./LearningModeSelectionPage";
 import { ALL_COURSES, course as defaultCourse } from "../shared/domain/courseCatalog";
 import { readSelectedCoursePreference } from "../student/data/studentPreferencesRepository";
+import { savePreferredLearningMode } from "../student/data/studentLearningModePreference";
 import { useNavigate } from "../routing";
 import { routes } from "../routes/routePaths";
 
@@ -12,6 +13,7 @@ export default function LearningModeSelectionRoute() {
     ALL_COURSES.find((c) => c.id === selectedCourseId) || defaultCourse;
 
   const handleSelectMode = (modeId) => {
+    savePreferredLearningMode(modeId);
     // 设置并跳转到具体功能页
     navigate(`${routes.directory}?mode=${modeId}&selected=1`);
   };

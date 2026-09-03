@@ -54,7 +54,7 @@ export default function RoleSwitcherFloat() {
 
   const handleToggleRole = () => {
     if (isTeacherMode) {
-      navigate(routes.directory);
+      navigate(routes.modeSelection);
     } else {
       navigate(routes.teacherHome);
     }

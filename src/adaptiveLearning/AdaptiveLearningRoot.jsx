@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect, Route, Switch } from "dva/router";
 
 import RoleSwitcherFloat from "./components/RoleSwitcherFloat";
+import ErrorBoundary from "./components/ErrorBoundary";
 import DirectoryRoute from "./pages/DirectoryRoute";
 import FamilyStudentMonitorRoute from "./pages/FamilyStudentMonitorRoute";
 import KnowledgeCheckpointRoute from "./pages/KnowledgeCheckpointRoute";
@@ -76,11 +77,12 @@ const requireTeacher = (element) => (
  */
 export default function AdaptiveLearningRoot(routeProperties) {
   return (
-    <RoutingProvider route={routeProperties}>
-      <LearningSessionProvider>
-        <div className="adaptive-learning-root">
-          <ScrollToTop />
-          <Switch>
+    <ErrorBoundary>
+      <RoutingProvider route={routeProperties}>
+        <LearningSessionProvider>
+          <div className="adaptive-learning-root">
+            <ScrollToTop />
+            <Switch>
             <Redirect exact from="/" to={routes.teacherHome} />
             <Redirect exact from="/adaptive-learning" to={routes.teacherHome} />
             {route(routes.modeSelection, <LearningModeSelectionRoute />)}
@@ -178,5 +180,6 @@ export default function AdaptiveLearningRoot(routeProperties) {
         </div>
       </LearningSessionProvider>
     </RoutingProvider>
+    </ErrorBoundary>
   );
 }

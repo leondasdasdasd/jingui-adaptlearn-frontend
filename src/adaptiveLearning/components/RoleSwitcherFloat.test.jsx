@@ -31,10 +31,10 @@ describe("RoleSwitcherFloat", () => {
     expect(routing.navigate).toHaveBeenCalledWith(routes.teacherHome);
   });
 
-  it("switches the teacher view to the real student directory route", () => {
+  it("switches the teacher view to the student mode selection route", () => {
     renderSwitcher(routes.teacherHome);
     fireEvent.click(screen.getByRole("button", { name: /切为学生/ }));
-    expect(routing.navigate).toHaveBeenCalledWith(routes.directory);
+    expect(routing.navigate).toHaveBeenCalledWith(routes.modeSelection);
   });
 
   it("marks session workflows so fixed actions remain reachable", () => {
