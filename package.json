@@ -4,12 +4,13 @@
   "version": "0.1.0",
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
   },
   "scripts": {
     "start": "vite --port=3000 --host=0.0.0.0",
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
+    "lint": "node -e \"console.log('本前端包未配置 lint / Lint is not configured for this frontend package')\"",
     "preview": "vite preview --port=3000 --host=0.0.0.0",
     "clean": "rm -rf dist server.js",
     "test": "vitest run",
