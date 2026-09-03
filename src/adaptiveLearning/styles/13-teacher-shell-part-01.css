@@ -128,8 +128,8 @@
 }
 
 .teacher-nav-badge.ai {
-  color: #4f46e5;
-  background: #e0e7ff;
+  color: #0445fc;
+  background: #eff4ff;
 }
 
 .teacher-nav-badge.live {
@@ -159,13 +159,13 @@
 .teacher-sidebar-card {
   margin-top: auto;
   padding: 14px;
-  border-radius: 14px;
-  background: linear-gradient(145deg, #f8fafc 0%, #eef2ff 100%);
-  border: 1px solid rgba(79, 70, 229, 0.12);
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .teacher-sidebar-card-icon {

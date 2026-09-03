@@ -1,11 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { ChevronRight, Sparkles } from "lucide-react";
 
 import { trans } from "../../utils/i18n";
 import {
   resolveStudentLearningModePresentation,
   studentLearningModeOptions,
 } from "../student/presentation/studentLearningModePresentation";
+import { routes } from "../routes/routePaths";
 import LearningModeIcon from "./LearningModeIcon";
 
 /**
@@ -13,11 +15,26 @@ import LearningModeIcon from "./LearningModeIcon";
  * @param {object} props 当前选择与切换动作。
  * @param {string} props.value 当前学习模式。
  * @param {Function} props.onChange 切换学习模式。
+ * @param {Function} [props.onOpenModePage] 打开独立全屏模式选择页。
  * @returns {React.ReactElement} 学习模式选择器。
  */
-export default function StudentLearningModeSelector({ value, onChange }) {
+export default function StudentLearningModeSelector({
+  value,
+  onChange,
+  onOpenModePage,
+}) {
   const modes = studentLearningModeOptions();
   const activeMode = resolveStudentLearningModePresentation(value);
+
+  const handleOpenPage = () => {
+    if (onOpenModePage) {
+      onOpenModePage(value);
+      return;
+    }
+    if (typeof window !== "undefined") {
+      window.location.hash = `#${routes.modeSelection}?mode=${value}`;
+    }
+  };
 
   return (
     <section
@@ -26,12 +43,24 @@ export default function StudentLearningModeSelector({ value, onChange }) {
     >
       <div className="student-learning-mode-heading">
         <div>
-          <strong id="student-learning-mode-title">
-            {trans(
-              "adaptiveLearning.learningMode.studentTitle",
-              "这次想怎么学？",
-            )}
-          </strong>
+          <div className="student-learning-mode-title-row">
+            <strong id="student-learning-mode-title">
+              {trans(
+                "adaptiveLearning.learningMode.studentTitle",
+                "这次想怎么学？",
+              )}
+            </strong>
+            <button
+              type="button"
+              className="student-learning-mode-open-page-btn"
+              onClick={handleOpenPage}
+              title="单独进入自选模式详情页"
+            >
+              <Sparkles size={13} />
+              <span>三种模式对比与自选专页</span>
+              <ChevronRight size={13} />
+            </button>
+          </div>
           <span>{activeMode.summary}</span>
         </div>
         <div
@@ -75,5 +104,6 @@ export default function StudentLearningModeSelector({ value, onChange }) {
 
 StudentLearningModeSelector.propTypes = {
   onChange: PropTypes.func.isRequired,
+  onOpenModePage: PropTypes.func,
   value: PropTypes.string.isRequired,
 };

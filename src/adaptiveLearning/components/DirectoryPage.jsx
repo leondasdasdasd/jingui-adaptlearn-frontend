@@ -2,6 +2,10 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { trans } from "../../utils/i18n";
 import { DEFAULT_CLASSROOM_LEARNING_MODE } from "../shared/domain/classroomLearningMode";
+import {
+  readPreferredLearningMode,
+  savePreferredLearningMode,
+} from "../student/data/studentLearningModePreference";
 import AppShell from "./AppShell";
 import ChapterNavigator from "./directory/ChapterNavigator";
 import CourseSwitcher from "./directory/CourseSwitcher";
@@ -37,10 +41,31 @@ export default function DirectoryPage({
   busy = false,
   knowledgeProfile = {},
   onStartNewLesson,
+  initialLearningMode,
+  onLearningModeChange,
+  onOpenModePage,
 }) {
-  const [learningMode, setLearningMode] = useState(
-    DEFAULT_CLASSROOM_LEARNING_MODE,
-  );
+  const [learningMode, setLearningMode] = useState(() => {
+    return (
+      initialLearningMode ||
+      readPreferredLearningMode() ||
+      DEFAULT_CLASSROOM_LEARNING_MODE
+    );
+  });
+
+  useEffect(() => {
+    if (initialLearningMode) {
+      setLearningMode(initialLearningMode);
+    }
+  }, [initialLearningMode]);
+
+  const handleLearningModeChange = (nextMode) => {
+    setLearningMode(nextMode);
+    savePreferredLearningMode(nextMode);
+    if (onLearningModeChange) {
+      onLearningModeChange(nextMode);
+    }
+  };
   // 根据学习进度定位当前章节和课时
   const progressLocation = useMemo(() => {
     for (const chapter of course.chapters) {
@@ -118,7 +143,8 @@ export default function DirectoryPage({
         {!currentLessonProgress && (
           <StudentLearningModeSelector
             value={learningMode}
-            onChange={setLearningMode}
+            onChange={handleLearningModeChange}
+            onOpenModePage={onOpenModePage}
           />
         )}
         <div className="modern-directory-layout">

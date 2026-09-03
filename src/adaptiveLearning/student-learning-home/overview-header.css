@@ -171,9 +171,9 @@
 }
 
 .s-icon-wrapper.indigo {
-  background: linear-gradient(135deg, #e0e7ff, #ede9fe);
-  color: #4338ca;
-  border: 1px solid #c7d2fe;
+  background: #eff4ff;
+  color: #0445fc;
+  border: 1px solid #c3d5ff;
 }
 
 .s-icon-wrapper.emerald {

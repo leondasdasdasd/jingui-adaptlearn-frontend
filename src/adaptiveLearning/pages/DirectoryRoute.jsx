@@ -756,6 +756,10 @@ export default function DirectoryRoute() {
       {!restoreState.loading && (
         <DirectoryPage
           course={activeCourse}
+          initialLearningMode={searchParams.get("mode") || undefined}
+          onOpenModePage={(mode) =>
+            navigate(`${routes.modeSelection}?mode=${mode}`)
+          }
           knowledgeProfile={readKnowledgeProfile()}
           onSelectCourse={handleSelectCourse}
           progress={

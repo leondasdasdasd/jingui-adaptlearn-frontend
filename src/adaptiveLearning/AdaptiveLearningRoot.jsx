@@ -7,6 +7,7 @@ import FamilyStudentMonitorRoute from "./pages/FamilyStudentMonitorRoute";
 import KnowledgeCheckpointRoute from "./pages/KnowledgeCheckpointRoute";
 import KnowledgeMapRoute from "./pages/KnowledgeMapRoute";
 import LearningCheckInRoute from "./pages/LearningCheckInRoute";
+import LearningModeSelectionRoute from "./pages/LearningModeSelectionRoute";
 import LearningRoute from "./pages/LearningRoute";
 import PostAssessmentRoute from "./pages/PostAssessmentRoute";
 import PreAssessmentResultRoute from "./pages/PreAssessmentResultRoute";
@@ -82,6 +83,7 @@ export default function AdaptiveLearningRoot(routeProperties) {
           <Switch>
             <Redirect exact from="/" to={routes.teacherHome} />
             <Redirect exact from="/adaptive-learning" to={routes.teacherHome} />
+            {route(routes.modeSelection, <LearningModeSelectionRoute />)}
             {route(routes.directory, <DirectoryRoute />)}
             {route(routes.knowledgeMap, <KnowledgeMapRoute />)}
             {route(routes.studentHome, <StudentAuthoritativeHomeRoute />)}

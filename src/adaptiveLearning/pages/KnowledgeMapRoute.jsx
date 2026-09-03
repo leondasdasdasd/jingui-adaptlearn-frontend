@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
   AlertCircle,
-  ArrowRight,
   BookOpen,
   CheckCircle2,
   ChevronDown,
@@ -11,7 +10,6 @@ import {
   Filter,
   Grid3X3,
   History,
-  Play,
   RotateCcw,
   Search,
   Sparkles,
@@ -319,35 +317,6 @@ export default function KnowledgeMapRoute() {
     setStatusFilter("all");
   };
 
-  const handleContinuePractice = () => {
-    // 优先寻找正在学习或需巩固的知识点，其次是未开始的知识点
-    const allKps = activeCourse.chapters.flatMap((chapter) =>
-      chapter.sections.flatMap((section) => section.knowledgePoints),
-    );
-    const targetKp =
-      allKps.find((kp) => {
-        const item = profile[kp.id];
-        const status = displayStatus(item);
-        return status === "studying" || status === "needs_review";
-      }) ||
-      allKps.find((kp) => {
-        const item = profile[kp.id];
-        const status = displayStatus(item);
-        return status === "not_started";
-      }) ||
-      allKps[0];
-
-    if (targetKp) {
-      navigate(
-        `${routes.knowledgeLearning(targetKp.id)}?returnTo=${encodeURIComponent(
-          routes.knowledgeMap,
-        )}`,
-      );
-    } else {
-      navigate(routes.directory);
-    }
-  };
-
   const studentId =
     fixedIdentity?.studentId ||
     session.selection?.studentId ||
@@ -386,15 +355,6 @@ export default function KnowledgeMapRoute() {
               <span>{knowledgeMapText("historyTab", "学习记录")}</span>
             </button>
           </div>
-          <button
-            type="button"
-            className="km-header-continue-btn"
-            onClick={handleContinuePractice}
-            title={knowledgeMapText("continuePracticeTitle", "继续自适应练习")}
-          >
-            <Play size={14} />
-            <span>{knowledgeMapText("continuePractice", "继续练习")}</span>
-          </button>
         </div>
       }
     >
@@ -792,32 +752,6 @@ export default function KnowledgeMapRoute() {
                                       <div
                                         key={knowledgePoint.id}
                                         className={`km-point-card ${meta.tone}`}
-                                        role="button"
-                                        tabIndex={0}
-                                        onClick={() =>
-                                          navigate(
-                                            `${routes.knowledgeLearning(
-                                              knowledgePoint.id,
-                                            )}?returnTo=${encodeURIComponent(
-                                              routes.knowledgeMap,
-                                            )}`,
-                                          )
-                                        }
-                                        onKeyDown={(e) => {
-                                          if (
-                                            e.key === "Enter" ||
-                                            e.key === " "
-                                          ) {
-                                            e.preventDefault();
-                                            navigate(
-                                              `${routes.knowledgeLearning(
-                                                knowledgePoint.id,
-                                              )}?returnTo=${encodeURIComponent(
-                                                routes.knowledgeMap,
-                                              )}`,
-                                            );
-                                          }
-                                        }}
                                       >
                                         {/* 卡片顶部：先展示知识点名称，再展示状态指标 */}
                                         <div className="km-point-card-top-v2">
@@ -836,39 +770,14 @@ export default function KnowledgeMapRoute() {
                                           </span>
                                         </div>
 
-                                        {/* 卡片中部：认知矩阵查看入口与来源 */}
-                                        <div className="km-point-card-middle">
-                                          <button
-                                            type="button"
-                                            className="km-point-matrix-btn"
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              setMatrixModalState({
-                                                isOpen: true,
-                                                mode: "knowledgePoint",
-                                                lesson,
-                                                knowledgePoint,
-                                              });
-                                            }}
-                                            title={knowledgeMapText(
-                                              "knowledgeMatrixTitle",
-                                              "查看该知识点的认知考核矩阵与点亮情况",
-                                            )}
-                                          >
-                                            <Grid3X3 size={12} />
-                                            <span>
-                                              {knowledgeMapText(
-                                                "knowledgeMatrix",
-                                                "认知矩阵",
-                                              )}
-                                            </span>
-                                          </button>
-                                          {masterySourceLabel ? (
+                                        {/* 卡片中部：掌握度来源标签（若存在） */}
+                                        {masterySourceLabel ? (
+                                          <div className="km-point-card-middle">
                                             <span className="km-point-source-tag">
                                               {masterySourceLabel}
                                             </span>
-                                          ) : null}
-                                        </div>
+                                          </div>
+                                        ) : null}
 
                                         {/* 卡片底部：双指标（掌握率 + 矩阵点亮数/总量）与行动入口 */}
                                         <div className="km-point-card-bottom-dual">
@@ -959,11 +868,6 @@ export default function KnowledgeMapRoute() {
                                               </span>
                                             </div>
                                           </div>
-
-                                          <span className="km-point-action-hint">
-                                            <span>{meta.actionText}</span>
-                                            <ArrowRight size={13} />
-                                          </span>
                                         </div>
                                       </div>
                                     );
@@ -1040,13 +944,6 @@ export default function KnowledgeMapRoute() {
               ? session.publishedContent?.assessmentMatrices
               : {}
           }
-          onStartPractice={(kpId) => {
-            navigate(
-              `${routes.knowledgeLearning(kpId)}?returnTo=${encodeURIComponent(
-                routes.knowledgeMap,
-              )}`,
-            );
-          }}
         />
       </div>
     </AppShell>

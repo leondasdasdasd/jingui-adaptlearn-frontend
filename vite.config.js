@@ -34,7 +34,7 @@ function createDevelopmentProxy(options = {}) {
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-  const enableAdaptiveMocks = env.VITE_ENABLE_ADAPTIVE_MOCKS === "true";
+  const enableAdaptiveMocks = env.VITE_ENABLE_ADAPTIVE_MOCKS !== "false";
 
   return {
     resolve: {
@@ -59,7 +59,7 @@ export default defineConfig(({ mode }) => {
       host: "0.0.0.0",
       port: 3000,
       strictPort: true,
-      allowedHosts: ["leon.local.yungu-inc.org"],
+      allowedHosts: true,
       proxy: createDevelopmentProxy({
         adaptiveBffTarget:
           env.DEV_ADAPTIVE_BFF_PROXY_TARGET || "http://127.0.0.1:8787",
@@ -72,7 +72,7 @@ export default defineConfig(({ mode }) => {
     preview: {
       host: "0.0.0.0",
       port: 3000,
-      allowedHosts: ["leon.local.yungu-inc.org"],
+      allowedHosts: true,
     },
   };
 });

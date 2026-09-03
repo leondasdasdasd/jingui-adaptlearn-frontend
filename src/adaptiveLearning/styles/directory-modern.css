@@ -1401,24 +1401,24 @@
   flex: 1.15;
   height: 38px;
   padding: 0 14px;
-  border-radius: 10px;
+  border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
   color: #ffffff;
-  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+  background: #0445fc;
   border: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.28);
+  box-shadow: 0 2px 8px rgba(4, 69, 252, 0.25);
   transition: all 150ms ease;
 }
 
 .exit-confirm-btn-continue:hover {
-  background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
-  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.36);
+  background: #0336c8;
+  box-shadow: 0 4px 12px rgba(4, 69, 252, 0.35);
   transform: translateY(-1px);
 }
 

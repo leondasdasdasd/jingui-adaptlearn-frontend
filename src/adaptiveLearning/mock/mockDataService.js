@@ -417,3 +417,506 @@ export function getMockCheckInDiagnosis({
     promptVersion: "v1",
   };
 }
+
+/**
+ * Mock teacher classes
+ */
+export function getMockTeacherClasses() {
+  return [
+    {
+      classId: "class-7-1",
+      className: "初一（1）班",
+      studentCount: 32,
+      status: "ACTIVE",
+    },
+    {
+      classId: "class-7-2",
+      className: "初一（2）班",
+      studentCount: 30,
+      status: "ACTIVE",
+    },
+  ];
+}
+
+/**
+ * Mock class details
+ * @param classId
+ */
+export function getMockClassDetails(classId = "class-7-1") {
+  const classes = getMockTeacherClasses();
+  return classes.find((c) => c.classId === classId) || classes[0];
+}
+
+/**
+ * Mock class students
+ * @param classId
+ */
+export function getMockClassStudents(classId = "class-7-1") {
+  return [
+    {
+      studentId: "student-mock-1",
+      studentName: "张小明",
+      studentNumber: "20240701",
+      credential: {
+        status: "ACTIVE",
+        accessToken: "mock-token-s1",
+        updatedAt: "2026-03-01T08:00:00.000Z",
+      },
+      activity: {
+        sessionCount: 12,
+        answerCount: 85,
+        lastActiveAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
+      },
+    },
+    {
+      studentId: "student-mock-2",
+      studentName: "李欣怡",
+      studentNumber: "20240702",
+      credential: {
+        status: "ACTIVE",
+        accessToken: "mock-token-s2",
+        updatedAt: "2026-03-01T08:00:00.000Z",
+      },
+      activity: {
+        sessionCount: 15,
+        answerCount: 102,
+        lastActiveAt: new Date(Date.now() - 8 * 60 * 1000).toISOString(),
+      },
+    },
+    {
+      studentId: "student-mock-3",
+      studentName: "王晨阳",
+      studentNumber: "20240703",
+      credential: {
+        status: "ACTIVE",
+        accessToken: "mock-token-s3",
+        updatedAt: "2026-03-01T08:00:00.000Z",
+      },
+      activity: {
+        sessionCount: 9,
+        answerCount: 64,
+        lastActiveAt: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
+      },
+    },
+    {
+      studentId: "student-mock-4",
+      studentName: "赵雨涵",
+      studentNumber: "20240704",
+      credential: {
+        status: "ACTIVE",
+        accessToken: "mock-token-s4",
+        updatedAt: "2026-03-01T08:00:00.000Z",
+      },
+      activity: {
+        sessionCount: 14,
+        answerCount: 98,
+        lastActiveAt: new Date(Date.now() - 22 * 60 * 1000).toISOString(),
+      },
+    },
+  ];
+}
+
+/**
+ * Mock teacher learning periods
+ */
+export function getMockTeacherPeriods() {
+  return [
+    {
+      periodId: "mock-period-1-1",
+      id: "mock-period-1-1",
+      title: "正数和负数（第一课时）",
+      classId: "class-7-1",
+      className: "初一（1）班",
+      teachingCourseId: "course-math-7",
+      teachingCourseName: "七年级数学（人教版）",
+      semesterId: "semester-2024-1",
+      semesterName: "2024-2025学年第一学期",
+      status: "ACTIVE",
+      studentCount: 32,
+      onlineCount: 28,
+      avgAccuracy: 86,
+      completionRate: 91,
+      scheduledStartAt: new Date(Date.now() - 3600 * 1000).toISOString(),
+      publishedAt: new Date(Date.now() - 3700 * 1000).toISOString(),
+      activityAt: new Date().toISOString(),
+      linkedLessonIds: ["section-1-1"],
+      durationSeconds: 2700,
+    },
+    {
+      periodId: "mock-period-1-2",
+      id: "mock-period-1-2",
+      title: "有理数与数轴",
+      classId: "class-7-1",
+      className: "初一（1）班",
+      teachingCourseId: "course-math-7",
+      teachingCourseName: "七年级数学（人教版）",
+      semesterId: "semester-2024-1",
+      semesterName: "2024-2025学年第一学期",
+      status: "COMPLETED",
+      studentCount: 32,
+      onlineCount: 0,
+      avgAccuracy: 82,
+      completionRate: 95,
+      scheduledStartAt: new Date(Date.now() - 86400 * 1000).toISOString(),
+      publishedAt: new Date(Date.now() - 86500 * 1000).toISOString(),
+      completedAt: new Date(Date.now() - 82800 * 1000).toISOString(),
+      activityAt: new Date(Date.now() - 82800 * 1000).toISOString(),
+      linkedLessonIds: ["section-1-2"],
+      durationSeconds: 2700,
+    },
+  ];
+}
+
+/**
+ * Mock single teacher learning period
+ * @param periodId
+ */
+export function getMockTeacherPeriod(periodId = "mock-period-1-1") {
+  const periods = getMockTeacherPeriods();
+  return (
+    periods.find((p) => p.periodId === periodId || p.id === periodId) ||
+    periods[0]
+  );
+}
+
+/**
+ * Mock classroom live snapshot
+ * @param periodId
+ */
+export function getMockClassroomSnapshot(periodId = "mock-period-1-1") {
+  const students = getMockClassStudents("class-7-1");
+  return {
+    periodId,
+    sessions: students.map((s, idx) => ({
+      id: `session-mock-${s.studentId}`,
+      studentId: s.studentId,
+      studentName: s.studentName,
+      status: "ACTIVE",
+      startedAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+      currentStage:
+        idx === 0
+          ? "knowledge_practice"
+          : idx === 1
+            ? "composite_review"
+            : "knowledge_learning",
+      currentKnowledgeObjectiveId: "kp-1-1-1",
+      lastActiveAt: s.activity.lastActiveAt,
+    })),
+    events: students.flatMap((s) => [
+      {
+        id: `ev-${s.studentId}-1`,
+        studentSessionId: `session-mock-${s.studentId}`,
+        createdAt: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+        payload: {
+          type: "stage_entered",
+          stage: "pre_assessment",
+          lessonTitle: "正数和负数的概念与表示",
+        },
+      },
+      {
+        id: `ev-${s.studentId}-2`,
+        studentSessionId: `session-mock-${s.studentId}`,
+        createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
+        payload: {
+          type: "stage_entered",
+          stage: "knowledge_practice",
+          knowledgeObjectiveId: "kp-1-1-1",
+          lessonTitle: "正数和负数的概念与表示",
+        },
+      },
+    ]),
+    answers: students.flatMap((s, idx) => [
+      {
+        id: `ans-${s.studentId}-1`,
+        studentSessionId: `session-mock-${s.studentId}`,
+        questionId: "sec11-pre-1",
+        knowledgeObjectiveId: "kp-1-1-1",
+        score: idx === 2 ? 0 : 2,
+        maxScore: 2,
+        submittedAt: new Date(Date.now() - 20 * 60 * 1000).toISOString(),
+      },
+      {
+        id: `ans-${s.studentId}-2`,
+        studentSessionId: `session-mock-${s.studentId}`,
+        questionId: "sec11-pre-2",
+        knowledgeObjectiveId: "kp-1-1-1",
+        score: 2,
+        maxScore: 2,
+        submittedAt: new Date(Date.now() - 18 * 60 * 1000).toISOString(),
+      },
+    ]),
+    dialogues: [],
+  };
+}
+
+/**
+ * Mock classroom student reports
+ * @param periodId
+ */
+export function getMockClassroomReports(periodId = "mock-period-1-1") {
+  const students = getMockClassStudents("class-7-1");
+  return students.map((s, idx) => ({
+    studentId: s.studentId,
+    studentSessionId: `session-mock-${s.studentId}`,
+    studentName: s.studentName,
+    learningMinutes: 35 + idx * 2,
+    questionCount: 8 + idx,
+    accuracy: 80 + idx * 5,
+    answeredQuestionCount: 8 + idx,
+    masteryResults: [
+      {
+        knowledgeObjectiveId: "kp-1-1-1",
+        status: "DETERMINED",
+        priorMastery: 0.45,
+        mastery: 0.85 + (idx % 2) * 0.1,
+        confidence: 0.9,
+      },
+      {
+        knowledgeObjectiveId: "kp-1-1-2",
+        status: "DETERMINED",
+        priorMastery: 0.35,
+        mastery: 0.78 + (idx % 3) * 0.08,
+        confidence: 0.85,
+      },
+    ],
+    score: {
+      status: "SUBMITTED",
+      reviewStatus: "CONFIRMED",
+      summary: "知识点掌握扎实，练习完成迅速",
+    },
+  }));
+}
+
+/**
+ * Mock student learning home profile
+ * @param studentId
+ */
+export function getMockStudentLearningHome(studentId = "student-mock-1") {
+  const students = getMockClassStudents("class-7-1");
+  const s =
+    students.find((item) => item.studentId === studentId) || students[0];
+  const now = Date.now();
+  return {
+    student: {
+      displayName: s.studentName,
+      name: s.studentName,
+      studentId: s.studentId,
+    },
+    className: "初一（1）班",
+    records: [
+      {
+        knowledgePointId: "kp-1-1-1",
+        knowledgePointName: "1.1.1 正数与负数的定义",
+        chapterTitle: "第一章 有理数",
+        lessonTitle: "第1课 正数和负数的概念与表示",
+        mastery: 88,
+        priorMastery: 45,
+        confidence: 90,
+        status: "MASTERED",
+        attemptCount: 12,
+        correctCount: 10,
+        lastAttemptAt: new Date(now - 15 * 60 * 1000).toISOString(),
+      },
+      {
+        knowledgePointId: "kp-1-1-2",
+        knowledgePointName: "1.1.2 具有相反意义的量",
+        chapterTitle: "第一章 有理数",
+        lessonTitle: "第1课 正数和负数的概念与表示",
+        mastery: 78,
+        priorMastery: 35,
+        confidence: 85,
+        status: "IN_PROGRESS",
+        attemptCount: 10,
+        correctCount: 8,
+        lastAttemptAt: new Date(now - 45 * 60 * 1000).toISOString(),
+      },
+      {
+        knowledgePointId: "kp-1-2-1",
+        knowledgePointName: "1.2.1 数轴的三要素与画法",
+        chapterTitle: "第一章 有理数",
+        lessonTitle: "第2课 有理数与数轴规律",
+        mastery: 92,
+        priorMastery: 60,
+        confidence: 95,
+        status: "MASTERED",
+        attemptCount: 14,
+        correctCount: 13,
+        lastAttemptAt: new Date(now - 86400 * 1000).toISOString(),
+      },
+    ],
+    timeline: [
+      {
+        id: "tl-1",
+        stage: "pre_assessment",
+        stageTitle: "课前小测",
+        kpName: "1.1.1 正数与负数的定义",
+        startedAt: new Date(now - 35 * 60 * 1000).toISOString(),
+        endedAt: new Date(now - 25 * 60 * 1000).toISOString(),
+        durationSeconds: 600,
+      },
+      {
+        id: "tl-2",
+        stage: "knowledge_practice",
+        stageTitle: "知识点练习",
+        kpName: "1.1.1 正数与负数的定义",
+        startedAt: new Date(now - 25 * 60 * 1000).toISOString(),
+        endedAt: new Date(now - 10 * 60 * 1000).toISOString(),
+        durationSeconds: 900,
+      },
+    ],
+    attempts: [
+      {
+        id: "att-1",
+        questionId: "sec11-pre-1",
+        kpName: "1.1.1 正数与负数的定义",
+        stem: "下列各数中，属于负数的是（ ）",
+        type: "single_choice",
+        userAnswer: "B",
+        correctAnswer: "B",
+        isCorrect: true,
+        score: 2,
+        maxScore: 2,
+        submittedAt: new Date(now - 28 * 60 * 1000).toISOString(),
+        presentedAt: new Date(now - 30 * 60 * 1000).toISOString(),
+      },
+      {
+        id: "att-2",
+        questionId: "sec11-pre-2",
+        kpName: "1.1.1 正数与负数的定义",
+        stem: "如果+30元表示收入30元，那么支出20元表示为（ ）",
+        type: "single_choice",
+        userAnswer: "-20元",
+        correctAnswer: "-20元",
+        isCorrect: true,
+        score: 2,
+        maxScore: 2,
+        submittedAt: new Date(now - 24 * 60 * 1000).toISOString(),
+        presentedAt: new Date(now - 26 * 60 * 1000).toISOString(),
+      },
+    ],
+    supportActivities: [],
+    score: {
+      status: "SUBMITTED",
+      reviewStatus: "CONFIRMED",
+      summary: "课堂表现良好，基础概念掌握扎实。",
+    },
+    matrix: {
+      totalQuestions: 15,
+      correctQuestions: 13,
+      avgAccuracy: 87,
+      totalMinutes: 38,
+    },
+  };
+}
+
+/**
+ * Mock platform subjects
+ */
+export function getMockPlatformSubjects() {
+  return {
+    status: true,
+    content: [
+      { subjectId: "math", subjectName: "初中数学" },
+      { subjectId: "physics", subjectName: "初中物理" },
+    ],
+  };
+}
+
+/**
+ * Mock platform semester
+ */
+export function getMockPlatformSemester() {
+  return {
+    status: true,
+    content: [
+      {
+        semesterId: "semester-2024-1",
+        semesterName: "2024-2025学年第一学期",
+        current: true,
+      },
+    ],
+  };
+}
+
+/**
+ * Mock platform courses
+ */
+export function getMockPlatformCourses() {
+  return {
+    status: true,
+    content: [
+      {
+        courseId: "course-math-7",
+        courseName: "七年级数学（人教版）",
+        subjectId: "math",
+        semesterId: "semester-2024-1",
+        gradeId: "grade-7",
+        gradeName: "初一",
+      },
+    ],
+  };
+}
+
+/**
+ * Mock platform course students
+ */
+export function getMockPlatformCourseStudents() {
+  return {
+    status: true,
+    content: [
+      {
+        classId: "class-7-1",
+        className: "初一（1）班",
+        students: [
+          { studentId: "student-mock-1", studentName: "张小明" },
+          { studentId: "student-mock-2", studentName: "李欣怡" },
+          { studentId: "student-mock-3", studentName: "王晨阳" },
+          { studentId: "student-mock-4", studentName: "赵雨涵" },
+        ],
+      },
+      {
+        classId: "class-7-2",
+        className: "初一（2）班",
+        students: [
+          { studentId: "student-mock-5", studentName: "周思远" },
+          { studentId: "student-mock-6", studentName: "吴雨桐" },
+        ],
+      },
+    ],
+  };
+}
+
+/**
+ * Mock batch create generation runs
+ * @param lessons
+ */
+export function batchCreateMockGenerationRuns(lessons = []) {
+  const list = Array.isArray(lessons) ? lessons : [lessons];
+  return list.map((lesson) => {
+    const lessonId = lesson?.id || "section-1-1";
+    const version = getMockPublishedLessonVersion(lessonId);
+    return {
+      runId: `run-mock-${lessonId}-${Date.now()}`,
+      lessonId,
+      status: "awaiting_review",
+      progress: 100,
+      checkpoint: {
+        teacherAgent: { operation: "generate_whole_lesson" },
+      },
+      draft: {
+        publishedVersionNumber: 1,
+        status: "draft",
+        preQuestions: version.contentPackage.diagnosticQuestionPool,
+        postQuestions: [
+          ...Object.values(version.contentPackage.knowledgePracticePools).flat(),
+          ...version.contentPackage.compositeReviewPool,
+        ],
+        learningContent: version.contentPackage.learningContent,
+        qualityReport: { passed: true, issues: [] },
+      },
+      qualityIssues: [],
+      reviewRequired: true,
+      updatedAt: new Date().toISOString(),
+    };
+  });
+}

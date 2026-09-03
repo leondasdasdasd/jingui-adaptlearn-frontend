@@ -645,13 +645,12 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 10px;
-  cursor: pointer;
+  cursor: default;
   text-align: left;
   transition: all 0.18s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .km-point-card:hover {
-  transform: translateY(-2px);
   box-shadow: var(--shadow-card-hover, 0 4px 12px rgba(1, 17, 61, 0.06));
 }
 

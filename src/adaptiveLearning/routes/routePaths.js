@@ -4,6 +4,7 @@ export const routes = {
     `/adaptive-learning/teacher/textbook-courses/${courseId}/chapters/${chapterId}/unit-assessment`,
   teacherQuestionQuality: "/adaptive-learning/teacher/question-quality",
   directory: "/adaptive-learning/today",
+  modeSelection: "/adaptive-learning/mode-select",
   knowledgeMap: "/adaptive-learning/knowledge-map",
   studentHome: "/adaptive-learning/student/home",
   studentEntry: (studentId = ":studentId") =>

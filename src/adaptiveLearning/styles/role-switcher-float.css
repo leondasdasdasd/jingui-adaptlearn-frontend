@@ -146,13 +146,16 @@
   margin-bottom: 0.25rem;
 }
 
-.role-switcher-role-option.teacher:has(.text-indigo-600) {
-  color: #312e81;
-  background: #eef2ff;
-  border-color: #c7d2fe !important;
+.role-switcher-role-option.teacher:has(.text-indigo-600),
+.role-switcher-role-option.teacher:has(.text-blue-600),
+.role-switcher-role-option.teacher[data-active="true"] {
+  color: #0445fc;
+  background: #eff4ff;
+  border-color: #c3d5ff !important;
 }
 
-.role-switcher-role-option.student:has(.text-emerald-600) {
+.role-switcher-role-option.student:has(.text-emerald-600),
+.role-switcher-role-option.student[data-active="true"] {
   color: #064e3b;
   background: #ecfdf5;
   border-color: #a7f3d0 !important;
@@ -184,8 +187,8 @@
 }
 
 .role-switcher-float[data-mode="teacher"] .role-switcher-shortcut:hover {
-  color: #4338ca;
-  background: #eef2ff;
+  color: #0445fc;
+  background: #eff4ff;
 }
 
 .role-switcher-float[data-mode="student"] .role-switcher-shortcut:hover {
@@ -245,7 +248,7 @@
   gap: 0.25rem;
   padding: 0.25rem 0.625rem;
   color: #fff;
-  background: #4f46e5;
+  background: #0445fc;
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 500;
@@ -253,7 +256,7 @@
 }
 
 .role-switcher-quick-button:hover {
-  background: #6366f1;
+  background: #0336c8;
 }
 
 .role-switcher-trigger-bar > div {
